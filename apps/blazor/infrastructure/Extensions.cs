@@ -3,6 +3,7 @@ using Blazored.LocalStorage;
 using budget_request_app.Blazor.Infrastructure.Api;
 using budget_request_app.Blazor.Infrastructure.Auth;
 using budget_request_app.Blazor.Infrastructure.Auth.Jwt;
+using budget_request_app.Blazor.Infrastructure.Common;
 using budget_request_app.Blazor.Infrastructure.Notifications;
 using budget_request_app.Blazor.Infrastructure.Preferences;
 using Microsoft.Extensions.Configuration;
@@ -24,6 +25,7 @@ public static class Extensions
             configuration.SnackbarConfiguration.VisibleStateDuration = 3000;
             configuration.SnackbarConfiguration.ShowCloseIcon = false;
         });
+        services.AutoRegisterInterfaces<IAppService>();
         services.AddBlazoredLocalStorage();
         services.AddAuthentication(config);
         services.AddTransient<IApiClient, ApiClient>();
@@ -41,5 +43,31 @@ public static class Extensions
         services.AddNotifications();
         return services;
 
+    }
+
+    public static IServiceCollection AutoRegisterInterfaces<T>(this IServiceCollection services)
+    {
+        var @interface = typeof(T);
+
+        var types = @interface
+            .Assembly
+            .GetExportedTypes()
+            .Where(t => t.IsClass && !t.IsAbstract)
+            .Select(t => new
+            {
+                Service = t.GetInterface($"I{t.Name}"),
+                Implementation = t
+            })
+            .Where(t => t.Service != null);
+
+        foreach (var type in types)
+        {
+            if (@interface.IsAssignableFrom(type.Service))
+            {
+                services.AddTransient(type.Service, type.Implementation);
+            }
+        }
+
+        return services;
     }
 }
