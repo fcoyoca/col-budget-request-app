@@ -10,6 +10,13 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Pages\Catalog\**" />
+	  <Content Remove="Pages\Catalog\**" />
+	  <EmbeddedResource Remove="Pages\Catalog\**" />
+	  <None Remove="Pages\Catalog\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Mapster" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" PrivateAssets="all" />
