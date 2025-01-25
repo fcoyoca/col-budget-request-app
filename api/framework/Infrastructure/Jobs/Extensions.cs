@@ -4,6 +4,7 @@ using FSH.Framework.Core.Persistence;
 using FSH.Framework.Infrastructure.Persistence;
 using Hangfire;
 using Hangfire.PostgreSql;
+using Hangfire.SqlServer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -37,7 +38,7 @@ internal static class Extensions
                     break;
 
                 case DbProviders.MSSQL:
-                    config.UseSqlServerStorage(dbOptions.ConnectionString);
+                    config.UseSqlServerStorage(dbOptions.ConnectionString, configuration.GetSection("HangfireSettings:Options").Get<SqlServerStorageOptions>());
                     break;
 
                 default:
