@@ -20,6 +20,9 @@
 		<PackageReference Include="Mapster" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" PrivateAssets="all" />
+
+    <PackageReference Include="Syncfusion.Blazor.Inputs" />
+    <PackageReference Include="Syncfusion.Blazor.Themes" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -29,6 +32,10 @@
 
 	<ItemGroup>
 		<ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Components\Syncfusion\Inputs\" />
 	</ItemGroup>
 
 </Project>
