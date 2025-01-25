@@ -13,7 +13,7 @@ public static class Extensions
     public static IServiceCollection AddAuthentication(this IServiceCollection services, IConfiguration config)
     {
         services.AddScoped<AuthenticationStateProvider, JwtAuthenticationService>()
-                .AddScoped(sp => (IAuthenticationService)sp.GetRequiredService<AuthenticationStateProvider>())
+                .AddScoped(sp => ( IAuthenticationService)sp.GetRequiredService<AuthenticationStateProvider>())
                 .AddScoped(sp => (IAccessTokenProvider)sp.GetRequiredService<AuthenticationStateProvider>())
                 .AddScoped<IAccessTokenProviderAccessor, AccessTokenProviderAccessor>()
                 .AddScoped<JwtAuthenticationHeaderHandler>();
