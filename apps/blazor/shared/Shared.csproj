@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<RootNamespace>budget_request_app.Blazor.Shared</RootNamespace>
+		<AssemblyName>budget_request_app.Blazor.Shared</AssemblyName>
+	</PropertyGroup>
+
+</Project>
