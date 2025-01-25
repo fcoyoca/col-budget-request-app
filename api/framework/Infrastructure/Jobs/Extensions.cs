@@ -56,7 +56,7 @@ internal static class Extensions
     {
         var hangfireOptions = config.GetSection(nameof(HangfireOptions)).Get<HangfireOptions>() ?? new HangfireOptions();
         var dashboardOptions = new DashboardOptions();
-        dashboardOptions.AppPath = "https://fullstackhero.net/";
+        dashboardOptions.AppPath = "https://ltcsoftwaresolutions.com/";
         dashboardOptions.Authorization = new[]
         {
            new HangfireCustomBasicAuthenticationFilter
