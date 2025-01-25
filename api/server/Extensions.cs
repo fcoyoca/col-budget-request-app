@@ -1,10 +1,8 @@
 ﻿using System.Reflection;
 using Asp.Versioning.Conventions;
+using budget_request_app.WebApi.Todo;
 using Carter;
 using FluentValidation;
-using budget_request_app.WebApi.Catalog.Application;
-using budget_request_app.WebApi.Catalog.Infrastructure;
-using budget_request_app.WebApi.Todo;
 
 namespace budget_request_app.WebApi.Host;
 
@@ -17,7 +15,7 @@ public static class Extensions
         //define module assemblies
         var assemblies = new Assembly[]
         {
-            typeof(CatalogMetadata).Assembly,
+            // typeof(CatalogMetadata).Assembly, // TODO: remove existing service for reference
             typeof(TodoModule).Assembly
         };
 
@@ -31,13 +29,13 @@ public static class Extensions
         });
 
         //register module services
-        builder.RegisterCatalogServices();
+        // builder.RegisterCatalogServices(); // TODO: remove existing service for reference
         builder.RegisterTodoServices();
 
         //add carter endpoint modules
         builder.Services.AddCarter(configurator: config =>
         {
-            config.WithModule<CatalogModule.Endpoints>();
+            // config.WithModule<CatalogModule.Endpoints>(); // TODO: remove existing service for reference
             config.WithModule<TodoModule.Endpoints>();
         });
 
@@ -49,7 +47,7 @@ public static class Extensions
         ArgumentNullException.ThrowIfNull(app);
 
         //register modules
-        app.UseCatalogModule();
+        // app.UseCatalogModule(); // TODO: remove existing service for reference
         app.UseTodoModule();
 
         //register api versions

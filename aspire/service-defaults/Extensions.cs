@@ -81,8 +81,8 @@ public static class Extensions
                     .AddHttpClientInstrumentation()
                     .AddRuntimeInstrumentation()
                     .AddProcessInstrumentation()
-                    .AddMeter(MetricsConstants.Todos)
-                    .AddMeter(MetricsConstants.Catalog);
+                    .AddMeter(MetricsConstants.Todos);
+                //.AddMeter(MetricsConstants.Catalog); // TODO: commented for reference.
                 //.AddConsoleExporter();
             })
             .WithTracing(tracing =>
