@@ -2,8 +2,8 @@
 
 $currentDirectory = Get-Location
 $rootDirectory = git rev-parse --show-toplevel
-$hostDirectory = Join-Path -Path $rootDirectory -ChildPath 'src/apps/blazor/client'
-$infrastructurePrj = Join-Path -Path $rootDirectory -ChildPath 'src/apps/blazor/infrastructure/Infrastructure.csproj'
+$hostDirectory = Join-Path -Path $rootDirectory -ChildPath '/apps/blazor/client'
+$infrastructurePrj = Join-Path -Path $rootDirectory -ChildPath '/apps/blazor/infrastructure/Infrastructure.csproj'
 
 Write-Host "Make sure you have run the WebAPI project. `n"
 Write-Host "Press any key to continue... `n"
