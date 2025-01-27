@@ -1,0 +1,74 @@
+﻿@page "/authentication/{action}"
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using budget_request_app.Blazor.Infrastructure.Common
+@attribute [AllowAnonymous]
+
+
+<ErrorBoundary Context="context">
+    <ChildContent>
+        <RemoteAuthenticatorView Action="@Action">
+            <LogOutSucceeded>
+                <MudItem Class="d-flex justify-center">
+                    <MudText Typo="Typo.h5" GutterBottom="true">
+                        You were successfully logged out.
+                    </MudText>
+                </MudItem>
+                <MudItem Class="d-flex justify-center">
+                    <MudButton OnClick="GoHome" Color="Color.Primary" Size="Size.Large">
+                        Click here to log back in.
+                    </MudButton>
+                </MudItem>
+            </LogOutSucceeded>
+            <LoggingIn>
+                <span>Logging you in...</span>
+            </LoggingIn>
+            <CompletingLoggingIn>
+                <span>Checking permissions...</span>
+            </CompletingLoggingIn>
+            <LogInFailed>
+                <span>Sorry, your login failed. Please try again or contact support.</span>
+            </LogInFailed>
+            <LogOut>
+                <span>Logging you out...</span>
+            </LogOut>
+            <CompletingLogOut>
+                <span>Logging you out...</span>
+            </CompletingLogOut>
+            <LogOutFailed>
+                <span>Sorry, log out operation failed. Please try again or contact support.</span>
+            </LogOutFailed>
+            <UserProfile>
+                <span>Retrieving profile...</span>
+            </UserProfile>
+            <Registering>
+                <span>Registering account...</span>
+            </Registering>
+        </RemoteAuthenticatorView>
+    </ChildContent>
+    <ErrorContent>
+        <MudItem Class="d-flex flex-column" Style="min-height:200px;max-height:200px;overflow:auto;">
+            <MudText Typo="Typo.body2" Align="Align.Left" GutterBottom="true">
+                Message: @context.Message
+            </MudText>
+            <MudText Typo="Typo.body2" Align="Align.Left" GutterBottom="true">
+                StackTrace: @context.StackTrace
+            </MudText>
+            <MudText Typo="Typo.body2" Align="Align.Left" GutterBottom="true">
+                Source: @context.Source
+            </MudText>
+        </MudItem>
+        <MudItem Class="d-flex flex-column">
+            <MudButton Class="mb-2" OnClick="GoLoginPage">Try re-authenticate by clicking this button to redirect you to the login page.</MudButton>
+            <MudText Align="Align.Center">If button above does not work. Please contact GPC LTC for support. </MudText>
+        </MudItem>
+    </ErrorContent>
+</ErrorBoundary>
+
+
+@code {
+    [Parameter] public string? Action { get; set; }
+
+    public void GoHome() => Navigation.NavigateTo(PageNameConstants.Index);
+
+    public void GoLoginPage() => Navigation.NavigateTo(PageNameConstants.Login);
+}

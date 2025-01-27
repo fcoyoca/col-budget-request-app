@@ -25,6 +25,13 @@
     <PackageReference Include="Syncfusion.Blazor.Themes" />
 	</ItemGroup>
 
+  <ItemGroup>
+    <!-- Avoid trimming of the Msal library.
+             There's something too much trimmed from Msal in the publish step. Then, after logging in,
+             the user gets redirected to authentication/login-failed with no error message. -->
+    <TrimmerRootAssembly Include="Microsoft.Authentication.WebAssembly.Msal" />
+  </ItemGroup>
+
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\Shared\Shared.csproj" />
 		<ProjectReference Include="..\infrastructure\Infrastructure.csproj" />

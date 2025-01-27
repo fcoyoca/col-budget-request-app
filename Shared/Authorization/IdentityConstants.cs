@@ -2,5 +2,5 @@
 public static class IdentityConstants
 {
     public const int PasswordLength = 6;
-    public const string SchemaName = "identity";
+    public const string SchemaName = "budgetAppIdentity";
 }

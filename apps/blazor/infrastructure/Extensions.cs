@@ -2,7 +2,6 @@
 using Blazored.LocalStorage;
 using budget_request_app.Blazor.Infrastructure.Api;
 using budget_request_app.Blazor.Infrastructure.Auth;
-using budget_request_app.Blazor.Infrastructure.Auth.Jwt;
 using budget_request_app.Blazor.Infrastructure.Common;
 using budget_request_app.Blazor.Infrastructure.Notifications;
 using budget_request_app.Blazor.Infrastructure.Preferences;
@@ -14,7 +13,7 @@ using MudBlazor.Services;
 namespace budget_request_app.Blazor.Infrastructure;
 public static class Extensions
 {
-    private const string ClientName = "FullStackHero.API";
+    private const string ClientName = "BudgetRequest.API";
     public static IServiceCollection AddClientServices(this IServiceCollection services, IConfiguration config)
     {
         services.AddMudServices(configuration =>
@@ -25,9 +24,7 @@ public static class Extensions
             configuration.SnackbarConfiguration.VisibleStateDuration = 3000;
             configuration.SnackbarConfiguration.ShowCloseIcon = false;
         });
-        services.AutoRegisterInterfaces<IAppService>();
         services.AddBlazoredLocalStorage();
-        services.AddAuthentication(config);
         services.AddTransient<IApiClient, ApiClient>();
         services.AddHttpClient(ClientName, client =>
         {
@@ -35,11 +32,13 @@ public static class Extensions
             client.DefaultRequestHeaders.AcceptLanguage.ParseAdd(CultureInfo.DefaultThreadCurrentCulture?.TwoLetterISOLanguageName);
             client.BaseAddress = new Uri(config["ApiBaseUrl"]!);
         })
-           .AddHttpMessageHandler<JwtAuthenticationHeaderHandler>()
+           .AddAuthenticationHandler(config)
            .Services
            .AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient(ClientName));
         services.AddTransient<IClientPreferenceManager, ClientPreferenceManager>();
+        services.AutoRegisterInterfaces<IAppService>();
         services.AddTransient<IPreference, ClientPreference>();
+        services.AddAuthentication(config);
         services.AddNotifications();
         return services;
 

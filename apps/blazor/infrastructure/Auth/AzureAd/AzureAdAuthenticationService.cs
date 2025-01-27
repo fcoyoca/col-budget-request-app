@@ -29,5 +29,5 @@ internal class AzureAdAuthenticationService : IAuthenticationService
     {
         NavigateToExternalLogin(returnUrl);
         return Task.CompletedTask;
-    }
+    }   
 }

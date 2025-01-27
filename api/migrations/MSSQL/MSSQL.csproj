@@ -4,6 +4,11 @@
     <AssemblyName>budget_request_app.WebApi.Migrations.MSSQL</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Identity\20241123030737_Add Identity Schema1.cs" />
+    <Compile Remove="Identity\20241123030737_Add Identity Schema1.Designer.cs" />
+    <Compile Remove="Identity\IdentityDbContextModelSnapshot1.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\framework\Infrastructure\Infrastructure.csproj" />
     <ProjectReference Include="..\..\modules\Catalog\Catalog.Infrastructure\Catalog.Infrastructure.csproj" />
     <ProjectReference Include="..\..\modules\Todo\Todo.csproj" />

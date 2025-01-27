@@ -24,7 +24,7 @@ public sealed class JwtAuthenticationService : AuthenticationStateProvider, IAut
     private readonly IApiClient _client;
     private readonly ILocalStorageService _localStorage;
     private readonly NavigationManager _navigation;
-
+    public AuthProvider ProviderType => AuthProvider.Jwt;
     public JwtAuthenticationService(PersistentComponentState state, ILocalStorageService localStorage, IApiClient client, NavigationManager navigation)
     {
         _localStorage = localStorage;

@@ -1,5 +1,6 @@
 ﻿using budget_request_app.Blazor.Client.Components;
 using budget_request_app.Blazor.Infrastructure.Api;
+using budget_request_app.Blazor.Infrastructure.Auth;
 using budget_request_app.Shared.Authorization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -24,6 +25,13 @@ public partial class Login()
 
     protected override async Task OnInitializedAsync()
     {
+
+        if (authService.ProviderType == AuthProvider.AzureAd)
+        {
+            authService.NavigateToExternalLogin(Navigation.Uri);
+            return;
+        }
+
         var authState = await AuthState;
         if (authState.User.Identity?.IsAuthenticated is true)
         {

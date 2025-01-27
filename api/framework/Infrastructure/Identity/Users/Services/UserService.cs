@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Security.Claims;
 using System.Text;
+using budget_request_app.Shared.Authorization;
 using Finbuckle.MultiTenant.Abstractions;
 using FSH.Framework.Core.Caching;
 using FSH.Framework.Core.Exceptions;
@@ -18,11 +19,11 @@ using FSH.Framework.Infrastructure.Constants;
 using FSH.Framework.Infrastructure.Identity.Persistence;
 using FSH.Framework.Infrastructure.Identity.Roles;
 using FSH.Framework.Infrastructure.Tenant;
-using budget_request_app.Shared.Authorization;
 using Mapster;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Web;
 
 namespace FSH.Framework.Infrastructure.Identity.Users.Services;
 
@@ -95,9 +96,88 @@ internal sealed partial class UserService(
         return users.Adapt<List<UserDetail>>();
     }
 
-    public Task<string> GetOrCreateFromPrincipalAsync(ClaimsPrincipal principal)
+    /// <summary>
+    /// This is used when authenticating with AzureAd.
+    /// The local user is retrieved using the objectidentifier claim present in the ClaimsPrincipal.
+    /// If no such claim is found, an InternalServerException is thrown.
+    /// If no user is found with that ObjectId, a new one is created and populated with the values from the ClaimsPrincipal.
+    /// If a role claim is present in the principal, and the user is not yet in that roll, then the user is added to that role.
+    /// </summary>
+    public async Task<string> GetOrCreateFromPrincipalAsync(ClaimsPrincipal principal)
     {
-        throw new NotImplementedException();
+        string? objectId = principal.GetObjectId();
+        if (string.IsNullOrWhiteSpace(objectId))
+        {
+            throw new InternalServerException("Invalid objectId");
+        }
+
+        var user = await userManager.Users.Where(u => u.ObjectId == objectId).FirstOrDefaultAsync()
+            ?? await CreateOrUpdateFromPrincipalAsync(principal);
+
+        if (principal.FindFirstValue(ClaimTypes.Role) is string role &&
+            await roleManager.RoleExistsAsync(role) &&
+            !await userManager.IsInRoleAsync(user, role))
+        {
+            await userManager.AddToRoleAsync(user, role);
+        }
+
+        return user.Id;
+    }
+
+    public async Task<FshUser> CreateOrUpdateFromPrincipalAsync(ClaimsPrincipal principal)
+    {
+        string? email = principal.FindFirstValue(ClaimTypes.Upn);
+        string? username = principal.GetDisplayName();
+        if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(username))
+        {
+            throw new InternalServerException(string.Format("Username or Email not valid."));
+        }
+
+        var user = await userManager.FindByNameAsync(username);
+        if (user is not null && !string.IsNullOrWhiteSpace(user.ObjectId))
+        {
+            throw new InternalServerException(string.Format("Username {0} is already taken.", username));
+        }
+
+        if (user is null)
+        {
+            user = await userManager.FindByEmailAsync(email);
+            if (user is not null && !string.IsNullOrWhiteSpace(user.ObjectId))
+            {
+                throw new InternalServerException(string.Format("Email {0} is already taken.", email));
+            }
+        }
+
+        IdentityResult? result;
+        if (user is not null)
+        {
+            user.ObjectId = principal.GetObjectId();
+            result = await userManager.UpdateAsync(user);
+        }
+        else
+        {
+            user = new FshUser
+            {
+                ObjectId = principal.GetObjectId(),
+                FirstName = principal.FindFirstValue(ClaimTypes.GivenName),
+                LastName = principal.FindFirstValue(ClaimTypes.Surname),
+                Email = email,
+                NormalizedEmail = email.ToUpperInvariant(),
+                UserName = username,
+                NormalizedUserName = username.ToUpperInvariant(),
+                EmailConfirmed = true,
+                PhoneNumberConfirmed = true,
+                IsActive = true
+            };
+            result = await userManager.CreateAsync(user);
+        }
+
+        if (!result.Succeeded)
+        {
+            throw new InternalServerException("Validation Errors Occurred.", default! /* result.GetErrors(_localizer)*/);
+        }
+
+        return user;
     }
 
     public async Task<RegisterUserResponse> RegisterAsync(RegisterUserCommand request, string origin, CancellationToken cancellationToken)

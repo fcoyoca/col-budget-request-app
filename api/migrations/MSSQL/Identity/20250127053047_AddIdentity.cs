@@ -6,17 +6,17 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace budget_request_app.WebApi.Migrations.MSSQL.Identity
 {
     /// <inheritdoc />
-    public partial class AddIdentitySchema : Migration
+    public partial class AddIdentity : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.EnsureSchema(
-                name: "identity");
+                name: "budgetAppIdentity");
 
             migrationBuilder.CreateTable(
                 name: "AuditTrails",
-                schema: "identity",
+                schema: "budgetAppIdentity",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -37,7 +37,7 @@ namespace budget_request_app.WebApi.Migrations.MSSQL.Identity
 
             migrationBuilder.CreateTable(
                 name: "Roles",
-                schema: "identity",
+                schema: "budgetAppIdentity",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -54,7 +54,7 @@ namespace budget_request_app.WebApi.Migrations.MSSQL.Identity
 
             migrationBuilder.CreateTable(
                 name: "Users",
-                schema: "identity",
+                schema: "budgetAppIdentity",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -88,7 +88,7 @@ namespace budget_request_app.WebApi.Migrations.MSSQL.Identity
 
             migrationBuilder.CreateTable(
                 name: "RoleClaims",
-                schema: "identity",
+                schema: "budgetAppIdentity",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -106,7 +106,7 @@ namespace budget_request_app.WebApi.Migrations.MSSQL.Identity
                     table.ForeignKey(
                         name: "FK_RoleClaims_Roles_RoleId",
                         column: x => x.RoleId,
-                        principalSchema: "identity",
+                        principalSchema: "budgetAppIdentity",
                         principalTable: "Roles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -114,7 +114,7 @@ namespace budget_request_app.WebApi.Migrations.MSSQL.Identity
 
             migrationBuilder.CreateTable(
                 name: "UserClaims",
-                schema: "identity",
+                schema: "budgetAppIdentity",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -130,7 +130,7 @@ namespace budget_request_app.WebApi.Migrations.MSSQL.Identity
                     table.ForeignKey(
                         name: "FK_UserClaims_Users_UserId",
                         column: x => x.UserId,
-                        principalSchema: "identity",
+                        principalSchema: "budgetAppIdentity",
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -138,7 +138,7 @@ namespace budget_request_app.WebApi.Migrations.MSSQL.Identity
 
             migrationBuilder.CreateTable(
                 name: "UserLogins",
-                schema: "identity",
+                schema: "budgetAppIdentity",
                 columns: table => new
                 {
                     LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -153,7 +153,7 @@ namespace budget_request_app.WebApi.Migrations.MSSQL.Identity
                     table.ForeignKey(
                         name: "FK_UserLogins_Users_UserId",
                         column: x => x.UserId,
-                        principalSchema: "identity",
+                        principalSchema: "budgetAppIdentity",
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -161,7 +161,7 @@ namespace budget_request_app.WebApi.Migrations.MSSQL.Identity
 
             migrationBuilder.CreateTable(
                 name: "UserRoles",
-                schema: "identity",
+                schema: "budgetAppIdentity",
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -174,14 +174,14 @@ namespace budget_request_app.WebApi.Migrations.MSSQL.Identity
                     table.ForeignKey(
                         name: "FK_UserRoles_Roles_RoleId",
                         column: x => x.RoleId,
-                        principalSchema: "identity",
+                        principalSchema: "budgetAppIdentity",
                         principalTable: "Roles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_UserRoles_Users_UserId",
                         column: x => x.UserId,
-                        principalSchema: "identity",
+                        principalSchema: "budgetAppIdentity",
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -189,7 +189,7 @@ namespace budget_request_app.WebApi.Migrations.MSSQL.Identity
 
             migrationBuilder.CreateTable(
                 name: "UserTokens",
-                schema: "identity",
+                schema: "budgetAppIdentity",
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -204,7 +204,7 @@ namespace budget_request_app.WebApi.Migrations.MSSQL.Identity
                     table.ForeignKey(
                         name: "FK_UserTokens_Users_UserId",
                         column: x => x.UserId,
-                        principalSchema: "identity",
+                        principalSchema: "budgetAppIdentity",
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -212,13 +212,13 @@ namespace budget_request_app.WebApi.Migrations.MSSQL.Identity
 
             migrationBuilder.CreateIndex(
                 name: "IX_RoleClaims_RoleId",
-                schema: "identity",
+                schema: "budgetAppIdentity",
                 table: "RoleClaims",
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
                 name: "RoleNameIndex",
-                schema: "identity",
+                schema: "budgetAppIdentity",
                 table: "Roles",
                 columns: new[] { "NormalizedName", "TenantId" },
                 unique: true,
@@ -226,31 +226,31 @@ namespace budget_request_app.WebApi.Migrations.MSSQL.Identity
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserClaims_UserId",
-                schema: "identity",
+                schema: "budgetAppIdentity",
                 table: "UserClaims",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserLogins_UserId",
-                schema: "identity",
+                schema: "budgetAppIdentity",
                 table: "UserLogins",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserRoles_RoleId",
-                schema: "identity",
+                schema: "budgetAppIdentity",
                 table: "UserRoles",
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
                 name: "EmailIndex",
-                schema: "identity",
+                schema: "budgetAppIdentity",
                 table: "Users",
                 column: "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
-                schema: "identity",
+                schema: "budgetAppIdentity",
                 table: "Users",
                 column: "NormalizedUserName",
                 unique: true,
@@ -262,35 +262,35 @@ namespace budget_request_app.WebApi.Migrations.MSSQL.Identity
         {
             migrationBuilder.DropTable(
                 name: "AuditTrails",
-                schema: "identity");
+                schema: "budgetAppIdentity");
 
             migrationBuilder.DropTable(
                 name: "RoleClaims",
-                schema: "identity");
+                schema: "budgetAppIdentity");
 
             migrationBuilder.DropTable(
                 name: "UserClaims",
-                schema: "identity");
+                schema: "budgetAppIdentity");
 
             migrationBuilder.DropTable(
                 name: "UserLogins",
-                schema: "identity");
+                schema: "budgetAppIdentity");
 
             migrationBuilder.DropTable(
                 name: "UserRoles",
-                schema: "identity");
+                schema: "budgetAppIdentity");
 
             migrationBuilder.DropTable(
                 name: "UserTokens",
-                schema: "identity");
+                schema: "budgetAppIdentity");
 
             migrationBuilder.DropTable(
                 name: "Roles",
-                schema: "identity");
+                schema: "budgetAppIdentity");
 
             migrationBuilder.DropTable(
                 name: "Users",
-                schema: "identity");
+                schema: "budgetAppIdentity");
         }
     }
 }

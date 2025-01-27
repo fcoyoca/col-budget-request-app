@@ -59,7 +59,7 @@ namespace budget_request_app.WebApi.Migrations.MSSQL.Identity
 
                     b.HasKey("Id");
 
-                    b.ToTable("AuditTrails", "identity");
+                    b.ToTable("AuditTrails", "budgetAppIdentity");
 
                     b.HasAnnotation("Finbuckle:MultiTenant", true);
                 });
@@ -97,7 +97,7 @@ namespace budget_request_app.WebApi.Migrations.MSSQL.Identity
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("RoleClaims", "identity");
+                    b.ToTable("RoleClaims", "budgetAppIdentity");
 
                     b.HasAnnotation("Finbuckle:MultiTenant", true);
                 });
@@ -134,7 +134,7 @@ namespace budget_request_app.WebApi.Migrations.MSSQL.Identity
                         .HasDatabaseName("RoleNameIndex")
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
-                    b.ToTable("Roles", "identity");
+                    b.ToTable("Roles", "budgetAppIdentity");
 
                     b.HasAnnotation("Finbuckle:MultiTenant", true);
                 });
@@ -228,7 +228,7 @@ namespace budget_request_app.WebApi.Migrations.MSSQL.Identity
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.ToTable("Users", "identity");
+                    b.ToTable("Users", "budgetAppIdentity");
 
                     b.HasAnnotation("Finbuckle:MultiTenant", true);
                 });
@@ -260,7 +260,7 @@ namespace budget_request_app.WebApi.Migrations.MSSQL.Identity
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserClaims", "identity");
+                    b.ToTable("UserClaims", "budgetAppIdentity");
 
                     b.HasAnnotation("Finbuckle:MultiTenant", true);
                 });
@@ -289,7 +289,7 @@ namespace budget_request_app.WebApi.Migrations.MSSQL.Identity
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserLogins", "identity");
+                    b.ToTable("UserLogins", "budgetAppIdentity");
 
                     b.HasAnnotation("Finbuckle:MultiTenant", true);
                 });
@@ -311,7 +311,7 @@ namespace budget_request_app.WebApi.Migrations.MSSQL.Identity
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("UserRoles", "identity");
+                    b.ToTable("UserRoles", "budgetAppIdentity");
 
                     b.HasAnnotation("Finbuckle:MultiTenant", true);
                 });
@@ -337,7 +337,7 @@ namespace budget_request_app.WebApi.Migrations.MSSQL.Identity
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
-                    b.ToTable("UserTokens", "identity");
+                    b.ToTable("UserTokens", "budgetAppIdentity");
 
                     b.HasAnnotation("Finbuckle:MultiTenant", true);
                 });
