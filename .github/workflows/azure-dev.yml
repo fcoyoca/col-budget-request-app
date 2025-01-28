@@ -23,9 +23,18 @@ jobs:
       AZURE_SUBSCRIPTION_ID: ${{ vars.AZURE_SUBSCRIPTION_ID }}
       AZURE_ENV_NAME: ${{ vars.AZURE_ENV_NAME }}
       AZURE_LOCATION: ${{ vars.AZURE_LOCATION }}
+      ASPNETCORE_ENVIRONMENT: "Development"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: App Settings Variable Substitution
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: 'api/server/appsettings.Development.json'
+        env:
+          DatabaseOptions.ConnectionString: ${{ secrets.CONNECTION_STRING }}
+
       - name: Install azd
         uses: Azure/setup-azd@v2
       - uses: actions/setup-dotnet@v4
