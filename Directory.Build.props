@@ -10,7 +10,7 @@
         <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
         <AnalysisLevel>latest</AnalysisLevel>
         <AnalysisMode>All</AnalysisMode>
-        <ContainerImageTags>2.0.4-rc;latest</ContainerImageTags>
+        <ContainerImageTag>2.0.4-rc;latest</ContainerImageTag>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="SonarAnalyzer.CSharp" PrivateAssets="all" Condition="$(MSBuildProjectExtension) == '.csproj'" />
