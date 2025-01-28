@@ -87,7 +87,7 @@ public static class Extensions
             })
             .WithTracing(tracing =>
             {
-                if (builder.Environment.IsDevelopment())
+                if (builder.Environment.IsDevelopment() || builder.Environment.EnvironmentName == "Local")
                 {
                     tracing.SetSampler(new AlwaysOnSampler());
                 }
