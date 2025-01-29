@@ -38,11 +38,6 @@ jobs:
 
       - name: Install azd
         uses: Azure/setup-azd@v2
-      - uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '9.0.100'
-      - name: Install .NET Aspire workload
-        run: dotnet workload install aspire
 
       - name: Log in with Azure (Federated Credentials)
         run: |
@@ -52,6 +47,12 @@ jobs:
             --tenant-id "$Env:AZURE_TENANT_ID"
         shell: pwsh
 
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.100'
+
+      - name: Install .NET Aspire workload
+        run: dotnet workload install aspire
 
       - name: Provision Infrastructure
         run: azd provision --no-prompt
