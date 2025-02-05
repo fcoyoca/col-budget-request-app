@@ -15,7 +15,7 @@ public sealed class LookupValueDbContext : FshDbContext
     {
     }
 
-    public DbSet<LookupValueItem> LookupCategories { get; set; } = null!;
+    public DbSet<LookupValueItem> LookupValues { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
