@@ -23,6 +23,7 @@
     <ProjectReference Include="..\modules\Catalog\Catalog.Infrastructure\Catalog.Infrastructure.csproj" />
     <ProjectReference Include="..\modules\Todo\Todo.csproj" />
     <ProjectReference Include="..\modules\LookupCategory\LookupCategory.csproj" />
+    <ProjectReference Include="..\modules\LookupValue\LookupValue.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="appsettings.Development.json">

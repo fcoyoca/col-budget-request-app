@@ -2,6 +2,7 @@
 using Asp.Versioning.Conventions;
 using budget_request_app.WebApi.Todo;
 using budget_request_app.WebApi.LookupCategory;
+using budget_request_app.WebApi.LookupValue;
 using Carter;
 using FluentValidation;
 
@@ -18,8 +19,8 @@ public static class Extensions
         {
             // typeof(CatalogMetadata).Assembly, // TODO: remove existing service for reference
             typeof(TodoModule).Assembly,
-            typeof(LookupCategoryModule).Assembly
-            //typeof(LookupCategoryModule).Assembly
+            typeof(LookupCategoryModule).Assembly,
+            typeof(LookupValueModule).Assembly
         };
 
         //register validators
@@ -35,6 +36,7 @@ public static class Extensions
         // builder.RegisterCatalogServices(); // TODO: remove existing service for reference
         builder.RegisterTodoServices();
         builder.RegisterLookupCategoryServices();
+        builder.RegisterLookupValueServices();
 
         //add carter endpoint modules
         builder.Services.AddCarter(configurator: config =>
@@ -42,6 +44,7 @@ public static class Extensions
             // config.WithModule<CatalogModule.Endpoints>(); // TODO: remove existing service for reference
             config.WithModule<TodoModule.Endpoints>();
             config.WithModule<LookupCategoryModule.Endpoints>();
+            config.WithModule<LookupValueModule.Endpoints>();
         });
 
         return builder;
@@ -55,6 +58,7 @@ public static class Extensions
         // app.UseCatalogModule(); // TODO: remove existing service for reference
         app.UseTodoModule();
         app.UseLookupCategoryModule();
+        app.UseLookupValueModule();
 
         //register api versions
         var versions = app.NewApiVersionSet()
