@@ -8,7 +8,6 @@ public class TodoItem : AuditableEntity, IAggregateRoot
     public string? Title { get; set; }
 
     public string? Note { get; set; }
-
     public static TodoItem Create(string title, string note)
     {
         var item = new TodoItem();

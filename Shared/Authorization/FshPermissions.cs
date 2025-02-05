@@ -51,6 +51,14 @@ public static class FshPermissions
         new("Update Todos", FshActions.Update, FshResources.Todos),
         new("Delete Todos", FshActions.Delete, FshResources.Todos),
         new("Export Todos", FshActions.Export, FshResources.Todos),
+        
+        //lookup
+        new("View LookupCategories", FshActions.View, FshResources.LookupCategories, IsBasic: true),
+        new("Search LookupCategories", FshActions.Search, FshResources.LookupCategories, IsBasic: true),
+        new("Create LookupCategories", FshActions.Create, FshResources.LookupCategories),
+        new("Update LookupCategories", FshActions.Update, FshResources.LookupCategories),
+        new("Delete LookupCategories", FshActions.Delete, FshResources.LookupCategories),
+        new("Export LookupCategories", FshActions.Export, FshResources.LookupCategories),
 
          new("View Hangfire", FshActions.View, FshResources.Hangfire),
          new("View Dashboard", FshActions.View, FshResources.Dashboard),
