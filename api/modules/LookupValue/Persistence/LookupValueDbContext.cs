@@ -22,5 +22,6 @@ public sealed class LookupValueDbContext : FshDbContext
         ArgumentNullException.ThrowIfNull(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(LookupValueDbContext).Assembly);
         modelBuilder.HasDefaultSchema(SchemaNames.Lookup);
+        modelBuilder.Entity<LookupValueItem>().HasQueryFilter(p => p.Deleted == null);
     }
 }
