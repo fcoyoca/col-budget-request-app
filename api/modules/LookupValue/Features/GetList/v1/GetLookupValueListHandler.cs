@@ -25,7 +25,13 @@ public sealed class GetLookupValueListHandler(
 
         foreach (var item in items)
         {
-            var catName = categories.First(x => x.Id == item.LookupCategoryId).Name;
+            var category = categories.FirstOrDefault(x => x.Id == item.LookupCategoryId);
+            if (category == null)
+            {
+                continue;
+            }
+
+            var catName = category.Name;
             var propCatName = item.GetType().GetProperty("LookupCategoryName");
             propCatName.SetValue(item, catName);
         }
