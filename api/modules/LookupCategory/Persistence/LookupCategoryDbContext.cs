@@ -22,5 +22,6 @@ public sealed class LookupCategoryDbContext : FshDbContext
         ArgumentNullException.ThrowIfNull(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(LookupCategoryDbContext).Assembly);
         modelBuilder.HasDefaultSchema(SchemaNames.Lookup);
+        modelBuilder.Entity<LookupCategoryItem>().HasQueryFilter(p => p.Deleted == null);
     }
 }
