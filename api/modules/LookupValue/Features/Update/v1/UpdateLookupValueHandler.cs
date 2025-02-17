@@ -16,7 +16,6 @@ public sealed class UpdateLookupValueHandler(
         ArgumentNullException.ThrowIfNull(request);
         var LookupValue = await repository.GetByIdAsync(request.Id, cancellationToken);
         _ = LookupValue ?? throw new LookupValueItemNotFoundException(request.Id);
-        //var updatedLookupValue = LookupValue.Update(request.Name);
         LookupValue.Name = request.Name;
         await repository.UpdateAsync(LookupValue, cancellationToken);
         logger.LogInformation("LookupValue item updated {LookupValueItemId}", LookupValue.Id);

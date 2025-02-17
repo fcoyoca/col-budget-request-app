@@ -16,7 +16,7 @@ public class LookupValueItemUpdatedEventHandler(
     public async Task Handle(LookupValueItemUpdated notification, CancellationToken cancellationToken)
     {
         logger.LogInformation("handling LookupValue item update domain event..");
-        var cacheResponse = new GetLookupValueResponse(notification.item.Id, notification.item.Name, notification.item.LookupCategoryId);
+        var cacheResponse = new GetLookupValueResponse(notification.item.Id, notification.item.Name, notification.item.LookupCategoryId, notification.item.IsActive);
         await cache.SetAsync($"LookupValue:{notification.item.Id}", cacheResponse, cancellationToken: cancellationToken);
     }
 }

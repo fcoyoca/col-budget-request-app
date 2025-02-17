@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using budget_request_app.WebApi.LookupValue.Persistence;
 
@@ -11,9 +12,11 @@ using budget_request_app.WebApi.LookupValue.Persistence;
 namespace budget_request_app.WebApi.Migrations.MSSQL.LookupValue
 {
     [DbContext(typeof(LookupValueDbContext))]
-    partial class LookupValueDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250217023745_lookupvalue_isactive")]
+    partial class lookupvalue_isactive
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

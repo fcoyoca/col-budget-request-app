@@ -20,7 +20,7 @@ public sealed class GetLookupValueHandler(
             {
                 var LookupValueItem = await repository.GetByIdAsync(request.Id, cancellationToken);
                 if (LookupValueItem == null) throw new LookupValueItemNotFoundException(request.Id);
-                return new GetLookupValueResponse(LookupValueItem.Id, LookupValueItem.Name!, LookupValueItem.LookupCategoryId!);
+                return new GetLookupValueResponse(LookupValueItem.Id, LookupValueItem.Name!, LookupValueItem.LookupCategoryId!, LookupValueItem.IsActive);
             },
             cancellationToken: cancellationToken);
         return item!;
