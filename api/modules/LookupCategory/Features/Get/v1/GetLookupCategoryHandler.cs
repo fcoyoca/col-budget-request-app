@@ -20,7 +20,7 @@ public sealed class GetLookupCategoryHandler(
             {
                 var LookupCategoryItem = await repository.GetByIdAsync(request.Id, cancellationToken);
                 if (LookupCategoryItem == null) throw new LookupCategoryItemNotFoundException(request.Id);
-                return new GetLookupCategoryResponse(LookupCategoryItem.Id, LookupCategoryItem.Name!, LookupCategoryItem.Description!);
+                return new GetLookupCategoryResponse(LookupCategoryItem.Id, LookupCategoryItem.Name!, LookupCategoryItem.Description!, LookupCategoryItem.ModuleId.GetValueOrDefault());
             },
             cancellationToken: cancellationToken);
         return item!;

@@ -8,15 +8,17 @@ public class LookupCategoryItem : AuditableEntity, IAggregateRoot
     public string? Name { get; set; }
 
     public string? Description { get; set; }
+    public int? ModuleId { get; set; }
     
-    public static LookupCategoryItem Create(string name, string description)
+    public static LookupCategoryItem Create(string name, string description, int? moduleId)
     {
         var item = new LookupCategoryItem();
 
         item.Name = name;
         item.Description = description;
+        item.ModuleId = moduleId.GetValueOrDefault();
 
-        item.QueueDomainEvent(new LookupCategoryItemCreated(item.Id, item.Name, item.Description));
+        item.QueueDomainEvent(new LookupCategoryItemCreated(item.Id, item.Name, item.Description, item.ModuleId.GetValueOrDefault()));
 
         return item;
     }

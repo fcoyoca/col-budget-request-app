@@ -13,7 +13,7 @@ public sealed class CreateLookupCategoryHandler(
     public async Task<CreateLookupCategoryResponse> Handle(CreateLookupCategoryCommand request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
-        var item = LookupCategoryItem.Create(request.Name, request.Description);
+        var item = LookupCategoryItem.Create(request.Name, request.Description, request.ModuleId);
         await repository.AddAsync(item, cancellationToken).ConfigureAwait(false);
         await repository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         logger.LogInformation("LookupCategory item created {LookupCategoryItemId}", item.Id);

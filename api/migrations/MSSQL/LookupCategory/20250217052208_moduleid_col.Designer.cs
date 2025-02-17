@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using budget_request_app.WebApi.LookupCategory.Persistence;
 
@@ -11,9 +12,11 @@ using budget_request_app.WebApi.LookupCategory.Persistence;
 namespace budget_request_app.WebApi.Migrations.MSSQL.LookupCategory
 {
     [DbContext(typeof(LookupCategoryDbContext))]
-    partial class LookupCategoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250217052208_moduleid_col")]
+    partial class moduleid_col
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
