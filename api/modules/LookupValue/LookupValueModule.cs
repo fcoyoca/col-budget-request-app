@@ -7,6 +7,8 @@ using budget_request_app.WebApi.LookupValue.Features.Delete.v1;
 using budget_request_app.WebApi.LookupValue.Features.Get.v1;
 using budget_request_app.WebApi.LookupValue.Features.GetList.v1;
 using budget_request_app.WebApi.LookupValue.Features.Update.v1;
+using budget_request_app.WebApi.LookupValue.Features.Activate.v1;
+using budget_request_app.WebApi.LookupValue.Features.Deactivate.v1;
 using budget_request_app.WebApi.LookupValue.Persistence;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -26,6 +28,8 @@ public static class LookupValueModule
             LookupValueGroup.MapGetLookupValueEndpoint();
             LookupValueGroup.MapGetLookupValueListEndpoint();
             LookupValueGroup.MapLookupValueItemUpdationEndpoint();
+            LookupValueGroup.MapLookupValueItemActivationEndpoint();
+            LookupValueGroup.MapLookupValueItemDeactivationEndpoint();
             LookupValueGroup.MapLookupValueItemDeletionEndpoint();
         }
     }
