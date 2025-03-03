@@ -1,32 +1,49 @@
 ﻿using Carter;
-using FSH.WebApi.Modules.Catalog.Features.Products.ProductCreation.v1;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 
-namespace FSH.WebApi.Modules.CapitalEquipment;
+namespace budget_request_app.WebApi.CapitalEquipment;
 
 public static class CapitalEquipmentModule
 {
-    public class Endpoints : CarterModule
+    public Endpoints() : base("capitalEquipment") { }
+    public override void AddRoutes(IEndpointRouteBuilder app)
     {
-        public Endpoints() : base("capitalEquipment") { }
-        public override void AddRoutes(IEndpointRouteBuilder app)
-        {
-            // var productGroup = app.MapGroup("products").WithTags("products");
-            // productGroup.MapProductCreationEndpoint();
-            //
-            // var testGroup = app.MapGroup("test").WithTags("test");
-            // testGroup.MapGet("/test", () => "hi");
-        }
+        var generalInfoGroup = app.MapGroup("generalInfos").WithTags("General Information");
+        generalInfoGroup.MapGeneralInfoCreationEndpoint();
+        generalInfoGroup.MapGetGeneralInfoEndpoint();
+        generalInfoGroup.MapGetGeneralInfoListEndpoint();
+        generalInfoGroup.MapGeneralInfoUpdateEndpoint();
+        generalInfoGroup.MapGeneralInfoDeleteEndpoint();
+        //
+        // var brandGroup = app.MapGroup("brands").WithTags("brands");
+        // brandGroup.MapBrandCreationEndpoint();
+        // brandGroup.MapGetBrandEndpoint();
+        // brandGroup.MapGetBrandListEndpoint();
+        // brandGroup.MapBrandUpdateEndpoint();
+        // brandGroup.MapBrandDeleteEndpoint();
     }
-    public static WebApplicationBuilder RegisterCatalogServices(this WebApplicationBuilder builder)
-    {
-        ArgumentNullException.ThrowIfNull(builder);
-        return builder;
-    }
-    public static WebApplication UseCatalogModule(this WebApplication app)
-    {
-        return app;
-    }
+}
+public static WebApplicationBuilder RegisterCapitalEquipmentServices(this WebApplicationBuilder builder)
+{
+    ArgumentNullException.ThrowIfNull(builder);
+    builder.Services.BindDbContext<CapitalEquipmentDbContext>();
+    builder.Services.AddScoped<IDbInitializer, CapitalEquipmentDbInitializer>();
+    builder.Services.AddKeyedScoped<IRepository<GeneralInfo>, CapitalEquipmentRepository<GeneralInfo>>("capitalEquipment:generalInfos");
+    builder.Services.AddKeyedScoped<IReadRepository<GeneralInfo>, CapitalEquipmentRepository<GeneralInfo>>("capitalEquipment:generalInfos");
+
+    // foreach(var service in builder.Services)
+    // {
+    //     Console.WriteLine($"Service: {service.ServiceType.FullName}");
+    //     // \nLifetime: {service.Lifetime}
+    //     // \nInstance: {service.ImplementationType?.FullName}");
+    // }
+        
+    return builder;
+}
+public static WebApplication UseCapitalEquipmentModule(this WebApplication app)
+{
+    return app;
+}
 }

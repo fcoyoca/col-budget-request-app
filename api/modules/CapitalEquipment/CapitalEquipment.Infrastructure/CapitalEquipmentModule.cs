@@ -17,7 +17,7 @@ public static class CapitalEquipmentModule
         public Endpoints() : base("capitalEquipment") { }
         public override void AddRoutes(IEndpointRouteBuilder app)
         {
-            var generalInfoGroup = app.MapGroup("generalInfos").WithTags("generalInfos");
+            var generalInfoGroup = app.MapGroup("capitalEquipment:generalInfos").WithTags("General Information");
             generalInfoGroup.MapGeneralInfoCreationEndpoint();
             generalInfoGroup.MapGetGeneralInfoEndpoint();
             generalInfoGroup.MapGetGeneralInfoListEndpoint();
@@ -39,8 +39,7 @@ public static class CapitalEquipmentModule
         builder.Services.AddScoped<IDbInitializer, CapitalEquipmentDbInitializer>();
         builder.Services.AddKeyedScoped<IRepository<GeneralInfo>, CapitalEquipmentRepository<GeneralInfo>>("capitalEquipment:generalInfos");
         builder.Services.AddKeyedScoped<IReadRepository<GeneralInfo>, CapitalEquipmentRepository<GeneralInfo>>("capitalEquipment:generalInfos");
-        // builder.Services.AddKeyedScoped<IRepository<Brand>, CatalogRepository<Brand>>("catalog:brands");
-        // builder.Services.AddKeyedScoped<IReadRepository<Brand>, CatalogRepository<Brand>>("catalog:brands");
+        
         return builder;
     }
     public static WebApplication UseCapitalEquipmentModule(this WebApplication app)

@@ -1,4 +1,5 @@
 ﻿using FSH.Framework.Core.Persistence;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace budget_request_app.WebApi.CapitalEquipment.Infrastructure.Persistence;
@@ -8,11 +9,11 @@ internal sealed class CapitalEquipmentDbInitializer(
 {
     public async Task MigrateAsync(CancellationToken cancellationToken)
     {
-        //if ((await context.Database.GetPendingMigrationsAsync(cancellationToken)).Any())
-        //{
-        //    await context.Database.MigrateAsync(cancellationToken).ConfigureAwait(false);
-        //    logger.LogInformation("[{Tenant}] applied database migrations for CapitalEquipment module", context.TenantInfo!.Identifier);
-        //}
+        if ((await context.Database.GetPendingMigrationsAsync(cancellationToken)).Any())
+        {
+            await context.Database.MigrateAsync(cancellationToken).ConfigureAwait(false);
+            logger.LogInformation("[{Tenant}] applied database migrations for CapitalEquipment module", context.TenantInfo!.Identifier);
+        }
     }
 
     public async Task SeedAsync(CancellationToken cancellationToken)

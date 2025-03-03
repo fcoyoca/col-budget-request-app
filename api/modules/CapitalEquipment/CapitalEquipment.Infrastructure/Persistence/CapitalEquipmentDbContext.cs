@@ -23,5 +23,6 @@ public sealed class CapitalEquipmentDbContext : FshDbContext
         ArgumentNullException.ThrowIfNull(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(CapitalEquipmentDbContext).Assembly);
         modelBuilder.HasDefaultSchema(SchemaNames.CapitalEquipment);
+        modelBuilder.Entity<GeneralInfo>().HasQueryFilter(p => p.Deleted == null);
     }
 }

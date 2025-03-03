@@ -19,7 +19,7 @@ public static class GetGeneralInfoEndpoint
             .WithName(nameof(GetGeneralInfoEndpoint))
             .WithSummary("gets GeneralInfo by id")
             .WithDescription("gets prodct by id")
-            .Produces<GeneralInfoResponse>()
+            .Produces<GetGeneralInfoResponse>()
             .RequirePermission("Permissions.GeneralInfos.View")
             .MapToApiVersion(1);
     }

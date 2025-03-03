@@ -9,9 +9,9 @@ namespace budget_request_app.WebApi.CapitalEquipment.Application.GeneralInfos.Ge
 public sealed class GetGeneralInfoHandler(
     [FromKeyedServices("capitalEquipment:generalInfos")] IReadRepository<GeneralInfo> repository,
     ICacheService cache)
-    : IRequestHandler<GetGeneralInfoRequest, GeneralInfoResponse>
+    : IRequestHandler<GetGeneralInfoRequest, GetGeneralInfoResponse>
 {
-    public async Task<GeneralInfoResponse> Handle(GetGeneralInfoRequest request, CancellationToken cancellationToken)
+    public async Task<GetGeneralInfoResponse> Handle(GetGeneralInfoRequest request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
         var item = await cache.GetOrSetAsync(
@@ -21,9 +21,19 @@ public sealed class GetGeneralInfoHandler(
                 var spec = new GetGeneralInfoSpecs(request.Id);
                 var GeneralInfoItem = await repository.FirstOrDefaultAsync(spec, cancellationToken);
                 if (GeneralInfoItem == null) throw new GeneralInfoNotFoundException(request.Id);
-                return GeneralInfoItem;
+                return new GetGeneralInfoResponse(
+                    GeneralInfoItem.Id,
+                    GeneralInfoItem.RequestStatusId,
+                    GeneralInfoItem.RemarksPrintout,
+                    GeneralInfoItem.RequestingDepartmentIds,
+                    GeneralInfoItem.DepartmentHeadRequestorId,
+                    GeneralInfoItem.EquipmentName,
+                    GeneralInfoItem.EquipmentCategoryId,
+                    GeneralInfoItem.IsFinal);
             },
             cancellationToken: cancellationToken);
+        
+        
         return item!;
     }
 }

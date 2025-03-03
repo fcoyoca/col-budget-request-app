@@ -59,6 +59,14 @@ public static class FshPermissions
         new("Update LookupCategories", FshActions.Update, FshResources.LookupCategories),
         new("Delete LookupCategories", FshActions.Delete, FshResources.LookupCategories),
         new("Export LookupCategories", FshActions.Export, FshResources.LookupCategories),
+        
+        //Capital Equipment - General Info
+         new("View GeneralInfos", FshActions.View, FshResources.GeneralInfos, IsBasic: true),
+         new("Search GeneralInfos", FshActions.Search, FshResources.GeneralInfos, IsBasic: true),
+         new("Create GeneralInfos", FshActions.Create, FshResources.GeneralInfos),
+         new("Update GeneralInfos", FshActions.Update, FshResources.GeneralInfos),
+         new("Delete GeneralInfos", FshActions.Delete, FshResources.GeneralInfos),
+         new("Export GeneralInfos", FshActions.Export, FshResources.GeneralInfos),
 
          new("View Hangfire", FshActions.View, FshResources.Hangfire),
          new("View Dashboard", FshActions.View, FshResources.Dashboard),

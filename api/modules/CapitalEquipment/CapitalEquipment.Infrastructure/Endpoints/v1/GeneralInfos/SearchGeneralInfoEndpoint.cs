@@ -23,7 +23,7 @@ public static class SearchGeneralInfosEndpoint
             .WithName(nameof(SearchGeneralInfosEndpoint))
             .WithSummary("Gets a list of GeneralInfos")
             .WithDescription("Gets a list of GeneralInfos with pagination and filtering support")
-            .Produces<PagedList<GeneralInfoResponse>>()
+            .Produces<PagedList<GetGeneralInfoResponse>>()
             .RequirePermission("Permissions.GeneralInfos.View")
             .MapToApiVersion(1);
     }

@@ -13,11 +13,11 @@ public static class CatalogModule
         public Endpoints() : base("catalog") { }
         public override void AddRoutes(IEndpointRouteBuilder app)
         {
-            var productGroup = app.MapGroup("products").WithTags("products");
-            productGroup.MapProductCreationEndpoint();
-
-            var testGroup = app.MapGroup("test").WithTags("test");
-            testGroup.MapGet("/test", () => "hi");
+            // var productGroup = app.MapGroup("products").WithTags("products");
+            // productGroup.MapProductCreationEndpoint();
+            //
+            // var testGroup = app.MapGroup("test").WithTags("test");
+            // testGroup.MapGet("/test", () => "hi");
         }
     }
     public static WebApplicationBuilder RegisterCatalogServices(this WebApplicationBuilder builder)

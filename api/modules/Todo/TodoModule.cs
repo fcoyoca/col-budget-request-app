@@ -36,6 +36,14 @@ public static class TodoModule
         builder.Services.AddScoped<IDbInitializer, TodoDbInitializer>();
         builder.Services.AddKeyedScoped<IRepository<TodoItem>, TodoRepository<TodoItem>>("todo");
         builder.Services.AddKeyedScoped<IReadRepository<TodoItem>, TodoRepository<TodoItem>>("todo");
+        
+        // foreach(var service in builder.Services)
+        // {
+        //     Console.WriteLine($"Service: {service.ServiceType.FullName}");
+        //     // \nLifetime: {service.Lifetime}
+        //     // \nInstance: {service.ImplementationType?.FullName}");
+        // }
+        
         return builder;
     }
     public static WebApplication UseTodoModule(this WebApplication app)

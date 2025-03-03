@@ -4,6 +4,6 @@ using MediatR;
 
 namespace budget_request_app.WebApi.CapitalEquipment.Application.GeneralInfos.Search.v1;
 
-public class SearchGeneralInfosCommand : PaginationFilter, IRequest<PagedList<GeneralInfoResponse>>
+public class SearchGeneralInfosCommand : PaginationFilter, IRequest<PagedList<GetGeneralInfoResponse>>
 {
 }

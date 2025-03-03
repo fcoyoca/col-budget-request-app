@@ -1,9 +1,11 @@
 ﻿using FSH.Framework.Infrastructure.Auth.Policy;
-using budget_request_app.WebApi.CapitalEquipment.Application.GeneralInfos.Delete.v1;
+using budget_request_app.WebApi.CapitalEquipment.Infrastructure.GeneralInfos.Delete.v1;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
+
+using Asp.Versioning;
 
 namespace budget_request_app.WebApi.CapitalEquipment.Infrastructure.Endpoints.v1;
 public static class DeleteGeneralInfoEndpoint
@@ -12,7 +14,7 @@ public static class DeleteGeneralInfoEndpoint
     {
         return endpoints
             .MapDelete("/{id:guid}", async (Guid id, ISender mediator) =>
-             {
+             {         
                  await mediator.Send(new DeleteGeneralInfoCommand(id));
                  return Results.NoContent();
              })
@@ -21,6 +23,6 @@ public static class DeleteGeneralInfoEndpoint
             .WithDescription("deletes GeneralInfo by id")
             .Produces(StatusCodes.Status204NoContent)
             .RequirePermission("Permissions.GeneralInfos.Delete")
-            .MapToApiVersion(1);
+            .MapToApiVersion(new ApiVersion(1, 0));
     }
 }

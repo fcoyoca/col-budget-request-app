@@ -36,6 +36,7 @@ public static class LookupCategoryModule
         builder.Services.AddScoped<IDbInitializer, LookupCategoryDbInitializer>();
         builder.Services.AddKeyedScoped<IRepository<LookupCategoryItem>, LookupCategoryRepository<LookupCategoryItem>>("lookupCategories");
         builder.Services.AddKeyedScoped<IReadRepository<LookupCategoryItem>, LookupCategoryRepository<LookupCategoryItem>>("lookupCategories");
+
         return builder;
     }
     public static WebApplication UseLookupCategoryModule(this WebApplication app)

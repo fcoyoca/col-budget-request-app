@@ -6,6 +6,7 @@ using budget_request_app.WebApi.LookupValue;
 using budget_request_app.WebApi.CapitalEquipment.Infrastructure;
 using Carter;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace budget_request_app.WebApi.Host;
 
@@ -34,6 +35,11 @@ public static class Extensions
             cfg.RegisterServicesFromAssemblies(assemblies);
         });
 
+        foreach (var s in builder.Services.Where(x => x.ServiceType.FullName.Contains("Command,") && x.ServiceType.FullName.Contains("IRequestHandler")))
+        {
+            Console.WriteLine(s.ServiceType.ShortDisplayName());
+        }
+
         //register module services
         // builder.RegisterCatalogServices(); // TODO: remove existing service for reference
         builder.RegisterTodoServices();
@@ -50,7 +56,7 @@ public static class Extensions
             config.WithModule<LookupValueModule.Endpoints>();
             config.WithModule<CapitalEquipmentModule.Endpoints>();
         });
-
+        
         return builder;
     }
 
