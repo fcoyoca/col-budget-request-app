@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using budget_request_app.WebApi.CapitalEquipment.Infrastructure.Persistence;
 
@@ -11,9 +12,11 @@ using budget_request_app.WebApi.CapitalEquipment.Infrastructure.Persistence;
 namespace budget_request_app.WebApi.Migrations.MSSQL.CapitalEquipment
 {
     [DbContext(typeof(CapitalEquipmentDbContext))]
-    partial class CapitalEquipmentDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250307025853_capitalEquipment")]
+    partial class capitalEquipment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,10 +55,6 @@ namespace budget_request_app.WebApi.Migrations.MSSQL.CapitalEquipment
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ConditionOfAssetBeingReplaced")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CostToOperateExplanation")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -138,10 +137,6 @@ namespace budget_request_app.WebApi.Migrations.MSSQL.CapitalEquipment
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PaybackPeriodExplanation")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("PaybackPeriodPriority")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -171,27 +166,11 @@ namespace budget_request_app.WebApi.Migrations.MSSQL.CapitalEquipment
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("RequiredMandatedExplanation")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("RequiredMandatedPriority")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("RevenueGenerationExplanation")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RevenueGenerationPriority")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("RevisionTitle")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SafetyExplanation")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -200,10 +179,6 @@ namespace budget_request_app.WebApi.Migrations.MSSQL.CapitalEquipment
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("StandardReplacementCycle")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SustainabilityExplanation")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

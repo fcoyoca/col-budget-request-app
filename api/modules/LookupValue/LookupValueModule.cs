@@ -23,7 +23,7 @@ public static class LookupValueModule
     {
         public override void AddRoutes(IEndpointRouteBuilder app)
         {
-            var LookupValueGroup = app.MapGroup("lookupValues").WithTags("lookupValues");
+            var LookupValueGroup = app.MapGroup("lookupValues").WithTags("Lookup Values");
             LookupValueGroup.MapLookupValueItemCreationEndpoint();
             LookupValueGroup.MapGetLookupValueEndpoint();
             LookupValueGroup.MapGetLookupValueListEndpoint();

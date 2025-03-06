@@ -2,7 +2,7 @@
 using FSH.Framework.Core.Persistence;
 using FSH.Framework.Infrastructure.Persistence;
 using budget_request_app.WebApi.CapitalEquipment.Domain;
-using budget_request_app.WebApi.CapitalEquipment.Infrastructure.Endpoints.v1;
+using budget_request_app.WebApi.CapitalEquipment.Infrastructure.Endpoints.v1.CapitalEquipments;
 using budget_request_app.WebApi.CapitalEquipment.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -14,22 +14,15 @@ public static class CapitalEquipmentModule
 {
     public class Endpoints : CarterModule
     {
-        public Endpoints() : base("capitalEquipment") { }
+        public Endpoints() { }
         public override void AddRoutes(IEndpointRouteBuilder app)
         {
-            var generalInfoGroup = app.MapGroup("capitalEquipment:generalInfos").WithTags("General Information");
-            generalInfoGroup.MapGeneralInfoCreationEndpoint();
-            generalInfoGroup.MapGetGeneralInfoEndpoint();
-            generalInfoGroup.MapGetGeneralInfoListEndpoint();
-            generalInfoGroup.MapGeneralInfoUpdateEndpoint();
-            generalInfoGroup.MapGeneralInfoDeleteEndpoint();
-            //
-            // var brandGroup = app.MapGroup("brands").WithTags("brands");
-            // brandGroup.MapBrandCreationEndpoint();
-            // brandGroup.MapGetBrandEndpoint();
-            // brandGroup.MapGetBrandListEndpoint();
-            // brandGroup.MapBrandUpdateEndpoint();
-            // brandGroup.MapBrandDeleteEndpoint();
+            var capitalEquipmentGroup = app.MapGroup("capitalEquipments").WithTags("Capital Equipment");
+            capitalEquipmentGroup.MapCapitalEquipmentCreationEndpoint();
+            capitalEquipmentGroup.MapGetCapitalEquipmentEndpoint();
+            capitalEquipmentGroup.MapGetCapitalEquipmentListEndpoint();
+            capitalEquipmentGroup.MapCapitalEquipmentUpdateEndpoint();
+            capitalEquipmentGroup.MapCapitalEquipmentDeleteEndpoint();
         }
     }
     public static WebApplicationBuilder RegisterCapitalEquipmentServices(this WebApplicationBuilder builder)
@@ -37,8 +30,9 @@ public static class CapitalEquipmentModule
         ArgumentNullException.ThrowIfNull(builder);
         builder.Services.BindDbContext<CapitalEquipmentDbContext>();
         builder.Services.AddScoped<IDbInitializer, CapitalEquipmentDbInitializer>();
-        builder.Services.AddKeyedScoped<IRepository<GeneralInfo>, CapitalEquipmentRepository<GeneralInfo>>("capitalEquipment:generalInfos");
-        builder.Services.AddKeyedScoped<IReadRepository<GeneralInfo>, CapitalEquipmentRepository<GeneralInfo>>("capitalEquipment:generalInfos");
+        
+        builder.Services.AddKeyedScoped<IRepository<CapitalEquipmentItem>, CapitalEquipmentRepository<CapitalEquipmentItem>>("capitalEquipments");
+        builder.Services.AddKeyedScoped<IReadRepository<CapitalEquipmentItem>, CapitalEquipmentRepository<CapitalEquipmentItem>>("capitalEquipments");
         
         return builder;
     }

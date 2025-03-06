@@ -21,7 +21,7 @@ public static class LookupCategoryModule
     {
         public override void AddRoutes(IEndpointRouteBuilder app)
         {
-            var lookupCategoryGroup = app.MapGroup("lookupCategories").WithTags("lookupCategories");
+            var lookupCategoryGroup = app.MapGroup("lookupCategories").WithTags("Lookup Categories");
             lookupCategoryGroup.MapLookupCategoryItemCreationEndpoint();
             lookupCategoryGroup.MapGetLookupCategoryEndpoint();
             lookupCategoryGroup.MapGetLookupCategoryListEndpoint();

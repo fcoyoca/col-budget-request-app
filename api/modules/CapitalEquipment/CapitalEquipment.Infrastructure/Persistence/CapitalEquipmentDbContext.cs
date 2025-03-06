@@ -16,13 +16,15 @@ public sealed class CapitalEquipmentDbContext : FshDbContext
     {
     }
 
-    public DbSet<GeneralInfo> GeneralInfos { get; set; } = null!;
+    public DbSet<CapitalEquipmentItem> CapitalEquipments { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         ArgumentNullException.ThrowIfNull(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(CapitalEquipmentDbContext).Assembly);
         modelBuilder.HasDefaultSchema(SchemaNames.CapitalEquipment);
-        modelBuilder.Entity<GeneralInfo>().HasQueryFilter(p => p.Deleted == null);
+        
+        //soft deletes
+        modelBuilder.Entity<CapitalEquipmentItem>().HasQueryFilter(p => p.Deleted == null);
     }
 }

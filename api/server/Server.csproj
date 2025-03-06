@@ -26,7 +26,6 @@
     <ProjectReference Include="..\modules\LookupValue\LookupValue.csproj" />
     <ProjectReference Include="..\modules\CapitalEquipment\CapitalEquipment.Infrastructure\CapitalEquipment.Infrastructure.csproj" />
     <ProjectReference Include="..\modules\CapitalEquipment\CapitalEquipment.Application\CapitalEquipment.Application.csproj" />
-    <ProjectReference Include="..\modules\CapitalEquipment\CapitalEquipment.Application\CapitalEquipment.Domain.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="appsettings.Development.json">

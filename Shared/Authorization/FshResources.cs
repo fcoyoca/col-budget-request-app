@@ -13,5 +13,7 @@ public static class FshResources
     public const string Todos = nameof(Todos);
     public const string AuditTrails = nameof(AuditTrails);
     public const string LookupCategories = nameof(LookupCategories);
-    public const string GeneralInfos = nameof(GeneralInfos);
+    
+    //capital equipment
+    public const string CapitalEquipments = nameof(CapitalEquipments);
 }
