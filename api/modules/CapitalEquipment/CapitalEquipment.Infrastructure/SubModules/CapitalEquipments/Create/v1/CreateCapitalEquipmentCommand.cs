@@ -16,7 +16,7 @@ public sealed record CreateCapitalEquipmentCommand(
     ExistingAssetInfo ExistingAssetInfo,
     OperatingBudgetImpact OperatingBudgetImpact,
     ApprovalOversightInfo ApprovalOversightInfo,
-    List<FundingItem> FundingItems
+    FundingCreateDTO Funding
 ) : IRequest<CreateCapitalEquipmentResponse>;
 
 public class GeneralInfo
@@ -87,4 +87,17 @@ public class ApprovalOversightInfo
     public DateTime? DateOfOversightApproval { get; set; }
     public bool? PurchasingBuyerReview { get; set; }
     public string AdditionalNotes { get; set; }
+}
+
+public class FundingCreateDTO
+{
+    public FundingItemCreateDTO BorrowingFunding { get; set; }
+
+    public FundingItemCreateDTO OUEFunding { get; set; }
+}
+
+public class FundingItemCreateDTO
+{
+    public Guid? FundingSource { get; set; } = Guid.Empty;
+    public string? GrantingAgency { get; set; }
 }

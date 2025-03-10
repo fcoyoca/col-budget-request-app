@@ -1,4 +1,6 @@
-﻿using budget_request_app.WebApi.CapitalEquipment.Domain.Events;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
+using budget_request_app.WebApi.CapitalEquipment.Domain.Events;
 using FSH.Framework.Core.Domain;
 using FSH.Framework.Core.Domain.Contracts;
 
@@ -11,6 +13,7 @@ public class FundingItem : AuditableEntity, IAggregateRoot
     public FundingYearItem? CurrentYearRequested { get; set; }
     public List<FundingYearItem>? YearEstimates { get; set; } = new();
     public Guid CapitalEquipmentId { get; set; } = Guid.Empty;
+    [NotMapped, JsonIgnore]
     public CapitalEquipmentItem? CapitalEquipment { get; set; }
 
     public static FundingItem Create(

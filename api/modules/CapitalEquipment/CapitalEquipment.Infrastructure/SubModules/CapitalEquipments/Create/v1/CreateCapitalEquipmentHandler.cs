@@ -1,5 +1,6 @@
 ﻿using FSH.Framework.Core.Persistence;
 using budget_request_app.WebApi.CapitalEquipment.Domain;
+using Mapster;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -21,6 +22,7 @@ public sealed class CreateCapitalEquipmentHandler(
         ExistingAssetInfo existingAssetInfo = new ExistingAssetInfo();
         OperatingBudgetImpact operatingBudgetImpact = new OperatingBudgetImpact();
         ApprovalOversightInfo approvalOversightInfo = new ApprovalOversightInfo();
+        List<FundingItem> fundingItems = new List<FundingItem>();
         
         generalInfo = request.GeneralInfo;
         equipmentInfo = request.EquipmentInfo;
@@ -29,6 +31,19 @@ public sealed class CreateCapitalEquipmentHandler(
         existingAssetInfo = request.ExistingAssetInfo;
         operatingBudgetImpact = request.OperatingBudgetImpact;
         approvalOversightInfo = request.ApprovalOversightInfo;
+
+        FundingItem borrowingFunding = request.Funding.BorrowingFunding.Adapt<FundingItem>();
+        borrowingFunding.FundingType = "Borrowing";
+        
+        FundingItem oueFunding = request.Funding.OUEFunding.Adapt<FundingItem>();
+        oueFunding.FundingType = "Operating";
+        
+        
+        fundingItems = new List<FundingItem>()
+        {
+            borrowingFunding,
+            oueFunding
+        };
         
         var data = CapitalEquipmentItem.Create(
             request.BudgetId,
@@ -77,7 +92,7 @@ public sealed class CreateCapitalEquipmentHandler(
             approvalOversightInfo.DateOfOversightApproval,
             approvalOversightInfo.PurchasingBuyerReview,
             approvalOversightInfo.AdditionalNotes,
-            request.FundingItems
+            fundingItems
             );
         
         await repository.AddAsync(data, cancellationToken);

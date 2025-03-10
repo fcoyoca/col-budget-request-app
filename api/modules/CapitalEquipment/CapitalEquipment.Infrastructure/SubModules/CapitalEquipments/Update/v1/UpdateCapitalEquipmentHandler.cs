@@ -25,6 +25,7 @@ public sealed class UpdateCapitalEquipmentHandler(
         ExistingAssetInfo existingAssetInfo = new ExistingAssetInfo();
         OperatingBudgetImpact operatingBudgetImpact = new OperatingBudgetImpact();
         ApprovalOversightInfo approvalOversightInfo = new ApprovalOversightInfo();
+        List<FundingItem> fundingItems = new List<FundingItem>();
         
         generalInfo = request.GeneralInfo;
         equipmentInfo = request.EquipmentInfo;
@@ -33,10 +34,7 @@ public sealed class UpdateCapitalEquipmentHandler(
         existingAssetInfo = request.ExistingAssetInfo;
         operatingBudgetImpact = request.OperatingBudgetImpact;
         approvalOversightInfo = request.ApprovalOversightInfo;
-        
-        // capitalEquipment.BudgetId = request.BudgetId;
-        // capitalEquipment.RevisionTitle = request.RevisionTitle;
-        // capitalEquipment
+        fundingItems = new List<FundingItem>();
         
         var updatedCapitalEquipment = CapitalEquipmentItem.Update(
             capitalEquipment,
@@ -85,7 +83,8 @@ public sealed class UpdateCapitalEquipmentHandler(
             approvalOversightInfo.ApprovingOversightBoard,
             approvalOversightInfo.DateOfOversightApproval,
             approvalOversightInfo.PurchasingBuyerReview,
-            approvalOversightInfo.AdditionalNotes
+            approvalOversightInfo.AdditionalNotes,
+            fundingItems
             );
         
         await repository.UpdateAsync(updatedCapitalEquipment, cancellationToken);

@@ -1,3 +1,4 @@
+using budget_request_app.WebApi.CapitalEquipment.Domain;
 using budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Create.v1;
 using MediatR;
 
@@ -14,5 +15,21 @@ public sealed record UpdateCapitalEquipmentCommand(
     JustificationMatrix JustificationMatrix,
     ExistingAssetInfo ExistingAssetInfo,
     OperatingBudgetImpact OperatingBudgetImpact,
-    ApprovalOversightInfo ApprovalOversightInfo
+    ApprovalOversightInfo ApprovalOversightInfo,
+    FundingUpdateDTO Funding
     ) : IRequest<UpdateCapitalEquipmentResponse>;
+
+
+public class FundingUpdateDTO
+{
+    public FundingItemCreateDTO BorrowingFunding { get; set; }
+
+    public FundingItemCreateDTO OUEFunding { get; set; }
+}
+
+public class FundingItemUpdateDTO
+{
+    public Guid? Id { get; set; }
+    public Guid? FundingSource { get; set; } = Guid.Empty;
+    public string? GrantingAgency { get; set; }
+}
