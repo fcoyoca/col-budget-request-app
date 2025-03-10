@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using budget_request_app.WebApi.CapitalEquipment.Domain;
 using MediatR;
 
 namespace budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Create.v1;
@@ -14,7 +15,8 @@ public sealed record CreateCapitalEquipmentCommand(
     JustificationMatrix JustificationMatrix,
     ExistingAssetInfo ExistingAssetInfo,
     OperatingBudgetImpact OperatingBudgetImpact,
-    ApprovalOversightInfo ApprovalOversightInfo
+    ApprovalOversightInfo ApprovalOversightInfo,
+    List<FundingItem> FundingItems
 ) : IRequest<CreateCapitalEquipmentResponse>;
 
 public class GeneralInfo

@@ -52,6 +52,7 @@ public class CapitalEquipmentItem : AuditableEntity, IAggregateRoot
     public DateTime? DateOfOversightApproval { get; set; }
     public bool? PurchasingBuyerReview { get; set; }
     public string AdditionalNotes { get; set; }
+    public List<FundingItem> FundingItems { get; set; }
 
     public static CapitalEquipmentItem Create(
         string budgetId,
@@ -99,7 +100,8 @@ public class CapitalEquipmentItem : AuditableEntity, IAggregateRoot
         string approvingOversightBoard,
         DateTime? dateOfOversightApproval,
         bool? purchasingBuyerReview,
-        string additionalNotes
+        string additionalNotes,
+        List<FundingItem> fundingItems
         )
     {
         var CapitalEquipment = new CapitalEquipmentItem();
@@ -150,16 +152,11 @@ public class CapitalEquipmentItem : AuditableEntity, IAggregateRoot
         CapitalEquipment.DateOfOversightApproval = dateOfOversightApproval;
         CapitalEquipment.PurchasingBuyerReview = purchasingBuyerReview;
         CapitalEquipment.AdditionalNotes = additionalNotes;
+        CapitalEquipment.FundingItems = fundingItems;
         
         CapitalEquipment.QueueDomainEvent(new CapitalEquipmentCreated() { CapitalEquipment = CapitalEquipment });
 
         return CapitalEquipment;
-    }
-
-    public CapitalEquipmentItem Update(string? requestStatusId)
-    {
-        this.QueueDomainEvent(new CapitalEquipmentUpdated() { CapitalEquipment = this });
-        return this;
     }
 
     public static CapitalEquipmentItem Update(
@@ -209,7 +206,8 @@ public class CapitalEquipmentItem : AuditableEntity, IAggregateRoot
         string approvingOversightBoard,
         DateTime? dateOfOversightApproval,
         bool? purchasingBuyerReview,
-        string additionalNotes
+        string additionalNotes,
+        List<FundingItem> fundingItems
         )
     {
 
@@ -259,6 +257,7 @@ public class CapitalEquipmentItem : AuditableEntity, IAggregateRoot
         capitalEquipment.DateOfOversightApproval = dateOfOversightApproval;
         capitalEquipment.PurchasingBuyerReview = purchasingBuyerReview;
         capitalEquipment.AdditionalNotes = additionalNotes;
+        capitalEquipment.FundingItems = fundingItems;
 
         capitalEquipment.QueueDomainEvent(new CapitalEquipmentUpdated() { CapitalEquipment = capitalEquipment });
 

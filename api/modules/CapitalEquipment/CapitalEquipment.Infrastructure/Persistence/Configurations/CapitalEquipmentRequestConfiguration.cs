@@ -10,5 +10,17 @@ internal sealed class CapitalEquipmentRequestConfiguration : IEntityTypeConfigur
     {
         builder.IsMultiTenant();
         builder.HasKey(x => x.Id);
+        builder.HasMany<FundingItem>(x => x.FundingItems)
+            .WithOne(x => x.CapitalEquipment)
+            .HasForeignKey(x => x.CapitalEquipmentId);
+    }
+}
+
+internal sealed class FundingConfiguration : IEntityTypeConfiguration<FundingItem>
+{
+    public void Configure(EntityTypeBuilder<FundingItem> builder)
+    {
+        builder.IsMultiTenant();
+        builder.HasKey(x => x.Id);
     }
 }
