@@ -33,16 +33,31 @@ public sealed class CreateCapitalEquipmentHandler(
         approvalOversightInfo = request.ApprovalOversightInfo;
 
         FundingItem borrowingFunding = request.Funding.BorrowingFunding.Adapt<FundingItem>();
-        borrowingFunding.FundingType = "Borrowing";
+        borrowingFunding.FundingType = FundingTab.Borrowing;
         
         FundingItem oueFunding = request.Funding.OUEFunding.Adapt<FundingItem>();
-        oueFunding.FundingType = "Operating";
+        oueFunding.FundingType = FundingTab.Operating;
         
+        FundingItem grantFunding = request.Funding.GrantFunding.Adapt<FundingItem>();
+        oueFunding.FundingType = FundingTab.Grant;
+        
+        FundingItem outsideFunding = request.Funding.OutsideFunding.Adapt<FundingItem>();
+        oueFunding.FundingType = FundingTab.Outside;
+        
+        FundingItem specialFunding = request.Funding.SpecialFunding.Adapt<FundingItem>();
+        oueFunding.FundingType = FundingTab.Special;
+        
+        FundingItem otherFunding = request.Funding.OtherFunding.Adapt<FundingItem>();
+        oueFunding.FundingType = FundingTab.Other;
         
         fundingItems = new List<FundingItem>()
         {
             borrowingFunding,
-            oueFunding
+            oueFunding,
+            grantFunding,
+            outsideFunding,
+            specialFunding,
+            otherFunding
         };
         
         var data = CapitalEquipmentItem.Create(

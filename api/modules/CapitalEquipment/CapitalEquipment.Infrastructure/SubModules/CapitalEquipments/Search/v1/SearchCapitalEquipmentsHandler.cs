@@ -9,9 +9,9 @@ using Microsoft.Extensions.DependencyInjection;
 namespace budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Search.v1;
 public sealed class SearchCapitalEquipmentsHandler(
     [FromKeyedServices("capitalEquipments")] IReadRepository<CapitalEquipmentItem> repository)
-    : IRequestHandler<SearchCapitalEquipmentsCommand, PagedList<GetCapitalEquipmentResponseDefault>>
+    : IRequestHandler<SearchCapitalEquipmentsCommand, PagedList<GetCapitalEquipmentResponse>>
 {
-    public async Task<PagedList<GetCapitalEquipmentResponseDefault>> Handle(SearchCapitalEquipmentsCommand request, CancellationToken cancellationToken)
+    public async Task<PagedList<GetCapitalEquipmentResponse>> Handle(SearchCapitalEquipmentsCommand request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
 
@@ -20,7 +20,8 @@ public sealed class SearchCapitalEquipmentsHandler(
         var items = await repository.ListAsync(spec,cancellationToken).ConfigureAwait(false);
         var totalCount = await repository.CountAsync(spec, cancellationToken).ConfigureAwait(false);
 
-        return new PagedList<GetCapitalEquipmentResponseDefault>(items, request!.PageNumber, request!.PageSize, totalCount);
+        var itemsMapped = items.Select(CapitalEquipmentMapper.GetResponse);
+        return new PagedList<GetCapitalEquipmentResponse>(itemsMapped.ToList(), request!.PageNumber, request!.PageSize, totalCount);
     }
 }
 

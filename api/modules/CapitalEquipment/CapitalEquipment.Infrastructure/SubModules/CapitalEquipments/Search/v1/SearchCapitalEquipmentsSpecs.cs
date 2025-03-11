@@ -5,7 +5,7 @@ using budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.Capit
 using budget_request_app.WebApi.CapitalEquipment.Domain;
 
 namespace budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Search.v1;
-public class SearchCapitalEquipmentSpecs : EntitiesByPaginationFilterSpec<CapitalEquipmentItem, GetCapitalEquipmentResponseDefault>
+public class SearchCapitalEquipmentSpecs : EntitiesByPaginationFilterSpec<CapitalEquipmentItem, CapitalEquipmentItem>
 {
     public SearchCapitalEquipmentSpecs(SearchCapitalEquipmentsCommand command)
         : base(command) =>

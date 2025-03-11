@@ -94,10 +94,32 @@ public class FundingCreateDTO
     public FundingItemCreateDTO BorrowingFunding { get; set; }
 
     public FundingItemCreateDTO OUEFunding { get; set; }
+    public FundingItemCreateDTO GrantFunding { get; set; }
+    public FundingItemCreateDTO OutsideFunding { get; set; }
+    public FundingItemCreateDTO SpecialFunding { get; set; }
+    public FundingItemCreateDTO OtherFunding { get; set; }
 }
 
 public class FundingItemCreateDTO
 {
     public Guid? FundingSource { get; set; } = Guid.Empty;
     public string? GrantingAgency { get; set; }
+    public FundingYearItemCreateDTO CurrentYearRequested { get; set; }
+    public List<FundingYearItemCreateDTO> YearEstimates { get; set; } = new List<FundingYearItemCreateDTO>();
+}
+
+public class FundingYearItemCreateDTO
+{
+    public int? Year { get; set; }
+    public decimal? Value { get; set; }
+}
+
+public static class FundingTab
+{
+    public static string Borrowing { get; } = "Borrowing";
+    public static string Grant { get; } = "Grant";
+    public static string Operating { get; } = "Operating";
+    public static string Outside { get; } = "Outside";
+    public static string Special { get; } = "Special";
+    public static string Other { get; } = "Other";
 }
