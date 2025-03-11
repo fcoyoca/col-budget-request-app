@@ -19,7 +19,7 @@ public static class GetCapitalEquipmentEndpoint
             .WithName(nameof(GetCapitalEquipmentEndpoint))
             .WithSummary("gets CapitalEquipment by id")
             .WithDescription("gets CapitalEquipment by id")
-            .Produces<GetCapitalEquipmentResponseDefault>()
+            .Produces<GetCapitalEquipmentResponse>()
             .RequirePermission("Permissions.CapitalEquipments.View")
             .MapToApiVersion(1);
     }
