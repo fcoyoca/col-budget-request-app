@@ -32,33 +32,49 @@ public sealed class CreateCapitalEquipmentHandler(
         operatingBudgetImpact = request.OperatingBudgetImpact;
         approvalOversightInfo = request.ApprovalOversightInfo;
 
-        FundingItem borrowingFunding = request.Funding.BorrowingFunding.Adapt<FundingItem>();
-        borrowingFunding.FundingType = FundingTab.Borrowing;
-        
-        FundingItem oueFunding = request.Funding.OUEFunding.Adapt<FundingItem>();
-        oueFunding.FundingType = FundingTab.Operating;
-        
-        FundingItem grantFunding = request.Funding.GrantFunding.Adapt<FundingItem>();
-        oueFunding.FundingType = FundingTab.Grant;
-        
-        FundingItem outsideFunding = request.Funding.OutsideFunding.Adapt<FundingItem>();
-        oueFunding.FundingType = FundingTab.Outside;
-        
-        FundingItem specialFunding = request.Funding.SpecialFunding.Adapt<FundingItem>();
-        oueFunding.FundingType = FundingTab.Special;
-        
-        FundingItem otherFunding = request.Funding.OtherFunding.Adapt<FundingItem>();
-        oueFunding.FundingType = FundingTab.Other;
-        
-        fundingItems = new List<FundingItem>()
+        List<FundingItem> borrowingFundings = request.Funding.BorrowingFunding.Adapt<List<FundingItem>>();
+        foreach (FundingItem fundingItem in borrowingFundings)
         {
-            borrowingFunding,
-            oueFunding,
-            grantFunding,
-            outsideFunding,
-            specialFunding,
-            otherFunding
-        };
+            fundingItem.FundingType = FundingTab.Borrowing;
+        }
+        
+        List<FundingItem> oueFundings = request.Funding.OUEFunding.Adapt<List<FundingItem>>();
+        foreach (FundingItem fundingItem in oueFundings)
+        {
+            fundingItem.FundingType = FundingTab.Operating;
+        }
+        
+        List<FundingItem> grantFundings = request.Funding.GrantFunding.Adapt<List<FundingItem>>();
+        foreach (FundingItem fundingItem in grantFundings)
+        {
+            fundingItem.FundingType = FundingTab.Grant;
+        }
+        
+        List<FundingItem> outsideFundings = request.Funding.OutsideFunding.Adapt<List<FundingItem>>();
+        foreach (FundingItem fundingItem in outsideFundings)
+        {
+            fundingItem.FundingType = FundingTab.Outside;
+        }
+        
+        List<FundingItem> specialFundings = request.Funding.SpecialFunding.Adapt<List<FundingItem>>();
+        foreach (FundingItem fundingItem in specialFundings)
+        {
+            fundingItem.FundingType = FundingTab.Special;
+        }
+        
+        List<FundingItem> otherFundings = request.Funding.OtherFunding.Adapt<List<FundingItem>>();
+        foreach (FundingItem fundingItem in otherFundings)
+        {
+            fundingItem.FundingType = FundingTab.Other;
+        }
+
+        fundingItems = new List<FundingItem>();
+        fundingItems.AddRange(borrowingFundings);
+        fundingItems.AddRange(oueFundings);
+        fundingItems.AddRange(grantFundings);
+        fundingItems.AddRange(outsideFundings);
+        fundingItems.AddRange(specialFundings);
+        fundingItems.AddRange(otherFundings);
         
         var data = CapitalEquipmentItem.Create(
             request.BudgetId,

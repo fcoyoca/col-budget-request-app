@@ -91,13 +91,12 @@ public class ApprovalOversightInfo
 
 public class FundingCreateDTO
 {
-    public FundingItemCreateDTO BorrowingFunding { get; set; }
-
-    public FundingItemCreateDTO OUEFunding { get; set; }
-    public FundingItemCreateDTO GrantFunding { get; set; }
-    public FundingItemCreateDTO OutsideFunding { get; set; }
-    public FundingItemCreateDTO SpecialFunding { get; set; }
-    public FundingItemCreateDTO OtherFunding { get; set; }
+    public List<FundingItemCreateDTO> BorrowingFunding { get; set; }
+    public List<FundingItemCreateDTO> OUEFunding { get; set; }
+    public List<FundingItemCreateDTO> GrantFunding { get; set; }
+    public List<FundingItemCreateDTO> OutsideFunding { get; set; }
+    public List<FundingItemCreateDTO> SpecialFunding { get; set; }
+    public List<FundingItemCreateDTO> OtherFunding { get; set; }
 }
 
 public class FundingItemCreateDTO

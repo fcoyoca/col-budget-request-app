@@ -78,15 +78,15 @@ public static class CapitalEquipmentMapper
         };
 
         List<FundingItem> fundingItems = capitalEquipmentItem.FundingItems;
-
-        FundingResponseDTO funding = new FundingResponseDTO()
+        
+        FundingResponseDTO funding = new()
         {
-            BorrowingFunding = fundingItems.FirstOrDefault(x => x.FundingType == FundingTab.Borrowing),
-            OueFunding = fundingItems.FirstOrDefault(x => x.FundingType == FundingTab.Operating),
-            GrantFunding = fundingItems.FirstOrDefault(x => x.FundingType == FundingTab.Grant),
-            OutsideFunding = fundingItems.FirstOrDefault(x => x.FundingType == FundingTab.Outside),
-            SpecialFunding = fundingItems.FirstOrDefault(x => x.FundingType == FundingTab.Special),
-            OtherFunding = fundingItems.FirstOrDefault(x => x.FundingType == FundingTab.Other),
+            BorrowingFunding = fundingItems.Where(x => x.FundingType == FundingTab.Borrowing).ToList(),
+            OueFunding = fundingItems.Where(x => x.FundingType == FundingTab.Operating).ToList(),
+            GrantFunding = fundingItems.Where(x => x.FundingType == FundingTab.Grant).ToList(),
+            OutsideFunding = fundingItems.Where(x => x.FundingType == FundingTab.Outside).ToList(),
+            SpecialFunding = fundingItems.Where(x => x.FundingType == FundingTab.Special).ToList(),
+            OtherFunding = fundingItems.Where(x => x.FundingType == FundingTab.Other).ToList(),
         };
 
         return new GetCapitalEquipmentResponse(
