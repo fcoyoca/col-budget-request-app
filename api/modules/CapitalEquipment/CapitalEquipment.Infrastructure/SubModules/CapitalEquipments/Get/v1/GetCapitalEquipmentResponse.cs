@@ -20,11 +20,11 @@ public sealed record GetCapitalEquipmentResponse(
 
 public class FundingResponseDTO
 {
-    public List<FundingItem> BorrowingFunding { get; set; }
-    public List<FundingItem> OueFunding { get; set; }
-    public List<FundingItem> GrantFunding { get; set; }
-    public List<FundingItem> SpecialFunding { get; set; }
-    public List<FundingItem> OtherFunding { get; set; }
-    public List<FundingItem> OutsideFunding { get; set; }
+    public List<FundingItem> BorrowingFundings { get; set; }
+    public List<FundingItem> OueFundings { get; set; }
+    public List<FundingItem> GrantFundings { get; set; }
+    public List<FundingItem> SpecialFundings { get; set; }
+    public List<FundingItem> OtherFundings { get; set; }
+    public List<FundingItem> OutsideFundings { get; set; }
 }
 

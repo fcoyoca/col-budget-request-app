@@ -32,37 +32,37 @@ public sealed class CreateCapitalEquipmentHandler(
         operatingBudgetImpact = request.OperatingBudgetImpact;
         approvalOversightInfo = request.ApprovalOversightInfo;
 
-        List<FundingItem> borrowingFundings = request.Funding.BorrowingFunding.Adapt<List<FundingItem>>();
+        List<FundingItem> borrowingFundings = request.Funding.BorrowingFundings.Adapt<List<FundingItem>>();
         foreach (FundingItem fundingItem in borrowingFundings)
         {
             fundingItem.FundingType = FundingTab.Borrowing;
         }
         
-        List<FundingItem> oueFundings = request.Funding.OUEFunding.Adapt<List<FundingItem>>();
+        List<FundingItem> oueFundings = request.Funding.OUEFundings.Adapt<List<FundingItem>>();
         foreach (FundingItem fundingItem in oueFundings)
         {
             fundingItem.FundingType = FundingTab.Operating;
         }
         
-        List<FundingItem> grantFundings = request.Funding.GrantFunding.Adapt<List<FundingItem>>();
+        List<FundingItem> grantFundings = request.Funding.GrantFundings.Adapt<List<FundingItem>>();
         foreach (FundingItem fundingItem in grantFundings)
         {
             fundingItem.FundingType = FundingTab.Grant;
         }
         
-        List<FundingItem> outsideFundings = request.Funding.OutsideFunding.Adapt<List<FundingItem>>();
+        List<FundingItem> outsideFundings = request.Funding.OutsideFundings.Adapt<List<FundingItem>>();
         foreach (FundingItem fundingItem in outsideFundings)
         {
             fundingItem.FundingType = FundingTab.Outside;
         }
         
-        List<FundingItem> specialFundings = request.Funding.SpecialFunding.Adapt<List<FundingItem>>();
+        List<FundingItem> specialFundings = request.Funding.SpecialFundings.Adapt<List<FundingItem>>();
         foreach (FundingItem fundingItem in specialFundings)
         {
             fundingItem.FundingType = FundingTab.Special;
         }
         
-        List<FundingItem> otherFundings = request.Funding.OtherFunding.Adapt<List<FundingItem>>();
+        List<FundingItem> otherFundings = request.Funding.OtherFundings.Adapt<List<FundingItem>>();
         foreach (FundingItem fundingItem in otherFundings)
         {
             fundingItem.FundingType = FundingTab.Other;

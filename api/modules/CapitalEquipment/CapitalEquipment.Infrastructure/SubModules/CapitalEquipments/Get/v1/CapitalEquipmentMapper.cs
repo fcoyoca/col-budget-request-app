@@ -81,12 +81,12 @@ public static class CapitalEquipmentMapper
         
         FundingResponseDTO funding = new()
         {
-            BorrowingFunding = fundingItems.Where(x => x.FundingType == FundingTab.Borrowing).ToList(),
-            OueFunding = fundingItems.Where(x => x.FundingType == FundingTab.Operating).ToList(),
-            GrantFunding = fundingItems.Where(x => x.FundingType == FundingTab.Grant).ToList(),
-            OutsideFunding = fundingItems.Where(x => x.FundingType == FundingTab.Outside).ToList(),
-            SpecialFunding = fundingItems.Where(x => x.FundingType == FundingTab.Special).ToList(),
-            OtherFunding = fundingItems.Where(x => x.FundingType == FundingTab.Other).ToList(),
+            BorrowingFundings = fundingItems.Where(x => x.FundingType == FundingTab.Borrowing).ToList(),
+            OueFundings = fundingItems.Where(x => x.FundingType == FundingTab.Operating).ToList(),
+            GrantFundings = fundingItems.Where(x => x.FundingType == FundingTab.Grant).ToList(),
+            OutsideFundings = fundingItems.Where(x => x.FundingType == FundingTab.Outside).ToList(),
+            SpecialFundings = fundingItems.Where(x => x.FundingType == FundingTab.Special).ToList(),
+            OtherFundings = fundingItems.Where(x => x.FundingType == FundingTab.Other).ToList(),
         };
 
         return new GetCapitalEquipmentResponse(
