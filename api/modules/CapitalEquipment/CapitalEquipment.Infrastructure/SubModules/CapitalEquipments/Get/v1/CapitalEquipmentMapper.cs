@@ -1,12 +1,33 @@
 using budget_request_app.WebApi.CapitalEquipment.Domain;
 using budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Create.v1;
+using budget_request_app.WebApi.LookupValue.Domain;
 
 namespace budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Get.v1;
 
 public static class CapitalEquipmentMapper
 {
-    public static GetCapitalEquipmentResponse GetResponse(CapitalEquipmentItem capitalEquipmentItem)
+    public static GetCapitalEquipmentResponse GetResponse(CapitalEquipmentItem capitalEquipmentItem, List<LookupValueItem> lookupValues)
     {
+        var requestingDepartmentIds = capitalEquipmentItem.RequestingDepartmentIds.Split(",");
+        var requestingDepartments = lookupValues.Where(
+            x => requestingDepartmentIds.Contains(x.Id.ToString())
+        ).Select(x => x.Name).ToList();
+        
+        var departmentHeadRequestor = lookupValues.FirstOrDefault(x => x.Id.ToString() == capitalEquipmentItem.DepartmentHeadRequestorId);
+        var departmentHeadRequestorName = string.Empty;
+        
+        if (departmentHeadRequestor != null)
+        {
+            departmentHeadRequestorName = departmentHeadRequestor.Name;
+        }
+        
+        var requestStatus = lookupValues.FirstOrDefault(x => x.Id.ToString() == capitalEquipmentItem.RequestStatusId);
+        var requestStatusName = string.Empty;
+        if (requestStatus != null)
+        {
+            requestStatusName = requestStatus.Name;
+        }
+
         GeneralInfo generalInfo = new GeneralInfo()
         {
             RequestStatusId = capitalEquipmentItem.RequestStatusId,
@@ -15,6 +36,10 @@ public static class CapitalEquipmentMapper
             DepartmentHeadRequestorId = capitalEquipmentItem.DepartmentHeadRequestorId,
             EquipmentName = capitalEquipmentItem.EquipmentName,
             EquipmentCategoryId = capitalEquipmentItem.EquipmentCategoryId,
+            RequestingDepartmentValue = string.Join(",", requestingDepartments),
+            DepartmentHeadRequestorValue = departmentHeadRequestorName,
+            RequestStatusValue = requestStatusName
+            
         };
 
         EquipmentInfo equipmentInfo = new EquipmentInfo()

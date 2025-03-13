@@ -22,9 +22,12 @@ public sealed record CreateCapitalEquipmentCommand(
 public class GeneralInfo
 {
     public string RequestStatusId { get; set; }
+    public string? RequestStatusValue { get; set; }
     public string RemarksPrintout { get; set; }
     public string RequestingDepartmentIds { get; set; }
+    public string? RequestingDepartmentValue { get; set; }
     public string DepartmentHeadRequestorId { get; set; }
+    public string? DepartmentHeadRequestorValue { get; set; }
     public string EquipmentName { get; set; }
     public string EquipmentCategoryId { get; set; }
 }
