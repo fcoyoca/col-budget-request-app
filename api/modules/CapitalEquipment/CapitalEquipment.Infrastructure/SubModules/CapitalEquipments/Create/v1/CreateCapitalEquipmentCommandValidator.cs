@@ -5,5 +5,9 @@ public class CreateCapitalEquipmentCommandValidator : AbstractValidator<CreateCa
 {
     public CreateCapitalEquipmentCommandValidator()
     {
+        RuleFor(b => b.GeneralInfo.EquipmentName).NotEmpty();
+        // RuleFor(b => b.Funding.BorrowingFundings)
+        //     .Must(x => x.Any())
+        //     .WithMessage("walay sulod ang borrowing fundings");
     }
 }

@@ -32,37 +32,44 @@ public sealed class CreateCapitalEquipmentHandler(
         operatingBudgetImpact = request.OperatingBudgetImpact;
         approvalOversightInfo = request.ApprovalOversightInfo;
 
+        
         List<FundingItem> borrowingFundings = request.Funding.BorrowingFundings.Adapt<List<FundingItem>>();
+        borrowingFundings = borrowingFundings.Any() ? borrowingFundings : new List<FundingItem>();
         foreach (FundingItem fundingItem in borrowingFundings)
         {
             fundingItem.FundingType = FundingTab.Borrowing;
         }
         
         List<FundingItem> oueFundings = request.Funding.OUEFundings.Adapt<List<FundingItem>>();
+        oueFundings = oueFundings.Any() ? oueFundings : new List<FundingItem>();
         foreach (FundingItem fundingItem in oueFundings)
         {
             fundingItem.FundingType = FundingTab.Operating;
         }
         
         List<FundingItem> grantFundings = request.Funding.GrantFundings.Adapt<List<FundingItem>>();
+        grantFundings = grantFundings.Any() ? grantFundings : new List<FundingItem>();
         foreach (FundingItem fundingItem in grantFundings)
         {
             fundingItem.FundingType = FundingTab.Grant;
         }
         
         List<FundingItem> outsideFundings = request.Funding.OutsideFundings.Adapt<List<FundingItem>>();
+        outsideFundings = outsideFundings.Any() ? outsideFundings : new List<FundingItem>();
         foreach (FundingItem fundingItem in outsideFundings)
         {
             fundingItem.FundingType = FundingTab.Outside;
         }
         
         List<FundingItem> specialFundings = request.Funding.SpecialFundings.Adapt<List<FundingItem>>();
+        specialFundings = specialFundings.Any() ? specialFundings : new List<FundingItem>();
         foreach (FundingItem fundingItem in specialFundings)
         {
             fundingItem.FundingType = FundingTab.Special;
         }
         
         List<FundingItem> otherFundings = request.Funding.OtherFundings.Adapt<List<FundingItem>>();
+        otherFundings = otherFundings.Any() ? otherFundings : new List<FundingItem>();
         foreach (FundingItem fundingItem in otherFundings)
         {
             fundingItem.FundingType = FundingTab.Other;
