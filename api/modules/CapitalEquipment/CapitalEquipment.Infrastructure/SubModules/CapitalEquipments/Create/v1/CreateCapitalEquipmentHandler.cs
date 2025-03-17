@@ -32,48 +32,12 @@ public sealed class CreateCapitalEquipmentHandler(
         operatingBudgetImpact = request.OperatingBudgetImpact;
         approvalOversightInfo = request.ApprovalOversightInfo;
 
-        
-        List<FundingItem> borrowingFundings = request.Funding.BorrowingFundings.Adapt<List<FundingItem>>();
-        borrowingFundings = borrowingFundings.Any() ? borrowingFundings : new List<FundingItem>();
-        foreach (FundingItem fundingItem in borrowingFundings)
-        {
-            fundingItem.FundingType = FundingTab.Borrowing;
-        }
-        
-        List<FundingItem> oueFundings = request.Funding.OUEFundings.Adapt<List<FundingItem>>();
-        oueFundings = oueFundings.Any() ? oueFundings : new List<FundingItem>();
-        foreach (FundingItem fundingItem in oueFundings)
-        {
-            fundingItem.FundingType = FundingTab.Operating;
-        }
-        
-        List<FundingItem> grantFundings = request.Funding.GrantFundings.Adapt<List<FundingItem>>();
-        grantFundings = grantFundings.Any() ? grantFundings : new List<FundingItem>();
-        foreach (FundingItem fundingItem in grantFundings)
-        {
-            fundingItem.FundingType = FundingTab.Grant;
-        }
-        
-        List<FundingItem> outsideFundings = request.Funding.OutsideFundings.Adapt<List<FundingItem>>();
-        outsideFundings = outsideFundings.Any() ? outsideFundings : new List<FundingItem>();
-        foreach (FundingItem fundingItem in outsideFundings)
-        {
-            fundingItem.FundingType = FundingTab.Outside;
-        }
-        
-        List<FundingItem> specialFundings = request.Funding.SpecialFundings.Adapt<List<FundingItem>>();
-        specialFundings = specialFundings.Any() ? specialFundings : new List<FundingItem>();
-        foreach (FundingItem fundingItem in specialFundings)
-        {
-            fundingItem.FundingType = FundingTab.Special;
-        }
-        
-        List<FundingItem> otherFundings = request.Funding.OtherFundings.Adapt<List<FundingItem>>();
-        otherFundings = otherFundings.Any() ? otherFundings : new List<FundingItem>();
-        foreach (FundingItem fundingItem in otherFundings)
-        {
-            fundingItem.FundingType = FundingTab.Other;
-        }
+        var borrowingFundings = MapFundingItems(request.Funding.BorrowingFundings, FundingTab.Borrowing);
+        var oueFundings = MapFundingItems(request.Funding.OUEFundings, FundingTab.Operating);
+        var grantFundings = MapFundingItems(request.Funding.GrantFundings, FundingTab.Grant);
+        var outsideFundings = MapFundingItems(request.Funding.OutsideFundings, FundingTab.Outside);
+        var specialFundings = MapFundingItems(request.Funding.SpecialFundings, FundingTab.Special);
+        var otherFundings = MapFundingItems(request.Funding.OtherFundings, FundingTab.Other);
 
         fundingItems = new List<FundingItem>();
         fundingItems.AddRange(borrowingFundings);
@@ -136,5 +100,27 @@ public sealed class CreateCapitalEquipmentHandler(
         await repository.AddAsync(data, cancellationToken);
         logger.LogInformation("CapitalEquipment created {CapitalEquipmentId}", data.Id);
         return new CreateCapitalEquipmentResponse(data.Id);
+    }
+
+    private List<FundingItem> MapFundingItems(List<FundingItemCreateDTO> fundingCreateItems, string fundingType)
+    {
+        if (fundingCreateItems == null)
+        {
+            fundingCreateItems = new List<FundingItemCreateDTO>();
+        }
+
+        var fundingItems = new List<FundingItem>();
+
+        if (fundingCreateItems != null)
+        {
+            fundingItems = fundingCreateItems.Adapt<List<FundingItem>>();
+        }
+
+        foreach (FundingItem fundingItem in fundingItems)
+        {
+            fundingItem.FundingType = fundingType;
+        }
+
+        return fundingItems;
     }
 }
