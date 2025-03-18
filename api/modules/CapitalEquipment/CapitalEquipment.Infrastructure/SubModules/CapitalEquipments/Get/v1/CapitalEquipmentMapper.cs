@@ -8,18 +8,18 @@ public static class CapitalEquipmentMapper
 {
     public static GetCapitalEquipmentResponse GetResponse(CapitalEquipmentItem capitalEquipmentItem, List<LookupValueItem> lookupValues)
     {
-        var requestingDepartmentIds = capitalEquipmentItem.RequestingDepartmentIds.Split(",");
+        var requestingDepartmentIds = capitalEquipmentItem.RequestingDepartmentIds.Split(",")
+            .Select(x => x.Trim());
         var requestingDepartments = lookupValues.Where(
             x => requestingDepartmentIds.Contains(x.Id.ToString())
         ).Select(x => x.Name).ToList();
         
-        var departmentHeadRequestor = lookupValues.FirstOrDefault(x => x.Id.ToString() == capitalEquipmentItem.DepartmentHeadRequestorId);
-        var departmentHeadRequestorName = string.Empty;
+        var requestingDepartmentHeadIds = capitalEquipmentItem.DepartmentHeadRequestorId.Split(",")
+            .Select(x => x.Trim());
+        var requestingDepartmentHeads = lookupValues.Where(
+            x => requestingDepartmentHeadIds.Contains(x.Id.ToString())
+        ).Select(x => x.Name).ToList();
         
-        if (departmentHeadRequestor != null)
-        {
-            departmentHeadRequestorName = departmentHeadRequestor.Name;
-        }
         
         var requestStatus = lookupValues.FirstOrDefault(x => x.Id.ToString() == capitalEquipmentItem.RequestStatusId);
         var requestStatusName = string.Empty;
@@ -37,7 +37,7 @@ public static class CapitalEquipmentMapper
             EquipmentName = capitalEquipmentItem.EquipmentName,
             EquipmentCategoryId = capitalEquipmentItem.EquipmentCategoryId,
             RequestingDepartmentValue = string.Join(",", requestingDepartments),
-            DepartmentHeadRequestorValue = departmentHeadRequestorName,
+            DepartmentHeadRequestorValue = string.Join(",", requestingDepartmentHeads),
             RequestStatusValue = requestStatusName
             
         };
