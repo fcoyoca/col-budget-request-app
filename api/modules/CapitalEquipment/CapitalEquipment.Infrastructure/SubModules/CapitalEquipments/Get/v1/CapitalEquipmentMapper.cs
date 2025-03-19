@@ -94,7 +94,7 @@ public static class CapitalEquipmentMapper
 
         ApprovalOversightInfo approvalOversightInfo = new ApprovalOversightInfo()
         {
-            HasPurchaseBeenApprovedByOversight = !capitalEquipmentItem.HasPurchaseBeenApprovedByOversight,
+            HasPurchaseBeenApprovedByOversight = capitalEquipmentItem.HasPurchaseBeenApprovedByOversight,
             LegistarApprovalItemNumber = capitalEquipmentItem.LegistarApprovalItemNumber,
             ApprovingOversightBoard = capitalEquipmentItem.ApprovingOversightBoard,
             DateOfOversightApproval = capitalEquipmentItem.DateOfOversightApproval,
