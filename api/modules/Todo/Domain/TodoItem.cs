@@ -1,6 +1,6 @@
-﻿using FSH.Framework.Core.Domain;
+﻿using budget_request_app.WebApi.Todo.Domain.Events;
+using FSH.Framework.Core.Domain;
 using FSH.Framework.Core.Domain.Contracts;
-using budget_request_app.WebApi.Todo.Domain.Events;
 
 namespace budget_request_app.WebApi.Todo.Domain;
 public class TodoItem : AuditableEntity, IAggregateRoot
@@ -17,7 +17,7 @@ public class TodoItem : AuditableEntity, IAggregateRoot
 
         item.QueueDomainEvent(new TodoItemCreated(item.Id, item.Title, item.Note));
 
-        TodoMetrics.Created.Add(1);
+        //TodoMetrics.Created.Add(1);
 
         return item;
     }

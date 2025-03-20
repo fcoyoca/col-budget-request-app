@@ -1,0 +1,76 @@
+name: Deploy to IIS
+
+# Run when commits are pushed to main
+on:
+  workflow_dispatch:
+  push:
+    # Run when commits are pushed to mainline branch (main or master)
+    # Set this to the mainline branch you are using
+    branches:
+      - dev
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: windows-latest  # Make sure we're using a Windows runner
+
+    steps:
+      # Check out the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Set up .NET SDK
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '9.0.x'  # Replace with your .NET version
+
+      # Publish the project
+      - name: Publish the project
+        run: dotnet publish api\server\Server.csproj --configuration Release --output ./publish
+
+      - name: Ensure Clean Web Deploy Install
+        shell: pwsh
+        run: |
+          # Check if Web Deploy is installed
+          $webDeploy = choco list --local-only | Select-String "webdeploy"
+
+          if (-not $webDeploy) {
+            Write-Output "Web Deploy not found. Installing..."
+            choco install webdeploy -y
+          } else {
+            Write-Output "Web Deploy is already installed."
+          }
+
+      # Deploy to IIS using msdeploy.exe
+      - name: Deploy to IIS
+        shell: powershell
+        run: |
+          $msdeployPath = "C:\Program Files\IIS\Microsoft Web Deploy V3\msdeploy.exe"
+          $sourcePath = "${{ github.workspace }}\publish\wwwroot"
+          $destinationPath = "\BudgetRequestWebService\"
+          $computerName = "https://48.210.64.131:8172/msdeploy.axd?site=budgetrequestwebservice"
+          $userName = "${{ secrets.WEB_DEPLOY_USERNAME }}"
+          $password = "${{ secrets.WEB_DEPLOY_PASSWORD }}"  # Store password in GitHub Secrets
+
+          # Run msdeploy.exe
+          & "$msdeployPath" `
+            -source:contentPath="$sourcePath" `
+            -dest:contentPath="$destinationPath",ComputerName="$computerName",UserName="$userName",Password="$password",IncludeAcls='False',AuthType='Basic' `
+            -verb:sync `
+            -enablerule:AppOffline `
+            -retryAttempts:20 `
+            -disablerule:BackupRule `
+            -skip:objectName=filePath,absolutePath='.*google.*\.html' `
+            -skip:objectName=filePath,absolutePath='.*BingSiteAuth\.xml' `
+            -skip:objectName=filePath,absolutePath='logs\\.*' `
+            -skip:objectName=dirPath,absolutePath='logs' `
+            -skip:objectName=filePath,absolutePath='data\\.*' `
+            -skip:objectName=dirPath,absolutePath='data' `
+            -allowUntrusted
+
+          # Check if deployment succeeded
+          if ($LASTEXITCODE -ne 0) {
+            Write-Error "Deployment failed with exit code $LASTEXITCODE"
+            exit 1
+          }
