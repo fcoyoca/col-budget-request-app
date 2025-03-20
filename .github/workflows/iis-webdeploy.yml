@@ -27,7 +27,7 @@ jobs:
 
       # Publish the project
       - name: Publish the project
-        run: dotnet publish api/server/Server.csproj --configuration Release --output ./publish -nowarn:CA1307
+        run: dotnet publish api/server/Server.csproj --configuration Release --output ./publish -p:EnableContainerBuild=false -p:ContainerImageTags= -p:ContainerRegistry= -p:PublishProfile=
 
       - name: Ensure Clean Web Deploy Install
         shell: pwsh
