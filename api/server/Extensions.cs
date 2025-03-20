@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using Asp.Versioning.Conventions;
-using budget_request_app.WebApi.Todo;
 using budget_request_app.WebApi.LookupCategory;
 using budget_request_app.WebApi.LookupValue;
 using budget_request_app.WebApi.CapitalEquipment.Infrastructure;
@@ -19,8 +18,6 @@ public static class Extensions
         //define module assemblies
         var assemblies = new Assembly[]
         {
-            // typeof(CatalogMetadata).Assembly, // TODO: remove existing service for reference
-            typeof(TodoModule).Assembly,
             typeof(LookupCategoryModule).Assembly,
             typeof(LookupValueModule).Assembly,
             typeof(CapitalEquipmentModule).Assembly,
@@ -41,8 +38,6 @@ public static class Extensions
         }
 
         //register module services
-        // builder.RegisterCatalogServices(); // TODO: remove existing service for reference
-        builder.RegisterTodoServices();
         builder.RegisterLookupCategoryServices();
         builder.RegisterLookupValueServices();
         builder.RegisterCapitalEquipmentServices();
@@ -50,8 +45,6 @@ public static class Extensions
         //add carter endpoint modules
         builder.Services.AddCarter(configurator: config =>
         {
-            // config.WithModule<CatalogModule.Endpoints>(); // TODO: remove existing service for reference
-            config.WithModule<TodoModule.Endpoints>();
             config.WithModule<LookupCategoryModule.Endpoints>();
             config.WithModule<LookupValueModule.Endpoints>();
             config.WithModule<CapitalEquipmentModule.Endpoints>();
@@ -65,8 +58,6 @@ public static class Extensions
         ArgumentNullException.ThrowIfNull(app);
 
         //register modules
-        // app.UseCatalogModule(); // TODO: remove existing service for reference
-        app.UseTodoModule();
         app.UseLookupCategoryModule();
         app.UseLookupValueModule();
         app.UseCapitalEquipmentModule();

@@ -5,14 +5,10 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\framework\Infrastructure\Infrastructure.csproj" />
-    <ProjectReference Include="..\..\modules\Catalog\Catalog.Infrastructure\Catalog.Infrastructure.csproj" />
-    <ProjectReference Include="..\..\modules\Todo\Todo.csproj" />
     <ProjectReference Include="..\..\modules\LookupCategory\LookupCategory.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Catalog\" />
     <Folder Include="Identity\" />
     <Folder Include="Tenant\" />
-    <Folder Include="Todo\" />
   </ItemGroup>
 </Project>

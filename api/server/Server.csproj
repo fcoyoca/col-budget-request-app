@@ -20,8 +20,6 @@
     <ProjectReference Include="..\framework\Infrastructure\Infrastructure.csproj" />
     <ProjectReference Include="..\migrations\MSSQL\MSSQL.csproj" />
     <ProjectReference Include="..\migrations\PostgreSQL\PostgreSQL.csproj" />
-    <ProjectReference Include="..\modules\Catalog\Catalog.Infrastructure\Catalog.Infrastructure.csproj" />
-    <ProjectReference Include="..\modules\Todo\Todo.csproj" />
     <ProjectReference Include="..\modules\LookupCategory\LookupCategory.csproj" />
     <ProjectReference Include="..\modules\LookupValue\LookupValue.csproj" />
     <ProjectReference Include="..\modules\CapitalEquipment\CapitalEquipment.Infrastructure\CapitalEquipment.Infrastructure.csproj" />
