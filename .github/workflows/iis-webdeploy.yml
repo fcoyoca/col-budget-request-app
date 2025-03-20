@@ -47,7 +47,7 @@ jobs:
         shell: powershell
         run: |
           $msdeployPath = "C:\Program Files\IIS\Microsoft Web Deploy V3\msdeploy.exe"
-          $sourcePath = "${{ github.workspace }}\publish\wwwroot"
+          $sourcePath = "${{ github.workspace }}\publish"
           $destinationPath = "\BudgetRequestWebService\"
           $computerName = "https://48.210.64.131:8172/msdeploy.axd?site=budgetrequestwebservice"
           $userName = "${{ secrets.WEB_DEPLOY_USERNAME }}"
