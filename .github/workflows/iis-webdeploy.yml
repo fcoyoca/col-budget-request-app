@@ -51,7 +51,7 @@ jobs:
           $destinationPath = "\BudgetRequestWebService\"
           $computerName = "https://48.210.64.131:8172/msdeploy.axd?site=budgetrequestwebservice"
           $userName = "${{ secrets.WEB_DEPLOY_USERNAME }}"
-          $password = "${{ secrets.WEB_DEPLOY_PASSWORD }}"  # Store password in GitHub Secrets
+          $password = "${{ secrets.WEB_DEPLOY_PASSWORD }}"  # Store password in GitHub Secrets #re-execute
 
           # Run msdeploy.exe
           & "$msdeployPath" `
