@@ -74,6 +74,8 @@ public static class Extensions
 
     public static WebApplication UseFshFramework(this WebApplication app)
     {
+        var config = app.Configuration;
+
         app.MapDefaultEndpoints();
         app.UseRateLimit();
         app.UseSecurityHeaders();
@@ -88,6 +90,11 @@ public static class Extensions
         {
             FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "assets")),
             RequestPath = new PathString("/assets")
+        });
+        app.UseStaticFiles(new StaticFileOptions
+        {
+            FileProvider = new PhysicalFileProvider($"{config["FileStorage:FileProvider"]}"),
+            RequestPath = new PathString($"{config["FileStorage:RequestPath"]}")
         });
         app.UseAuthentication();
         app.UseAuthorization();
