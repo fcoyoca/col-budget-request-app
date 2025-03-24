@@ -11,11 +11,13 @@
   <ItemGroup>
     <ProjectReference Include="..\..\framework\Infrastructure\Infrastructure.csproj" />
     <ProjectReference Include="..\..\modules\CapitalEquipment\CapitalEquipment.Infrastructure\CapitalEquipment.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\modules\CapitalProject\CapitalProject.Infrastructure\CapitalProject.Infrastructure.csproj" />
     <ProjectReference Include="..\..\modules\LookupCategory\LookupCategory.csproj" />
     <ProjectReference Include="..\..\modules\LookupValue\LookupValue.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="CapitalEquipment\" />
+    <Folder Include="CapitalProject\" />
     <Folder Include="Identity\" />
     <Folder Include="Tenant\" />
     <Folder Include="LookupCategory\" />

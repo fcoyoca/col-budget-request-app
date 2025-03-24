@@ -3,6 +3,7 @@ using Asp.Versioning.Conventions;
 using budget_request_app.WebApi.LookupCategory;
 using budget_request_app.WebApi.LookupValue;
 using budget_request_app.WebApi.CapitalEquipment.Infrastructure;
+using budget_request_app.WebApi.CapitalProject.Infrastructure;
 using Carter;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -21,6 +22,7 @@ public static class Extensions
             typeof(LookupCategoryModule).Assembly,
             typeof(LookupValueModule).Assembly,
             typeof(CapitalEquipmentModule).Assembly,
+            typeof(CapitalProjectModule).Assembly,
         };
 
         //register validators
@@ -32,15 +34,11 @@ public static class Extensions
             cfg.RegisterServicesFromAssemblies(assemblies);
         });
 
-        foreach (var s in builder.Services.Where(x => x.ServiceType.FullName.Contains("Command,") && x.ServiceType.FullName.Contains("IRequestHandler")))
-        {
-            Console.WriteLine(s.ServiceType.ShortDisplayName());
-        }
-
         //register module services
         builder.RegisterLookupCategoryServices();
         builder.RegisterLookupValueServices();
         builder.RegisterCapitalEquipmentServices();
+        builder.RegisterCapitalProjectServices();
 
         //add carter endpoint modules
         builder.Services.AddCarter(configurator: config =>
@@ -48,6 +46,7 @@ public static class Extensions
             config.WithModule<LookupCategoryModule.Endpoints>();
             config.WithModule<LookupValueModule.Endpoints>();
             config.WithModule<CapitalEquipmentModule.Endpoints>();
+            config.WithModule<CapitalProjectModule.Endpoints>();
         });
         
         return builder;
@@ -61,6 +60,7 @@ public static class Extensions
         app.UseLookupCategoryModule();
         app.UseLookupValueModule();
         app.UseCapitalEquipmentModule();
+        app.UseCapitalProjectModule();
 
         //register api versions
         var versions = app.NewApiVersionSet()
