@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <RootNamespace>budget_request_app.WebApi.CapitalEquipment.Infrastructure</RootNamespace>
-    <AssemblyName>budget_request_app.WebApi.CapitalEquipment.Infrastructure</AssemblyName>
+    <RootNamespace>budget_request_app.WebApi.CapitalProject.Infrastructure</RootNamespace>
+    <AssemblyName>budget_request_app.WebApi.CapitalProject.Infrastructure</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Persistence\Repositories\**" />
@@ -12,6 +12,10 @@
     <ProjectReference Include="..\..\..\framework\Core\Core.csproj" />
     <ProjectReference Include="..\..\..\framework\Infrastructure\Infrastructure.csproj" />
     <ProjectReference Include="..\..\LookupValue\LookupValue.csproj" />
-    <ProjectReference Include="..\CapitalEquipment.Application\CapitalEquipment.Application.csproj" />
+    <ProjectReference Include="..\CapitalProject.Application\CapitalProject.Application.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Endpoints\v1\" />
+    <Folder Include="SubModules\" />
   </ItemGroup>
 </Project>

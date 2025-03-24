@@ -13,8 +13,8 @@ public class CapitalProjectFunding : AuditableEntity, IAggregateRoot
 public class CapitalProjectFundingBase : AuditableEntity, IAggregateRoot
 {
     public Guid? ExpenditureCategoryId { get; set; } = Guid.Empty;
-    public CapitalProjectFundingYearItem? YearRequested { get; set; }
-    public List<CapitalProjectFundingYearItem>? YearEstimates { get; set; } = new();
+    public FundingYearItem? YearRequested { get; set; }
+    public List<FundingYearItem>? YearEstimates { get; set; } = new();
 }
 
 
@@ -50,7 +50,7 @@ public class SpecialFunding : CapitalProjectFundingBase
 public class OtherFunding : CapitalProjectFundingBase
 {
     public Guid? FundingSourceId { get; set; } = Guid.Empty;
-    public string? Description { get; set; } = Guid.Empty;
+    public string? Description { get; set; } = string.Empty;
 }
 
 public class SpendingBudget : CapitalProjectFundingBase

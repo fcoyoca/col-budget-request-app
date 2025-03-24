@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <RootNamespace>budget_request_app.WebApi.CapitalEquipment.Application</RootNamespace>
-    <AssemblyName>budget_request_app.WebApi.CapitalEquipment.Application</AssemblyName>
+    <RootNamespace>budget_request_app.WebApi.CapitalProject.Application</RootNamespace>
+    <AssemblyName>budget_request_app.WebApi.CapitalProject.Application</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\framework\Core\Core.csproj" />
     <ProjectReference Include="..\..\..\framework\Infrastructure\Infrastructure.csproj" />
-    <ProjectReference Include="..\CapitalEquipment.Domain\CapitalEquipment.Domain.csproj" />
+    <ProjectReference Include="..\CapitalProject.Domain\CapitalProject.Domain.csproj" />
   </ItemGroup>
 </Project>

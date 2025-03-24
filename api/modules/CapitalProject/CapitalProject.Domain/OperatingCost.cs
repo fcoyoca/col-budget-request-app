@@ -4,7 +4,7 @@ using budget_request_app.WebApi.CapitalProject.Domain.Events;
 
 namespace budget_request_app.WebApi.CapitalProject.Domain;
 
-public class CapitalProjectOperatingCost : AuditableEntity, IAggregateRoot
+public class OperatingCost : AuditableEntity, IAggregateRoot
 {
     public Guid FundingSourceId { get; set; }
     public Guid DepartmentId { get; set; }

@@ -4,7 +4,7 @@ using budget_request_app.WebApi.CapitalProject.Domain.Events;
 
 namespace budget_request_app.WebApi.CapitalProject.Domain;
 
-public class CapitalProjectMinorProject : AuditableEntity, IAggregateRoot
+public class MinorProject : AuditableEntity, IAggregateRoot
 {
     public Guid ExpenditureCategoryId { get; set; }
     public string Description { get; set; }

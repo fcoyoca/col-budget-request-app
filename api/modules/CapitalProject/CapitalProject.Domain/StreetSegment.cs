@@ -4,7 +4,7 @@ using budget_request_app.WebApi.CapitalProject.Domain.Events;
 
 namespace budget_request_app.WebApi.CapitalProject.Domain;
 
-public class CapitalProjectStreetSegment : AuditableEntity, IAggregateRoot
+public class StreetSegment : AuditableEntity, IAggregateRoot
 {
     public string StreetId { get; set; }
     public string Description { get; set; }

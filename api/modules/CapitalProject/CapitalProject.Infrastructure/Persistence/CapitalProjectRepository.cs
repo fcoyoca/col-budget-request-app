@@ -4,11 +4,11 @@ using FSH.Framework.Core.Domain.Contracts;
 using FSH.Framework.Core.Persistence;
 using Mapster;
 
-namespace budget_request_app.WebApi.CapitalEquipment.Infrastructure.Persistence;
-internal sealed class CapitalEquipmentRepository<T> : RepositoryBase<T>, IReadRepository<T>, IRepository<T>
+namespace budget_request_app.WebApi.CapitalProject.Infrastructure.Persistence;
+internal sealed class CapitalProjectRepository<T> : RepositoryBase<T>, IReadRepository<T>, IRepository<T>
     where T : class, IAggregateRoot
 {
-    public CapitalEquipmentRepository(CapitalEquipmentDbContext context)
+    public CapitalProjectRepository(CapitalProjectDbContext context)
         : base(context)
     {
     }
