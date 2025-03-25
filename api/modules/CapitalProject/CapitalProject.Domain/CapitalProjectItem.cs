@@ -11,6 +11,7 @@ public class CapitalProjectItem : AuditableEntity, IAggregateRoot
     public GeneralInformation? GeneralInformation { get; set; }
     // 2nd tab
     public JustificationPrioritization? JustificationPrioritization { get; set; }
+    public StatusTimeline? StatusTimeline { get; set; }
     public GrantFundingOpportunity? GrantFundingOpportunity { get; set; }
     public ApprovalOversight? ApprovalOversight { get; set; }
     

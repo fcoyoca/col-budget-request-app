@@ -14,8 +14,4 @@
     <ProjectReference Include="..\..\LookupValue\LookupValue.csproj" />
     <ProjectReference Include="..\CapitalProject.Application\CapitalProject.Application.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Endpoints\v1\" />
-    <Folder Include="SubModules\" />
-  </ItemGroup>
 </Project>
