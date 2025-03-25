@@ -1,4 +1,6 @@
 using budget_request_app.WebApi.CapitalProject.Domain;
+using budget_request_app.WebApi.CapitalProject.Infrastructure.SubModules.CapitalProjects.Get.v1.DTOS;
+
 //using budget_request_app.WebApi.CapitalProject.Infrastructure.SubModules.CapitalProjects.Create.v1;
 
 namespace budget_request_app.WebApi.CapitalProject.Infrastructure.SubModules.CapitalProjects.Get.v1;
@@ -6,39 +8,13 @@ public sealed record GetCapitalProjectResponse(
     Guid Id,
     string? BudgetId,
     string? RevisionTitle,
-    GeneralInformation? GeneralInformation,
-    TimeJustificationApproval? TimeJustificationApproval,
-    OperatingBudgetImpact? OperatingBudgetImpact,
-    MinorProjectLocation? MinorProjectLocation,
-    Financial? Financial,
-    ProjectManagement? ProjectManagement
+    GeneralInformationDTO? GeneralInformation,
+    TimeJustificationApprovalDTO? TimeJustificationApproval,
+    OperatingBudgetImpactDTO? OperatingBudgetImpact,
+    MinorProjectLocationDTO? MinorProjectLocation,
+    FinancialDTO? Financial,
+    ProjectManagementDTO? ProjectManagement
     );
-
-public class TimeJustificationApproval
-{
-    public JustificationPrioritization? JustificationPrioritization { get; set; } 
-    public GrantFundingOpportunity? GrantFundingOpportunity { get; set; }
-    public ApprovalOversight? ApprovalOversight { get; set; }
-}
-
-public class OperatingBudgetImpact
-{
-    public List<OperatingCost>? OperatingCosts { get; set; }
-    public List<OperatingRevenue>? OperatingRevenues { get; set; }
-}
-
-public class MinorProjectLocation
-{
-    public RequestLocation? RequestLocation { get; set; }
-    public List<MinorProject>? MinorProjects { get; set; }
-    public List<StreetSegment>? StreetSegments { get; set; }
-}
-
-public class RequestLocation
-{
-    public bool? IsMappedRequest { get; set; } = false;
-    public string? GISMappingDescription { get; set; }
-}
 
 public class Financial
 {

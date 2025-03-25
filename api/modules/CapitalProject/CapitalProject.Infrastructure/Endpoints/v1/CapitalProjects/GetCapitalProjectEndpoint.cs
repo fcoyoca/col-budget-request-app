@@ -1,4 +1,3 @@
-using budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Get.v1;
 using FSH.Framework.Infrastructure.Auth.Policy;
 using budget_request_app.WebApi.CapitalProject.Infrastructure.SubModules.CapitalProjects.Get.v1;
 using MediatR;

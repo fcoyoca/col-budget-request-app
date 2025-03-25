@@ -1,5 +1,4 @@
 using Azure.Core;
-using budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Get.v1;
 using Microsoft.Extensions.DependencyInjection;
 using budget_request_app.WebApi.CapitalProject.Domain.Exceptions;
 using FSH.Framework.Core.Persistence;
@@ -35,6 +34,4 @@ public sealed class GetCapitalProjectHandler(
         
         return item;
     }
-
-    
 }

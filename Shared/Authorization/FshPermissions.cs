@@ -70,11 +70,6 @@ public static class FshPermissions
         
         //capital project
         new("View CapitalProjects", FshActions.View, FshResources.CapitalProjects, IsBasic: true),
-        new("Search CapitalProjects", FshActions.Search, FshResources.CapitalProjects, IsBasic: true),
-        new("Create CapitalProjects", FshActions.Create, FshResources.CapitalProjects),
-        new("Update CapitalProjects", FshActions.Update, FshResources.CapitalProjects),
-        new("Delete CapitalProjects", FshActions.Delete, FshResources.CapitalProjects),
-        new("Export CapitalProjects", FshActions.Export, FshResources.CapitalProjects),
 
          new("View Hangfire", FshActions.View, FshResources.Hangfire),
          new("View Dashboard", FshActions.View, FshResources.Dashboard),
