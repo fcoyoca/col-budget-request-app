@@ -18,7 +18,10 @@ public static class CapitalProjectModule
         public override void AddRoutes(IEndpointRouteBuilder app)
         {
             var capitalProjectGroup = app.MapGroup("capitalProjects").WithTags("Capital Projects");
+            capitalProjectGroup.MapGetCapitalProjectListEndpoint();
             capitalProjectGroup.MapGetCapitalProjectEndpoint();
+            capitalProjectGroup.MapCapitalProjectCreationEndpoint();
+            capitalProjectGroup.MapCapitalProjectDeleteEndpoint();
         }
     }
     public static WebApplicationBuilder RegisterCapitalProjectServices(this WebApplicationBuilder builder)
