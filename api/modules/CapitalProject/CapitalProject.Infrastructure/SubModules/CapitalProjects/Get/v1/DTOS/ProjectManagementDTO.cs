@@ -2,7 +2,7 @@ namespace budget_request_app.WebApi.CapitalProject.Infrastructure.SubModules.Cap
 
 public class ProjectManagementDTO
 {
-    public Guid Id { get; set; }
+    public Guid? Id { get; set; }
     public Guid? ProjectStatusId { get; set; }
     public DateTime? StartDate { get; set; }
     public DateTime? EndDate { get; set; }

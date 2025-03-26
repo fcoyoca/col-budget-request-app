@@ -10,10 +10,13 @@ public class FinancialDTO
 
 public class FundingDTO
 {
+    public string? TIFFundingIds { get; set; }
     public List<BorrowingFundingDTO>? BorrowingFundings { get; set; }
     public List<OperatingFundingDTO>? OperatingFundings { get; set; }
     public List<GrantFundingDTO>? GrantFundings { get; set; }
     public DonationFundingParentDTO? DonationFunding { get; set; }
+    public List<SpecialFundingDTO>? SpecialFundings { get; set; }
+    public List<OtherFundingDTO>? OtherFundings { get; set; }
 }
 
 public class SpendingDTO
@@ -41,7 +44,7 @@ public class DonationFundingParentDTO
 
 public class CapitalProjectFundingBase
 {
-    public Guid Id { get; set; }
+    public Guid? Id { get; set; }
     public Guid? ExpenditureCategoryId { get; set; } = Guid.Empty;
     public FundingYearItemDTO? YearRequested { get; set; }
     public List<FundingYearItemDTO>? YearEstimates { get; set; } = new();

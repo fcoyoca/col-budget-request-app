@@ -2,7 +2,7 @@ namespace budget_request_app.WebApi.CapitalProject.Infrastructure.SubModules.Cap
 
 public class GeneralInformationDTO
 {
-    public Guid Id { get; set; }
+    public Guid? Id { get; set; }
     public int? RequestId { get; set; }
     public string? RequestStatusId { get; set; }
     public string? Title { get; set; }

@@ -15,7 +15,7 @@ public class RequestLocationDTO
 
 public class MinorProjectDTO
 {
-    public Guid Id { get; set; }
+    public Guid? Id { get; set; }
     public Guid ExpenditureCategoryId { get; set; }
     public string Description { get; set; }
     public int Year { get; set; }
@@ -25,7 +25,7 @@ public class MinorProjectDTO
 
 public class StreetSegmentDTO
 {
-    public Guid Id { get; set; }
+    public Guid? Id { get; set; }
     public string StreetId { get; set; }
     public string Description { get; set; }
     public decimal Length { get; set; }

@@ -54,6 +54,11 @@ public static class CapitalProjectMapper
         {
             SpendingBudgets = capitalProjectItem.SpendingBudgets.Adapt<List<SpendingBudgetDTO>>(),
         };
+
+        financial.Change = new()
+        {
+            FundingChanges = capitalProjectItem.FundingChanges.Adapt<List<FundingChangeDTO>>(),
+        };
         
         financial.Past = new()
         {

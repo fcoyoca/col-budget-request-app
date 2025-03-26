@@ -10,7 +10,7 @@ public class OperatingBudgetImpactDTO
 
 public class OperatingCostDTO
 {
-    public Guid Id { get; set; }
+    public Guid? Id { get; set; }
     public Guid FundingSourceId { get; set; }
     public Guid DepartmentId { get; set; }
     public string Description { get; set; }
@@ -20,7 +20,7 @@ public class OperatingCostDTO
 
 public class OperatingRevenueDTO
 {
-    public Guid Id { get; set; }
+    public Guid? Id { get; set; }
     public Guid FundingSourceId { get; set; }
     public Guid DepartmentId { get; set; }
     public string Description { get; set; }

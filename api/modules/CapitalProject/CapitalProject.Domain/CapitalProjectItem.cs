@@ -28,6 +28,7 @@ public class CapitalProjectItem : AuditableEntity, IAggregateRoot
     // financials
     
     // financials - funding
+    public string? TIFFundingIds { get; set; }
     public List<BorrowingFunding>? BorrowingFundings { get; set; }
     public List<OperatingFunding>? OperatingFundings { get; set; }
     public List<GrantFunding> GrantFundings { get; set; }
