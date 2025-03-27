@@ -8,10 +8,10 @@ namespace budget_request_app.WebApi.CapitalProject.Infrastructure.SubModules.Cap
 public sealed record CreateCapitalProjectCommand(
     string BudgetId,
     string RevisionTitle,
-    GeneralInformationDTO GeneralInformation,
-    TimeJustificationApprovalDTO TimeJustificationApproval,
-    OperatingBudgetImpactDTO OperatingBudgetImpact,
-    MinorProjectLocationDTO MinorProjectLocation,
-    FinancialDTO Financial,
-    ProjectManagementDTO ProjectManagement
+    GeneralInformationDTO? GeneralInformation,
+    TimeJustificationApprovalDTO? TimeJustificationApproval,
+    OperatingBudgetImpactDTO? OperatingBudgetImpact,
+    MinorProjectLocationDTO? MinorProjectLocation,
+    FinancialDTO? Financial,
+    ProjectManagementDTO? ProjectManagement
 ) : IRequest<CreateCapitalProjectResponse>;

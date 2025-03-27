@@ -14,43 +14,43 @@ public sealed class CreateCapitalProjectHandler(
     public async Task<CreateCapitalProjectResponse> Handle(CreateCapitalProjectCommand request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
-
-        var justificationPrioritization = request.TimeJustificationApproval.JustificationPrioritization;
-        var statusTimeline = request.TimeJustificationApproval.StatusTimeline;
-        var approvalOversight = request.TimeJustificationApproval.ApprovalOversight;
-        var grantFundingOpportunity = request.TimeJustificationApproval.GrantFundingOpportunity;
-        var operatingCosts = request.OperatingBudgetImpact.OperatingCosts;
-        var operatingRevenues = request.OperatingBudgetImpact.OperatingRevenues;
-        var minorProjects = request.MinorProjectLocation.MinorProjects;
-        var streetSegments = request.MinorProjectLocation.StreetSegments;
-        var tifFundingIds = request.Financial.Funding.TIFFundingIds;
-        var borrowingFundings = request.Financial.Funding.BorrowingFundings;
-        var operatingFundings = request.Financial.Funding.OperatingFundings;
-        var grantFundings = request.Financial.Funding.GrantFundings;
-        var donationFundingIsDonatedFundsUsed = request.Financial.Funding.DonationFunding.DonationFundingIsDonatedFundsUsed;
-        var donationFundingIsContributeFundsRequired = request.Financial.Funding.DonationFunding.DonationFundingIsContributeFundsRequired;
-        var donationFundings = request.Financial.Funding.DonationFunding.DonationFundings;
-        var specialFundings = request.Financial.Funding.SpecialFundings;
-        var otherFundings = request.Financial.Funding.OtherFundings;
-        var spendingBudgets = request.Financial.Spending.SpendingBudgets;
-        var fundingChanges = request.Financial.Change.FundingChanges;
-        var pastFundings = request.Financial.Past.PastFundings;
-        var pastSpendings = request.Financial.Past.PastSpendings;
+        
+        var justificationPrioritization = request.TimeJustificationApproval?.JustificationPrioritization;
+        var statusTimeline = request.TimeJustificationApproval?.StatusTimeline;
+        var approvalOversight = request.TimeJustificationApproval?.ApprovalOversight;
+        var grantFundingOpportunity = request.TimeJustificationApproval?.GrantFundingOpportunity;
+        var operatingCosts = request.OperatingBudgetImpact?.OperatingCosts;
+        var operatingRevenues = request.OperatingBudgetImpact?.OperatingRevenues;
+        var minorProjects = request.MinorProjectLocation?.MinorProjects;
+        var streetSegments = request.MinorProjectLocation?.StreetSegments;
+        var tifFundingIds = request.Financial?.Funding?.TIFFundingIds;
+        var borrowingFundings = request.Financial?.Funding?.BorrowingFundings;
+        var operatingFundings = request.Financial?.Funding?.OperatingFundings;
+        var grantFundings = request.Financial?.Funding?.GrantFundings;
+        var donationFundingIsDonatedFundsUsed = request.Financial?.Funding?.DonationFunding?.DonationFundingIsDonatedFundsUsed;
+        var donationFundingIsContributeFundsRequired = request.Financial?.Funding?.DonationFunding?.DonationFundingIsContributeFundsRequired;
+        var donationFundings = request.Financial?.Funding?.DonationFunding?.DonationFundings;
+        var specialFundings = request.Financial?.Funding?.SpecialFundings;
+        var otherFundings = request.Financial?.Funding?.OtherFundings;
+        var spendingBudgets = request.Financial?.Spending?.SpendingBudgets;
+        var fundingChanges = request.Financial?.Change?.FundingChanges;
+        var pastFundings = request.Financial?.Past?.PastFundings;
+        var pastSpendings = request.Financial?.Past?.PastSpendings;
         var projectManagement = request.ProjectManagement;
 
         var capitalProject = new CapitalProjectItem()
         {
             BudgetId = request.BudgetId,
             RevisionTitle = request.RevisionTitle,
-            GeneralInformation = request.GeneralInformation.Adapt<GeneralInformation>(),
+            GeneralInformation = request.GeneralInformation?.Adapt<GeneralInformation>(),
             JustificationPrioritization = justificationPrioritization.Adapt<JustificationPrioritization>(),
             StatusTimeline = statusTimeline.Adapt<StatusTimeline>(),
             ApprovalOversight = approvalOversight.Adapt<ApprovalOversight>(),
             GrantFundingOpportunity = grantFundingOpportunity.Adapt<GrantFundingOpportunity>(),
             OperatingCosts = operatingCosts.Adapt<List<OperatingCost>>(),
             OperatingRevenues = operatingRevenues.Adapt<List<OperatingRevenue>>(),
-            IsMappedRequest = request.MinorProjectLocation.RequestLocation.IsMappedRequest,
-            GISMappingDescription = request.MinorProjectLocation.RequestLocation.GISMappingDescription,
+            IsMappedRequest = request.MinorProjectLocation?.RequestLocation?.IsMappedRequest,
+            GISMappingDescription = request.MinorProjectLocation?.RequestLocation?.GISMappingDescription,
             MinorProjects = minorProjects.Adapt<List<MinorProject>>(),
             StreetSegments = streetSegments.Adapt<List<StreetSegment>>(),
             TIFFundingIds = tifFundingIds,
