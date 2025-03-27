@@ -10,7 +10,7 @@ public class GeneralInformationDTO
     public string? RequestingDepartmentIds { get; set; }
     public string? DepartmentHeadRequestorId { get; set; }
     public string? RequestTypeId { get; set; }
-    private bool? RequiresTwoThirdsApproval { get; set; } = false;
+    public bool? RequiresTwoThirdsApproval { get; set; } = false;
     public string? RemarksPrintout { get; set; }
     public string? RequestGroupId { get; set; }
 }
