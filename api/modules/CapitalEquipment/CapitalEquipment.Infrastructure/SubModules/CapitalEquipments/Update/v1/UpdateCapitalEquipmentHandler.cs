@@ -36,6 +36,21 @@ public sealed class UpdateCapitalEquipmentHandler(
         approvalOversightInfo = request.ApprovalOversightInfo;
         fundingItems = new List<FundingItem>();
         
+        var borrowingFundings = FundingItemMapper.MapFundingItems(request.Funding.BorrowingFundings, FundingTab.Borrowing);
+        var oueFundings = FundingItemMapper.MapFundingItems(request.Funding.OUEFundings, FundingTab.Operating);
+        var grantFundings = FundingItemMapper.MapFundingItems(request.Funding.GrantFundings, FundingTab.Grant);
+        var outsideFundings = FundingItemMapper.MapFundingItems(request.Funding.OutsideFundings, FundingTab.Outside);
+        var specialFundings = FundingItemMapper.MapFundingItems(request.Funding.SpecialFundings, FundingTab.Special);
+        var otherFundings = FundingItemMapper.MapFundingItems(request.Funding.OtherFundings, FundingTab.Other);
+
+        fundingItems = new List<FundingItem>();
+        fundingItems.AddRange(borrowingFundings);
+        fundingItems.AddRange(oueFundings);
+        fundingItems.AddRange(grantFundings);
+        fundingItems.AddRange(outsideFundings);
+        fundingItems.AddRange(specialFundings);
+        fundingItems.AddRange(otherFundings);
+        
         var updatedCapitalEquipment = CapitalEquipmentItem.Update(
             capitalEquipment,
             request.BudgetId,

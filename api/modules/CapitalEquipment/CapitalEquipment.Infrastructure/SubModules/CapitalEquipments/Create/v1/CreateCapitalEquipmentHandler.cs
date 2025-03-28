@@ -32,12 +32,12 @@ public sealed class CreateCapitalEquipmentHandler(
         operatingBudgetImpact = request.OperatingBudgetImpact;
         approvalOversightInfo = request.ApprovalOversightInfo;
 
-        var borrowingFundings = MapFundingItems(request.Funding.BorrowingFundings, FundingTab.Borrowing);
-        var oueFundings = MapFundingItems(request.Funding.OUEFundings, FundingTab.Operating);
-        var grantFundings = MapFundingItems(request.Funding.GrantFundings, FundingTab.Grant);
-        var outsideFundings = MapFundingItems(request.Funding.OutsideFundings, FundingTab.Outside);
-        var specialFundings = MapFundingItems(request.Funding.SpecialFundings, FundingTab.Special);
-        var otherFundings = MapFundingItems(request.Funding.OtherFundings, FundingTab.Other);
+        var borrowingFundings = FundingItemMapper.MapFundingItems(request.Funding.BorrowingFundings, FundingTab.Borrowing);
+        var oueFundings = FundingItemMapper.MapFundingItems(request.Funding.OUEFundings, FundingTab.Operating);
+        var grantFundings = FundingItemMapper.MapFundingItems(request.Funding.GrantFundings, FundingTab.Grant);
+        var outsideFundings = FundingItemMapper.MapFundingItems(request.Funding.OutsideFundings, FundingTab.Outside);
+        var specialFundings = FundingItemMapper.MapFundingItems(request.Funding.SpecialFundings, FundingTab.Special);
+        var otherFundings = FundingItemMapper.MapFundingItems(request.Funding.OtherFundings, FundingTab.Other);
 
         fundingItems = new List<FundingItem>();
         fundingItems.AddRange(borrowingFundings);
@@ -100,27 +100,5 @@ public sealed class CreateCapitalEquipmentHandler(
         await repository.AddAsync(data, cancellationToken);
         logger.LogInformation("CapitalEquipment created {CapitalEquipmentId}", data.Id);
         return new CreateCapitalEquipmentResponse(data.Id);
-    }
-
-    private List<FundingItem> MapFundingItems(List<FundingItemCreateDTO> fundingCreateItems, string fundingType)
-    {
-        if (fundingCreateItems == null)
-        {
-            fundingCreateItems = new List<FundingItemCreateDTO>();
-        }
-
-        var fundingItems = new List<FundingItem>();
-
-        if (fundingCreateItems != null)
-        {
-            fundingItems = fundingCreateItems.Adapt<List<FundingItem>>();
-        }
-
-        foreach (FundingItem fundingItem in fundingItems)
-        {
-            fundingItem.FundingType = fundingType;
-        }
-
-        return fundingItems;
     }
 }
