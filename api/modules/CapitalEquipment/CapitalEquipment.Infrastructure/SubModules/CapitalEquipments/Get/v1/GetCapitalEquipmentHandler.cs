@@ -20,20 +20,8 @@ public sealed class GetCapitalEquipmentHandler(
         ArgumentNullException.ThrowIfNull(request);
         
         var lookupValues = await lookupRepository.ListAsync();
-
-        var item = await cache.GetOrSetAsync(
-            $"CapitalEquipment:{request.Id}",
-            async () =>
-            {
-                var capitalEquipmentItem = await repository.FirstOrDefaultAsync(new GetCapitalEquipmentByIdSpec(request.Id));
-                //var capitalEquipmentItem = await repository.GetByIdAsync(request.Id, cancellationToken);
-                if (capitalEquipmentItem == null) throw new CapitalEquipmentNotFoundException(request.Id);
-                return CapitalEquipmentMapper.GetResponse(capitalEquipmentItem,lookupValues);
-            },
-            cancellationToken: cancellationToken);
-        
-        return item;
+        var capitalEquipmentItem = await repository.FirstOrDefaultAsync(new GetCapitalEquipmentByIdSpec(request.Id));
+        if (capitalEquipmentItem == null) throw new CapitalEquipmentNotFoundException(request.Id);
+        return CapitalEquipmentMapper.GetResponse(capitalEquipmentItem,lookupValues);
     }
-
-    
 }
