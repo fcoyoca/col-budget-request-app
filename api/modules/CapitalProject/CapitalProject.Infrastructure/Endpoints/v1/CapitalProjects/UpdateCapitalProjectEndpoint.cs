@@ -11,7 +11,7 @@ public static class UpdateCapitalProjectEndpoint
     internal static RouteHandlerBuilder MapCapitalProjectUpdateEndpoint(this IEndpointRouteBuilder endpoints)
     {
         return endpoints
-            .MapPost("/", async (UpdateCapitalProjectCommand request, ISender mediator) =>
+            .MapPut("/", async (UpdateCapitalProjectCommand request, ISender mediator) =>
             {
                 var response = await mediator.Send(request);
                 return Results.Ok(response);

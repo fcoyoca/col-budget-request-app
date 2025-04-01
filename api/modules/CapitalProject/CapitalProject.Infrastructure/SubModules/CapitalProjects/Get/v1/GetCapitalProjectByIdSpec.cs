@@ -22,44 +22,44 @@ public class GetCapitalProjectByIdSpec : Specification<CapitalProjectItem, Capit
             .Include(x => x.MinorProjects)
             .Include(x => x.StreetSegments)
 
-            .Include(x => x.BorrowingFundings)
-            .ThenInclude(x => x.YearRequested)
-            .Include(x => x.BorrowingFundings)
-            .ThenInclude(x => x.YearEstimates)
-            
-            .Include(x => x.OperatingFundings)
-            .ThenInclude(x => x.YearRequested)
-            .Include(x => x.OperatingFundings)
-            .ThenInclude(x => x.YearEstimates)
-            
-            .Include(x => x.GrantFundings)
-            .ThenInclude(x => x.YearRequested)
-            .Include(x => x.GrantFundings)
-            .ThenInclude(x => x.YearEstimates)
-            
-            .Include(x => x.DonationFundings)
-            .ThenInclude(x => x.YearRequested)
-            .Include(x => x.DonationFundings)
-            .ThenInclude(x => x.YearEstimates)
-            
-            .Include(x => x.SpecialFundings)
-            .ThenInclude(x => x.YearRequested)
-            .Include(x => x.SpecialFundings)
-            .ThenInclude(x => x.YearEstimates)
-            
-            .Include(x => x.OtherFundings)
-            .ThenInclude(x => x.YearRequested)
-            .Include(x => x.OtherFundings)
-            .ThenInclude(x => x.YearEstimates)
-            
-            .Include(x => x.SpendingBudgets)
-            .ThenInclude(x => x.YearRequested)
-            .Include(x => x.SpendingBudgets)
-            .ThenInclude(x => x.YearEstimates)
-            
-            .Include(x => x.FundingChanges)
-            .Include(x => x.PastFundings)
-            .Include(x => x.PastSpendings)
+            // .Include(x => x.BorrowingFundings)
+            // .ThenInclude(x => x.YearRequested)
+            // .Include(x => x.BorrowingFundings)
+            // .ThenInclude(x => x.YearEstimates)
+            //
+            // .Include(x => x.OperatingFundings)
+            // .ThenInclude(x => x.YearRequested)
+            // .Include(x => x.OperatingFundings)
+            // .ThenInclude(x => x.YearEstimates)
+            //
+            // .Include(x => x.GrantFundings)
+            // .ThenInclude(x => x.YearRequested)
+            // .Include(x => x.GrantFundings)
+            // .ThenInclude(x => x.YearEstimates)
+            //
+            // .Include(x => x.DonationFundings)
+            // .ThenInclude(x => x.YearRequested)
+            // .Include(x => x.DonationFundings)
+            // .ThenInclude(x => x.YearEstimates)
+            //
+            // .Include(x => x.SpecialFundings)
+            // .ThenInclude(x => x.YearRequested)
+            // .Include(x => x.SpecialFundings)
+            // .ThenInclude(x => x.YearEstimates)
+            //
+            // .Include(x => x.OtherFundings)
+            // .ThenInclude(x => x.YearRequested)
+            // .Include(x => x.OtherFundings)
+            // .ThenInclude(x => x.YearEstimates)
+            //
+            // .Include(x => x.SpendingBudgets)
+            // .ThenInclude(x => x.YearRequested)
+            // .Include(x => x.SpendingBudgets)
+            // .ThenInclude(x => x.YearEstimates)
+            //
+            // .Include(x => x.FundingChanges)
+            // .Include(x => x.PastFundings)
+            // .Include(x => x.PastSpendings)
             
         .Include(x => x.ProjectManagement);
 
