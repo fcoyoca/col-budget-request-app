@@ -34,6 +34,9 @@ public static class CapitalProjectModule
         builder.Services.AddKeyedScoped<IRepository<CapitalProjectItem>, CapitalProjectRepository<CapitalProjectItem>>("capitalProjects");
         builder.Services.AddKeyedScoped<IReadRepository<CapitalProjectItem>, CapitalProjectRepository<CapitalProjectItem>>("capitalProjects");
         
+        builder.Services.AddKeyedScoped<IRepository<FundingYearItem>, CapitalProjectRepository<FundingYearItem>>("capitalProjectsFundingYearItems");
+        builder.Services.AddKeyedScoped<IReadRepository<FundingYearItem>, CapitalProjectRepository<FundingYearItem>>("capitalProjectsFundingYearItems");
+        
         return builder;
     }
     public static WebApplication UseCapitalProjectModule(this WebApplication app)

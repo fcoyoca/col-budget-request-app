@@ -25,7 +25,7 @@ public sealed class SearchCapitalProjectsHandler(
         var lookupValues = await lookupRepository.ListAsync();
 
         var itemsMapped = items.Select(
-            x => CapitalProjectMapper.GetResponse(x, lookupValues)
+            x => CapitalProjectMapper.GetResponse(x, lookupValues, new List<FundingYearItem>())
             );
         return new PagedList<GetCapitalProjectResponse>(itemsMapped.ToList(), request!.PageNumber, request!.PageSize, totalCount);
     }

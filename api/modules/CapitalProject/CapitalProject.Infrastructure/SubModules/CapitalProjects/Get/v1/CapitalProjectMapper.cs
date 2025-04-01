@@ -8,7 +8,7 @@ namespace budget_request_app.WebApi.CapitalProject.Infrastructure.SubModules.Cap
 
 public static class CapitalProjectMapper
 {
-    public static GetCapitalProjectResponse GetResponse(CapitalProjectItem capitalProjectItem, List<LookupValueItem> lookupValues)
+    public static GetCapitalProjectResponse GetResponse(CapitalProjectItem capitalProjectItem, List<LookupValueItem> lookupValues, List<FundingYearItem> fundingYearItems)
     {
         
         TimeJustificationApprovalDTO timeJustificationApproval = new()
@@ -36,6 +36,12 @@ public static class CapitalProjectMapper
         };
 
         FinancialDTO financial = new();
+
+        // var borrowingFundings = capitalProjectItem.BorrowingFundings;
+        // // foreach (BorrowingFunding borrowingFunding in borrowingFundings)
+        // // {
+        // //     borrowingFunding.
+        // // }
         
         financial.Funding = new()
         {
@@ -49,6 +55,8 @@ public static class CapitalProjectMapper
                 DonationFundings = capitalProjectItem.DonationFundings.Adapt<List<DonationFundingDTO>>()
             }
         };
+        
+        
         
         financial.Spending = new()
         {

@@ -12,18 +12,19 @@ namespace budget_request_app.WebApi.CapitalProject.Infrastructure.SubModules.Cap
 public sealed class GetCapitalProjectHandler(
     [FromKeyedServices("capitalProjects")] IReadRepository<CapitalProjectItem> repository,
     [FromKeyedServices("lookupValues")] IReadRepository<LookupValueItem> lookupRepository,
+    [FromKeyedServices("capitalProjectsFundingYearItems")] IReadRepository<FundingYearItem> repositoryFundingYearItem,
     ICacheService cache)
     : IRequestHandler<GetCapitalProjectRequest, GetCapitalProjectResponse>
 {
     public async Task<GetCapitalProjectResponse> Handle(GetCapitalProjectRequest request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
-        
+        // capitalProjectsFundingYearItems
         var lookupValues = await lookupRepository.ListAsync();
 
         var capitalProjectItem = await repository.FirstOrDefaultAsync(new GetCapitalProjectByIdSpec(request.Id));
-        //var capitalProjectItem = await repository.GetByIdAsync(request.Id, cancellationToken);
         if (capitalProjectItem == null) throw new CapitalProjectNotFoundException(request.Id);
-        return CapitalProjectMapper.GetResponse(capitalProjectItem,lookupValues);
+        var fundingYearItems = await repositoryFundingYearItem.ListAsync(cancellationToken);
+        return CapitalProjectMapper.GetResponse(capitalProjectItem,lookupValues,fundingYearItems);
     }
 }
