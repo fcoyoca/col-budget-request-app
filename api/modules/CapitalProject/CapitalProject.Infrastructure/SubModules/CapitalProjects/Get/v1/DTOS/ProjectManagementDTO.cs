@@ -7,4 +7,5 @@ public class ProjectManagementDTO
     public DateTime? StartDate { get; set; }
     public DateTime? EndDate { get; set; }
     public string? MunisAccounts { get; set; }
+    public string? ProjectNotes { get; set; }
 }
