@@ -206,8 +206,7 @@ public class CapitalEquipmentItem : AuditableEntity, IAggregateRoot
         string approvingOversightBoard,
         DateTime? dateOfOversightApproval,
         bool? purchasingBuyerReview,
-        string additionalNotes,
-        List<FundingItem> fundingItems
+        string additionalNotes
         )
     {
 
@@ -257,7 +256,6 @@ public class CapitalEquipmentItem : AuditableEntity, IAggregateRoot
         capitalEquipment.DateOfOversightApproval = dateOfOversightApproval;
         capitalEquipment.PurchasingBuyerReview = purchasingBuyerReview;
         capitalEquipment.AdditionalNotes = additionalNotes;
-        capitalEquipment.FundingItems = fundingItems;
 
         capitalEquipment.QueueDomainEvent(new CapitalEquipmentUpdated() { CapitalEquipment = capitalEquipment });
 
