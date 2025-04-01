@@ -16,6 +16,7 @@ public static class FshResources
     
     //capital equipment
     public const string CapitalEquipments = nameof(CapitalEquipments);
+    public const string FundingItems = nameof(FundingItems);
     
     public const string CapitalProjects = nameof(CapitalProjects);
 }

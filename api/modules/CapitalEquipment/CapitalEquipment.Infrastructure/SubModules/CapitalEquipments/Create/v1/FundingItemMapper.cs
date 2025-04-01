@@ -7,6 +7,11 @@ public static class FundingItemMapper
 {
     public static List<FundingItem> MapFundingItems(List<FundingItemCreateDTO> fundingCreateItems, string fundingType)
     {
+        foreach (FundingItemCreateDTO fundingItemCreateDto in fundingCreateItems)
+        {
+            //fundingItemCreateDto.Id = Guid.NewGuid();
+        }
+        
         if (fundingCreateItems == null)
         {
             fundingCreateItems = new List<FundingItemCreateDTO>();

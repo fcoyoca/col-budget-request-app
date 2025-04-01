@@ -9,7 +9,8 @@ using Microsoft.Extensions.Logging;
 namespace budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Update.v1;
 public sealed class UpdateCapitalEquipmentHandler(
     ILogger<UpdateCapitalEquipmentHandler> logger,
-    [FromKeyedServices("capitalEquipments")] IRepository<CapitalEquipmentItem> repository)
+    [FromKeyedServices("capitalEquipments")] IRepository<CapitalEquipmentItem> repository,
+    [FromKeyedServices("capitalEquipmentsFundingItems")] IRepository<FundingItem> repositoryFundingItem)
     : IRequestHandler<UpdateCapitalEquipmentCommand, UpdateCapitalEquipmentResponse>
 {
     public async Task<UpdateCapitalEquipmentResponse> Handle(UpdateCapitalEquipmentCommand request, CancellationToken cancellationToken)
@@ -34,7 +35,6 @@ public sealed class UpdateCapitalEquipmentHandler(
         existingAssetInfo = request.ExistingAssetInfo;
         operatingBudgetImpact = request.OperatingBudgetImpact;
         approvalOversightInfo = request.ApprovalOversightInfo;
-        fundingItems = new List<FundingItem>();
         
         var borrowingFundings = FundingItemMapper.MapFundingItems(request.Funding.BorrowingFundings, FundingTab.Borrowing);
         var oueFundings = FundingItemMapper.MapFundingItems(request.Funding.OUEFundings, FundingTab.Operating);
@@ -42,7 +42,11 @@ public sealed class UpdateCapitalEquipmentHandler(
         var outsideFundings = FundingItemMapper.MapFundingItems(request.Funding.OutsideFundings, FundingTab.Outside);
         var specialFundings = FundingItemMapper.MapFundingItems(request.Funding.SpecialFundings, FundingTab.Special);
         var otherFundings = FundingItemMapper.MapFundingItems(request.Funding.OtherFundings, FundingTab.Other);
-
+        
+        var capitalEquipmentFundingItems = await repositoryFundingItem.ListAsync();
+        var items = capitalEquipmentFundingItems.Where(x => x.CapitalEquipmentId == request.Id).ToList();
+        await repositoryFundingItem.DeleteRangeAsync(items, cancellationToken);
+        
         fundingItems = new List<FundingItem>();
         fundingItems.AddRange(borrowingFundings);
         fundingItems.AddRange(oueFundings);
@@ -50,6 +54,13 @@ public sealed class UpdateCapitalEquipmentHandler(
         fundingItems.AddRange(outsideFundings);
         fundingItems.AddRange(specialFundings);
         fundingItems.AddRange(otherFundings);
+        
+        foreach (FundingItem fundingItem in fundingItems)
+        {
+            fundingItem.CapitalEquipmentId = request.Id;
+        }
+        
+        await repositoryFundingItem.AddRangeAsync(fundingItems, cancellationToken);
         
         var updatedCapitalEquipment = CapitalEquipmentItem.Update(
             capitalEquipment,

@@ -104,7 +104,7 @@ public class FundingCreateDTO
 
 public class FundingItemCreateDTO
 {
-    public Guid? Id { get; set; }
+    //public Guid? Id { get; set; } = Guid.Empty;
     public Guid? FundingSource { get; set; } = Guid.Empty;
     public string? GrantingAgency { get; set; }
     public FundingYearItemCreateDTO CurrentYearRequested { get; set; }
@@ -113,7 +113,7 @@ public class FundingItemCreateDTO
 
 public class FundingYearItemCreateDTO
 {
-    public Guid? Id { get; set; }
+    //public Guid? Id { get; set; } = Guid.Empty;
     public int? Year { get; set; }
     public decimal? Value { get; set; }
 }
