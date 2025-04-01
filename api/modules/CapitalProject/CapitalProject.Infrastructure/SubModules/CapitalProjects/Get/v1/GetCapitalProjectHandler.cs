@@ -21,17 +21,9 @@ public sealed class GetCapitalProjectHandler(
         
         var lookupValues = await lookupRepository.ListAsync();
 
-        var item = await cache.GetOrSetAsync(
-            $"CapitalProject:{request.Id}",
-            async () =>
-            {
-                var capitalProjectItem = await repository.FirstOrDefaultAsync(new GetCapitalProjectByIdSpec(request.Id));
-                //var capitalProjectItem = await repository.GetByIdAsync(request.Id, cancellationToken);
-                if (capitalProjectItem == null) throw new CapitalProjectNotFoundException(request.Id);
-                return CapitalProjectMapper.GetResponse(capitalProjectItem,lookupValues);
-            },
-            cancellationToken: cancellationToken);
-        
-        return item;
+        var capitalProjectItem = await repository.FirstOrDefaultAsync(new GetCapitalProjectByIdSpec(request.Id));
+        //var capitalProjectItem = await repository.GetByIdAsync(request.Id, cancellationToken);
+        if (capitalProjectItem == null) throw new CapitalProjectNotFoundException(request.Id);
+        return CapitalProjectMapper.GetResponse(capitalProjectItem,lookupValues);
     }
 }

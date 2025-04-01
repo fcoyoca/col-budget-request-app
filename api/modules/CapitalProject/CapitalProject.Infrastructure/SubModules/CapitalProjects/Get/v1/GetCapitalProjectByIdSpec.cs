@@ -21,7 +21,7 @@ public class GetCapitalProjectByIdSpec : Specification<CapitalProjectItem, Capit
 
             .Include(x => x.MinorProjects)
             .Include(x => x.StreetSegments)
-            
+
             .Include(x => x.BorrowingFundings)
             .ThenInclude(x => x.YearRequested)
             .Include(x => x.BorrowingFundings)
@@ -61,7 +61,7 @@ public class GetCapitalProjectByIdSpec : Specification<CapitalProjectItem, Capit
             .Include(x => x.PastFundings)
             .Include(x => x.PastSpendings)
             
-            .Include(x => x.ProjectManagement);
+        .Include(x => x.ProjectManagement);
 
     }
 }

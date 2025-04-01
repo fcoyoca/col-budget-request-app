@@ -22,6 +22,7 @@ public static class CapitalProjectModule
             capitalProjectGroup.MapGetCapitalProjectEndpoint();
             capitalProjectGroup.MapCapitalProjectCreationEndpoint();
             capitalProjectGroup.MapCapitalProjectDeleteEndpoint();
+            capitalProjectGroup.MapCapitalProjectUpdateEndpoint();
         }
     }
     public static WebApplicationBuilder RegisterCapitalProjectServices(this WebApplicationBuilder builder)
