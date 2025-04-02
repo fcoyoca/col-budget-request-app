@@ -42,7 +42,10 @@ public sealed class UpdateCapitalProjectHandler(
 
         capitalProject.BudgetId = request.BudgetId;
         capitalProject.RevisionTitle = request.RevisionTitle;
-        capitalProject.GeneralInformation = request.GeneralInformation?.Adapt<GeneralInformation>();
+        capitalProject.GeneralInformation = new GeneralInformation()
+        {
+            Title = request.GeneralInformation.Title
+        };
         capitalProject.JustificationPrioritization = justificationPrioritization.Adapt<JustificationPrioritization>();
         capitalProject.StatusTimeline = statusTimeline.Adapt<StatusTimeline>();
         capitalProject.ApprovalOversight = approvalOversight.Adapt<ApprovalOversight>();
@@ -69,7 +72,7 @@ public sealed class UpdateCapitalProjectHandler(
         capitalProject.ProjectManagement = projectManagement.Adapt<ProjectManagement>();
         
         await repository.UpdateAsync(capitalProject, cancellationToken);
-        logger.LogInformation("CapitalProject created {CapitalProjectId}", capitalProject.Id);
+        logger.LogInformation("CapitalProject updated {CapitalProjectId}", capitalProject.Id);
         return new UpdateCapitalProjectResponse(capitalProject.Id, "Kimper success!!");
     }
 }
