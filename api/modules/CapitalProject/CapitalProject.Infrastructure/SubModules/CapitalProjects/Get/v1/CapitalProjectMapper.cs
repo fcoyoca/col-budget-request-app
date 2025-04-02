@@ -40,6 +40,7 @@ public static class CapitalProjectMapper
         
         financial.Funding = new()
         {
+            TIFFundingIds = capitalProjectItem.TIFFundingIds,
             BorrowingFundings = capitalProjectItem.BorrowingFundings.Adapt<List<BorrowingFundingDTO>>(),
             OperatingFundings = capitalProjectItem.OperatingFundings.Adapt<List<OperatingFundingDTO>>(),
             GrantFundings = capitalProjectItem.GrantFundings.Adapt<List<GrantFundingDTO>>(),
