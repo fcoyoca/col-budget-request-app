@@ -11,9 +11,9 @@ namespace budget_request_app.WebApi.CapitalProject.Infrastructure.SubModules.Cap
 public sealed class SearchCapitalProjectsHandler(
     [FromKeyedServices("capitalProjects")] IReadRepository<CapitalProjectItem> repository,
     [FromKeyedServices("lookupValues")] IReadRepository<LookupValueItem> lookupRepository)
-    : IRequestHandler<SearchCapitalProjectsCommand, PagedList<GetCapitalProjectResponse>>
+    : IRequestHandler<SearchCapitalProjectsCommand, PagedList<SearchCapitalProjectResponse>>
 {
-    public async Task<PagedList<GetCapitalProjectResponse>> Handle(SearchCapitalProjectsCommand request, CancellationToken cancellationToken)
+    public async Task<PagedList<SearchCapitalProjectResponse>> Handle(SearchCapitalProjectsCommand request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
 
@@ -25,9 +25,25 @@ public sealed class SearchCapitalProjectsHandler(
         var lookupValues = await lookupRepository.ListAsync();
 
         var itemsMapped = items.Select(
-            x => CapitalProjectMapper.GetResponse(x, lookupValues, new List<FundingYearItem>())
+            x => new SearchCapitalProjectResponse(
+                x.Id,
+                x.GeneralInformation?.Title,
+                MapToLookupNames(x.GeneralInformation.RequestingDepartmentIds, lookupValues),
+                MapToLookupNames(x.GeneralInformation.DepartmentHeadRequestorId, lookupValues),
+                lookupValues.FirstOrDefault(y => y.Id == Guid.Parse(x.GeneralInformation.RequestStatusId))?.Name,
+                x.JustificationPrioritization.DepartmentPriorityRanking.ToString()
+                )
             );
-        return new PagedList<GetCapitalProjectResponse>(itemsMapped.ToList(), request!.PageNumber, request!.PageSize, totalCount);
+        return new PagedList<SearchCapitalProjectResponse>(itemsMapped.ToList(), request!.PageNumber, request!.PageSize, totalCount);
+    }
+
+    private string MapToLookupNames(string delimitedIds, List<LookupValueItem> items)
+    {
+        var ids = delimitedIds.Split(",").Select(id => Guid.Parse(id.Trim()));
+        items = items.Where(x => ids.Contains(x.Id)).ToList();
+        
+        var names = items.Select(x => x.Name).ToList();
+        return string.Join(',', names);
     }
 }
 

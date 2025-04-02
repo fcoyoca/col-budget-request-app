@@ -4,6 +4,6 @@ using MediatR;
 
 namespace budget_request_app.WebApi.CapitalProject.Infrastructure.SubModules.CapitalProjects.Search.v1;
 
-public class SearchCapitalProjectsCommand : PaginationFilter, IRequest<PagedList<GetCapitalProjectResponse>>
+public class SearchCapitalProjectsCommand : PaginationFilter, IRequest<PagedList<SearchCapitalProjectResponse>>
 {
 }
