@@ -22,7 +22,7 @@ public static class SearchCapitalProjectsEndpoint
             .WithName(nameof(SearchCapitalProjectsEndpoint))
             .WithSummary("Gets a list of CapitalProjects")
             .WithDescription("Gets a list of CapitalProjects with pagination and filtering support")
-            .Produces<PagedList<GetCapitalProjectResponse>>()
+            .Produces<PagedList<SearchCapitalProjectResponse>>()
             .RequirePermission("Permissions.CapitalProjects.View")
             .MapToApiVersion(1);
     }
