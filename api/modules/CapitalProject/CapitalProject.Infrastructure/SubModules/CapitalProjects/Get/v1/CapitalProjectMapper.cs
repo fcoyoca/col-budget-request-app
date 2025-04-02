@@ -16,6 +16,7 @@ public static class CapitalProjectMapper
             JustificationPrioritization = capitalProjectItem.JustificationPrioritization.Adapt<JustificationPrioritizationDTO>(),
             GrantFundingOpportunity = capitalProjectItem.GrantFundingOpportunity.Adapt<GrantFundingOpportunityDTO>(),
             ApprovalOversight = capitalProjectItem.ApprovalOversight.Adapt<ApprovalOversightDTO>(),
+            StatusTimeline = capitalProjectItem.StatusTimeline.Adapt<StatusTimelineDTO>(),
         };
         
         OperatingBudgetImpactDTO operatingBudgetImpact = new()
@@ -36,12 +37,6 @@ public static class CapitalProjectMapper
         };
 
         FinancialDTO financial = new();
-
-        // var borrowingFundings = capitalProjectItem.BorrowingFundings;
-        // // foreach (BorrowingFunding borrowingFunding in borrowingFundings)
-        // // {
-        // //     borrowingFunding.
-        // // }
         
         financial.Funding = new()
         {
