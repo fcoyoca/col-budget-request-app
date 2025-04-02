@@ -38,38 +38,37 @@ public sealed class UpdateCapitalProjectHandler(
         var pastSpendings = request.Financial?.Past?.PastSpendings;
         var projectManagement = request.ProjectManagement;
 
-        var capitalProject = new CapitalProjectItem()
-        {
-            BudgetId = request.BudgetId,
-            RevisionTitle = request.RevisionTitle,
-            GeneralInformation = request.GeneralInformation?.Adapt<GeneralInformation>(),
-            JustificationPrioritization = justificationPrioritization.Adapt<JustificationPrioritization>(),
-            StatusTimeline = statusTimeline.Adapt<StatusTimeline>(),
-            ApprovalOversight = approvalOversight.Adapt<ApprovalOversight>(),
-            GrantFundingOpportunity = grantFundingOpportunity.Adapt<GrantFundingOpportunity>(),
-            OperatingCosts = operatingCosts.Adapt<List<OperatingCost>>(),
-            OperatingRevenues = operatingRevenues.Adapt<List<OperatingRevenue>>(),
-            IsMappedRequest = request.MinorProjectLocation?.RequestLocation?.IsMappedRequest,
-            GISMappingDescription = request.MinorProjectLocation?.RequestLocation?.GISMappingDescription,
-            MinorProjects = minorProjects.Adapt<List<MinorProject>>(),
-            StreetSegments = streetSegments.Adapt<List<StreetSegment>>(),
-            TIFFundingIds = tifFundingIds,
-            BorrowingFundings = borrowingFundings.Adapt<List<BorrowingFunding>>(),
-            OperatingFundings = operatingFundings.Adapt<List<OperatingFunding>>(),
-            GrantFundings = grantFundings.Adapt<List<GrantFunding>>(),
-            DonationFundingIsDonatedFundsUsed = donationFundingIsDonatedFundsUsed,
-            DonationFundingIsContributeFundsRequired = donationFundingIsContributeFundsRequired,
-            DonationFundings = donationFundings.Adapt<List<DonationFunding>>(),
-            SpecialFundings = specialFundings.Adapt<List<SpecialFunding>>(),
-            OtherFundings = otherFundings.Adapt<List<OtherFunding>>(),
-            SpendingBudgets = spendingBudgets.Adapt<List<SpendingBudget>>(),
-            FundingChanges = fundingChanges.Adapt<List<FundingChange>>(),
-            PastFundings = pastFundings.Adapt<List<PastFunding>>(),
-            PastSpendings = pastSpendings.Adapt<List<PastSpending>>(),
-            ProjectManagement = projectManagement.Adapt<ProjectManagement>()
-        };
+        var capitalProject = await repository.GetByIdAsync(request.Id, cancellationToken);
+
+        capitalProject.BudgetId = request.BudgetId;
+        capitalProject.RevisionTitle = request.RevisionTitle;
+        capitalProject.GeneralInformation = request.GeneralInformation?.Adapt<GeneralInformation>();
+        capitalProject.JustificationPrioritization = justificationPrioritization.Adapt<JustificationPrioritization>();
+        capitalProject.StatusTimeline = statusTimeline.Adapt<StatusTimeline>();
+        capitalProject.ApprovalOversight = approvalOversight.Adapt<ApprovalOversight>();
+        capitalProject.GrantFundingOpportunity = grantFundingOpportunity.Adapt<GrantFundingOpportunity>();
+        capitalProject.OperatingCosts = operatingCosts.Adapt<List<OperatingCost>>();
+        capitalProject.OperatingRevenues = operatingRevenues.Adapt<List<OperatingRevenue>>();
+        capitalProject.IsMappedRequest = request.MinorProjectLocation?.RequestLocation?.IsMappedRequest;
+        capitalProject.GISMappingDescription = request.MinorProjectLocation?.RequestLocation?.GISMappingDescription;
+        capitalProject.MinorProjects = minorProjects.Adapt<List<MinorProject>>();
+        capitalProject.StreetSegments = streetSegments.Adapt<List<StreetSegment>>();
+        capitalProject.TIFFundingIds = tifFundingIds;
+        capitalProject.BorrowingFundings = borrowingFundings.Adapt<List<BorrowingFunding>>();
+        capitalProject.OperatingFundings = operatingFundings.Adapt<List<OperatingFunding>>();
+        capitalProject.GrantFundings = grantFundings.Adapt<List<GrantFunding>>();
+        capitalProject.DonationFundingIsDonatedFundsUsed = donationFundingIsDonatedFundsUsed;
+        capitalProject.DonationFundingIsContributeFundsRequired = donationFundingIsContributeFundsRequired;
+        capitalProject.DonationFundings = donationFundings.Adapt<List<DonationFunding>>();
+        capitalProject.SpecialFundings = specialFundings.Adapt<List<SpecialFunding>>();
+        capitalProject.OtherFundings = otherFundings.Adapt<List<OtherFunding>>();
+        capitalProject.SpendingBudgets = spendingBudgets.Adapt<List<SpendingBudget>>();
+        capitalProject.FundingChanges = fundingChanges.Adapt<List<FundingChange>>();
+        capitalProject.PastFundings = pastFundings.Adapt<List<PastFunding>>();
+        capitalProject.PastSpendings = pastSpendings.Adapt<List<PastSpending>>();
+        capitalProject.ProjectManagement = projectManagement.Adapt<ProjectManagement>();
         
-        await repository.AddAsync(capitalProject, cancellationToken);
+        await repository.UpdateAsync(capitalProject, cancellationToken);
         logger.LogInformation("CapitalProject created {CapitalProjectId}", capitalProject.Id);
         return new UpdateCapitalProjectResponse(capitalProject.Id, "Kimper success!!");
     }

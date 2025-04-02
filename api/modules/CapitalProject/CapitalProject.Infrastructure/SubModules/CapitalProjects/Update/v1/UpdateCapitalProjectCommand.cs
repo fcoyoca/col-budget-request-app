@@ -6,6 +6,7 @@ using MediatR;
 namespace budget_request_app.WebApi.CapitalProject.Infrastructure.SubModules.CapitalProjects.Update.v1;
 
 public sealed record UpdateCapitalProjectCommand(
+    Guid Id,
     string BudgetId,
     string RevisionTitle,
     GeneralInformationDTO? GeneralInformation,
