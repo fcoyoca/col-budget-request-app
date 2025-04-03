@@ -20,7 +20,8 @@ public static class GetCapitalProjectEndpoint
             .WithSummary("gets CapitalProject by id")
             .WithDescription("gets CapitalProject by id")
             .Produces<GetCapitalProjectResponse>()
-            .RequirePermission("Permissions.CapitalProjects.View")
+            .AllowAnonymous()
+            //.RequirePermission("Permissions.CapitalProjects.View")
             .MapToApiVersion(1);
     }
 }

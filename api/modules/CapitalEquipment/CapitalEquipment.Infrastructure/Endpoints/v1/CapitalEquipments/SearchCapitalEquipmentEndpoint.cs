@@ -23,7 +23,8 @@ public static class SearchCapitalEquipmentsEndpoint
             .WithSummary("Gets a list of CapitalEquipments")
             .WithDescription("Gets a list of CapitalEquipments with pagination and filtering support")
             .Produces<PagedList<GetCapitalEquipmentResponse>>()
-            .RequirePermission("Permissions.CapitalEquipments.View")
+            .AllowAnonymous()
+            //.RequirePermission("Permissions.CapitalEquipments.View")
             .MapToApiVersion(1);
     }
 }

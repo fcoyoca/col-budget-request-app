@@ -20,7 +20,8 @@ public static class GetCapitalEquipmentEndpoint
             .WithSummary("gets CapitalEquipment by id")
             .WithDescription("gets CapitalEquipment by id")
             .Produces<GetCapitalEquipmentResponse>()
-            .RequirePermission("Permissions.CapitalEquipments.View")
+            .AllowAnonymous()
+            //.RequirePermission("Permissions.CapitalEquipments.View")
             .MapToApiVersion(1);
     }
 }
