@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>budget_request_app.WebApi.FileService</RootNamespace>
+    <AssemblyName>budget_request_app.WebApi.FileService</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\framework\Core\Core.csproj" />
+    <ProjectReference Include="..\..\framework\Infrastructure\Infrastructure.csproj" />
+    <ProjectReference Include="..\CapitalEquipment\CapitalEquipment.Domain\CapitalEquipment.Domain.csproj" />
+    <ProjectReference Include="..\CapitalProject\CapitalProject.Domain\CapitalProject.Domain.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Domain\Events\" />
+  </ItemGroup>
+</Project>

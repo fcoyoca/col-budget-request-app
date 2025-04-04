@@ -121,6 +121,17 @@ namespace FSH.Framework.Infrastructure.Storage.Files
             }
         }
 
+        public void RemoveAttachment(string filename)
+        {
+            string folderName = configuration.GetValue<string>("FileStorage:FileProvider");
+            string path = Path.Combine(folderName, filename);
+            var pathString = path!.ToString();
+            if (File.Exists(pathString))
+            {
+                File.Delete(pathString);
+            }
+        }
+
         public static string RemoveSpecialCharacters(string str)
         {
             return Regex.Replace(str, "[^a-zA-Z0-9_.]+", string.Empty, RegexOptions.Compiled);

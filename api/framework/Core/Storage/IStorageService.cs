@@ -10,6 +10,8 @@ public interface IStorageService
 
     public Task<Uri> UploadAttachmentAsync(FileUploadCommand? request, FileType supportedFileType,
         CancellationToken cancellationToken = default);
+    
+    public void RemoveAttachment(string filename);
 
     public void Remove(Uri? path);
 }
