@@ -14,6 +14,7 @@
     <ProjectReference Include="..\..\modules\CapitalProject\CapitalProject.Infrastructure\CapitalProject.Infrastructure.csproj" />
     <ProjectReference Include="..\..\modules\LookupCategory\LookupCategory.csproj" />
     <ProjectReference Include="..\..\modules\LookupValue\LookupValue.csproj" />
+    <ProjectReference Include="..\..\modules\FileService\FileService.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="CapitalEquipment\" />
@@ -22,5 +23,6 @@
     <Folder Include="Tenant\" />
     <Folder Include="LookupCategory\" />
     <Folder Include="LookupValue\" />
+    <Folder Include="FileService\" />
   </ItemGroup>
 </Project>
