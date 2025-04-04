@@ -4,6 +4,7 @@ using budget_request_app.WebApi.LookupCategory;
 using budget_request_app.WebApi.LookupValue;
 using budget_request_app.WebApi.CapitalEquipment.Infrastructure;
 using budget_request_app.WebApi.CapitalProject.Infrastructure;
+using budget_request_app.WebApi.FileService;
 using Carter;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -23,6 +24,7 @@ public static class Extensions
             typeof(LookupValueModule).Assembly,
             typeof(CapitalEquipmentModule).Assembly,
             typeof(CapitalProjectModule).Assembly,
+            typeof(FileServiceModule).Assembly,
         };
 
         //register validators
@@ -39,6 +41,7 @@ public static class Extensions
         builder.RegisterLookupValueServices();
         builder.RegisterCapitalEquipmentServices();
         builder.RegisterCapitalProjectServices();
+        builder.RegisterFileServiceServices();
 
         //add carter endpoint modules
         builder.Services.AddCarter(configurator: config =>
@@ -47,6 +50,7 @@ public static class Extensions
             config.WithModule<LookupValueModule.Endpoints>();
             config.WithModule<CapitalEquipmentModule.Endpoints>();
             config.WithModule<CapitalProjectModule.Endpoints>();
+            config.WithModule<FileServiceModule.Endpoints>();
         });
         
         return builder;
@@ -61,6 +65,7 @@ public static class Extensions
         app.UseLookupValueModule();
         app.UseCapitalEquipmentModule();
         app.UseCapitalProjectModule();
+        app.UseFileServiceModule();
 
         //register api versions
         var versions = app.NewApiVersionSet()

@@ -94,7 +94,8 @@ public sealed class CreateCapitalEquipmentHandler(
             approvalOversightInfo.DateOfOversightApproval,
             approvalOversightInfo.PurchasingBuyerReview,
             approvalOversightInfo.AdditionalNotes ?? string.Empty,
-            fundingItems
+            fundingItems,
+            request.FileIds ?? string.Empty
             );
         
         await repository.AddAsync(data, cancellationToken);

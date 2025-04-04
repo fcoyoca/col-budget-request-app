@@ -5,10 +5,11 @@ using FSH.Framework.Core.Storage;
 using FSH.Framework.Core.Storage.File;
 using FSH.Framework.Core.Storage.File.Features;
 using FSH.Framework.Infrastructure.Common.Extensions;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 namespace FSH.Framework.Infrastructure.Storage.Files
 {
-    public class LocalFileStorageService(IOptions<OriginOptions> originSettings) : IStorageService
+    public class LocalFileStorageService(IOptions<OriginOptions> originSettings, IConfiguration configuration) : IStorageService
     {
         public async Task<Uri> UploadAsync<T>(FileUploadCommand? request, FileType supportedFileType, CancellationToken cancellationToken = default)
             where T : class
@@ -52,6 +53,60 @@ namespace FSH.Framework.Infrastructure.Storage.Files
                 {
                     dbPath = NextAvailableFilename(dbPath);
                     fullPath = NextAvailableFilename(fullPath);
+                }
+
+                using var stream = new FileStream(fullPath, FileMode.Create);
+                await streamData.CopyToAsync(stream, cancellationToken);
+                var path = dbPath.Replace("\\", "/", StringComparison.Ordinal);
+                var imageUri = new Uri(originSettings.Value.OriginUrl!, path);
+                return imageUri;
+            }
+            else
+            {
+                return null!;
+            }
+        }
+
+        public async Task<Uri> UploadAttachmentAsync(FileUploadCommand? request, FileType supportedFileType,
+            CancellationToken cancellationToken = default)
+        {
+            string folderName = configuration.GetValue<string>("FileStorage:FileProvider");
+            string requestPath = configuration.GetValue<string>("FileStorage:RequestPath");
+            if (request == null || request.Data == null)
+            {
+                return null!;
+            }
+
+            if (request.Extension is null)
+                throw new InvalidOperationException("File Format Required.");
+            if (request.Name is null)
+                throw new InvalidOperationException("Name is required.");
+
+            string base64Data = request.Data;
+
+            var streamData = new MemoryStream(Convert.FromBase64String(base64Data));
+            if (streamData.Length > 0)
+            {
+                string folder = "";
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                {
+                    folder = folder.Replace(@"\", "/", StringComparison.Ordinal);
+                }
+
+                string pathToSave = folderName;
+                Directory.CreateDirectory(pathToSave);
+
+                string fileName = request.Name.Trim('"');
+                fileName = RemoveSpecialCharacters(fileName);
+                fileName = fileName.ReplaceWhitespace("-");
+                fileName += request.Extension.Trim();
+                string fullPath = Path.Combine(pathToSave, fileName);
+                string dbPath = Path.Combine(requestPath, fileName);
+                
+                if (File.Exists(fullPath))
+                {
+                    fullPath = NextAvailableFilename(fullPath);
+                    dbPath = Path.Combine(requestPath, Path.GetFileName(fullPath));
                 }
 
                 using var stream = new FileStream(fullPath, FileMode.Create);

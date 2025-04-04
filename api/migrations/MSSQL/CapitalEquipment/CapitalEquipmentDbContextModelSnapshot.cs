@@ -108,6 +108,10 @@ namespace budget_request_app.WebApi.Migrations.MSSQL.CapitalEquipment
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("FileIds")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool?>("HasPurchaseBeenApprovedByOversight")
                         .HasColumnType("bit");
 

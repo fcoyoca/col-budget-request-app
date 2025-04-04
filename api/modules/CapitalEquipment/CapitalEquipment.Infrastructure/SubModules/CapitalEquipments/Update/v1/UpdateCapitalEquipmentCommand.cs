@@ -16,7 +16,8 @@ public sealed record UpdateCapitalEquipmentCommand(
     ExistingAssetInfo ExistingAssetInfo,
     OperatingBudgetImpact OperatingBudgetImpact,
     ApprovalOversightInfo ApprovalOversightInfo,
-    FundingCreateDTO Funding
+    FundingCreateDTO Funding,
+    string FileIds
     ) : IRequest<UpdateCapitalEquipmentResponse>;
 
 

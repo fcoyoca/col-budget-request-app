@@ -109,7 +109,8 @@ public sealed class UpdateCapitalEquipmentHandler(
             approvalOversightInfo.ApprovingOversightBoard,
             approvalOversightInfo.DateOfOversightApproval,
             approvalOversightInfo.PurchasingBuyerReview,
-            approvalOversightInfo.AdditionalNotes
+            approvalOversightInfo.AdditionalNotes,
+            request.FileIds
             );
         
         await repository.UpdateAsync(updatedCapitalEquipment, cancellationToken);

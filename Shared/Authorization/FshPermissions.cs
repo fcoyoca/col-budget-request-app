@@ -75,6 +75,8 @@ public static class FshPermissions
         new("Update CapitalProjects", FshActions.Update, FshResources.CapitalProjects),
         new("Delete CapitalProjects", FshActions.Delete, FshResources.CapitalProjects),
         new("Export CapitalProjects", FshActions.Export, FshResources.CapitalProjects),
+        
+        new("Create FileServiceItem", FshActions.Create, FshResources.FileServices),
 
          new("View Hangfire", FshActions.View, FshResources.Hangfire),
          new("View Dashboard", FshActions.View, FshResources.Dashboard),

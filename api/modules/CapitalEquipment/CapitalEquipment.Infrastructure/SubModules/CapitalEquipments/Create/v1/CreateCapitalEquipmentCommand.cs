@@ -16,7 +16,8 @@ public sealed record CreateCapitalEquipmentCommand(
     ExistingAssetInfo ExistingAssetInfo,
     OperatingBudgetImpact OperatingBudgetImpact,
     ApprovalOversightInfo ApprovalOversightInfo,
-    FundingCreateDTO Funding
+    FundingCreateDTO Funding,
+    string FileIds
 ) : IRequest<CreateCapitalEquipmentResponse>;
 
 public class GeneralInfo

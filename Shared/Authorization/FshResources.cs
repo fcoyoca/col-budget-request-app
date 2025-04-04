@@ -14,9 +14,8 @@ public static class FshResources
     public const string AuditTrails = nameof(AuditTrails);
     public const string LookupCategories = nameof(LookupCategories);
     
-    //capital equipment
     public const string CapitalEquipments = nameof(CapitalEquipments);
     public const string FundingItems = nameof(FundingItems);
-    
     public const string CapitalProjects = nameof(CapitalProjects);
+    public const string FileServices = nameof(FileServices);
 }
