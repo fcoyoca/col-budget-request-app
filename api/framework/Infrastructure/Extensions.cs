@@ -23,6 +23,7 @@ using FSH.Framework.Infrastructure.Tenant.Endpoints;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 
@@ -47,6 +48,7 @@ public static class Extensions
         builder.Services.AddExceptionHandler<CustomExceptionHandler>();
         builder.Services.AddProblemDetails();
         builder.Services.AddHealthChecks();
+        builder.Services.AddAntiforgery();
         builder.Services.AddOptions<OriginOptions>().BindConfiguration(nameof(OriginOptions));
 
         // Define module assemblies
@@ -85,6 +87,9 @@ public static class Extensions
         app.UseOpenApi();
         app.UseJobDashboard(app.Configuration);
         app.UseRouting();
+        app.UseAuthentication();
+        app.UseAuthorization();
+        app.UseAntiforgery();
         app.UseStaticFiles();
         app.UseStaticFiles(new StaticFileOptions()
         {
@@ -96,8 +101,7 @@ public static class Extensions
             FileProvider = new PhysicalFileProvider($"{config["FileStorage:FileProvider"]}"),
             RequestPath = new PathString($"{config["FileStorage:RequestPath"]}")
         });
-        app.UseAuthentication();
-        app.UseAuthorization();
+        
         app.MapTenantEndpoints();
         app.MapIdentityEndpoints();
 
@@ -113,7 +117,7 @@ public static class Extensions
 
         // Map versioned endpoint
         app.MapGroup("api/v{version:apiVersion}").WithApiVersionSet(versions);
-
+        
         return app;
     }
 }
