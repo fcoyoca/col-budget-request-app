@@ -17,9 +17,10 @@ public sealed class SearchCapitalProjectsHandler(
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        var spec = new SearchCapitalProjectSpecs(request);
+        var spec = new SearchCapitalProjectsSpec(request);
 
         var items = await repository.ListAsync(spec,cancellationToken).ConfigureAwait(false);
+        
         var totalCount = await repository.CountAsync(spec, cancellationToken).ConfigureAwait(false);
 
         var lookupValues = await lookupRepository.ListAsync();
@@ -40,6 +41,7 @@ public sealed class SearchCapitalProjectsHandler(
     private string MapToLookupNames(string delimitedIds, List<LookupValueItem> items)
     {
         var ids = delimitedIds.Split(",").Select(id => Guid.Parse(id.Trim()));
+        
         items = items.Where(x => ids.Contains(x.Id)).ToList();
         
         var names = items.Select(x => x.Name).ToList();
