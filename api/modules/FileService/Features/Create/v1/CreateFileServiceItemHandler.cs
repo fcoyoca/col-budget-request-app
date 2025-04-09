@@ -43,8 +43,7 @@ public sealed class CreateFileServiceHandler(
          logger.LogInformation("FileService item created {FileServiceItemId}", item.Id);
         
          hangfireService.Schedule(() => CheckFileIfUsed(item.Id), TimeSpan.FromMinutes(10));
-
-        return new CreateFileServiceItemResponse(item.Id);
+         return new CreateFileServiceItemResponse(item.Id);
     }
 
     public async Task CheckFileIfUsed(Guid fileid)
