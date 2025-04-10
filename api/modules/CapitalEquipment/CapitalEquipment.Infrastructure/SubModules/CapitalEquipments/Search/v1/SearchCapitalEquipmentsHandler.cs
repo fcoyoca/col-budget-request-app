@@ -16,7 +16,6 @@ public sealed class SearchCapitalEquipmentsHandler(
     public async Task<PagedList<GetCapitalEquipmentResponse>> Handle(SearchCapitalEquipmentsCommand request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
-
         var spec = new SearchCapitalEquipmentSpecs(request);
 
         var items = await repository.ListAsync(spec,cancellationToken).ConfigureAwait(false);
@@ -27,7 +26,8 @@ public sealed class SearchCapitalEquipmentsHandler(
         var itemsMapped = items.Select(
             x => CapitalEquipmentMapper.GetResponse(x, lookupValues)
             );
-        return new PagedList<GetCapitalEquipmentResponse>(itemsMapped.ToList(), request!.PageNumber, request!.PageSize, totalCount);
+        
+        return new PagedList<GetCapitalEquipmentResponse>(itemsMapped?.ToList(), request!.PageNumber, request!.PageSize, totalCount);
     }
 }
 

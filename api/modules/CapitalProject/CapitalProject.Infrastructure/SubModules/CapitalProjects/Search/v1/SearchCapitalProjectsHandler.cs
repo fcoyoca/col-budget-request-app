@@ -16,7 +16,7 @@ public sealed class SearchCapitalProjectsHandler(
     public async Task<PagedList<SearchCapitalProjectResponse>> Handle(SearchCapitalProjectsCommand request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
-
+        
         var spec = new SearchCapitalProjectsSpec(request);
 
         var items = await repository.ListAsync(spec,cancellationToken).ConfigureAwait(false);
@@ -24,7 +24,7 @@ public sealed class SearchCapitalProjectsHandler(
         var totalCount = await repository.CountAsync(spec, cancellationToken).ConfigureAwait(false);
 
         var lookupValues = await lookupRepository.ListAsync();
-
+        
         var itemsMapped = items.Select(
             x => new SearchCapitalProjectResponse(
                 x.Id,
