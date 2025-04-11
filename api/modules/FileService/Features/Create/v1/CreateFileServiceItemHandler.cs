@@ -37,7 +37,7 @@ public sealed class CreateFileServiceHandler(
          var fileName = Path.GetFileName(uploadedFile.ToString());
          var name = Path.GetFileNameWithoutExtension(uploadedFile.ToString());
         
-         var item = FileServiceItem.Create(name,fileName);
+         var item = FileServiceItem.Create(name,fileName,fileUploadCommand.Size);
          await repository.AddAsync(item, cancellationToken).ConfigureAwait(false);
          await repository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
          logger.LogInformation("FileService item created {FileServiceItemId}", item.Id);
@@ -73,11 +73,13 @@ public sealed class CreateFileServiceHandler(
 
         // Convert to base64
         var base64String = Convert.ToBase64String(fileBytes);
+        
+        double sizeInKB = fileBytes.Length / 1024.0;
 
         // Optionally include file name or content type
         return new FileUploadCommand()
         {
-            Name = Path.GetFileNameWithoutExtension(file.FileName), Extension = Path.GetExtension(file.FileName), Data = base64String
+            Name = Path.GetFileNameWithoutExtension(file.FileName), Extension = Path.GetExtension(file.FileName), Data = base64String, Size = sizeInKB
         };
     }
 }

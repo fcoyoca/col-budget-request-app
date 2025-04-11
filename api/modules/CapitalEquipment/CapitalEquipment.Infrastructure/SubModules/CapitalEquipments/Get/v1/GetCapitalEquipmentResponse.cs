@@ -1,5 +1,6 @@
 using budget_request_app.WebApi.CapitalEquipment.Domain;
 using budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Create.v1;
+using budget_request_app.WebApi.FileService.Domain;
 
 namespace budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Get.v1;
 public sealed record GetCapitalEquipmentResponse(
@@ -15,7 +16,8 @@ public sealed record GetCapitalEquipmentResponse(
     ExistingAssetInfo ExistingAssetInfo,
     OperatingBudgetImpact OperatingBudgetImpact,
     ApprovalOversightInfo ApprovalOversightInfo,
-    FundingResponseDTO Funding
+    FundingResponseDTO Funding,
+    List<FileServiceItem>? FileServiceItems
     );
 
 public class FundingResponseDTO

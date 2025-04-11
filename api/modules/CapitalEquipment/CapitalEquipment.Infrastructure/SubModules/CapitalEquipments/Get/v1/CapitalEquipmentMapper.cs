@@ -1,12 +1,13 @@
 using budget_request_app.WebApi.CapitalEquipment.Domain;
 using budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Create.v1;
+using budget_request_app.WebApi.FileService.Domain;
 using budget_request_app.WebApi.LookupValue.Domain;
 
 namespace budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Get.v1;
 
 public static class CapitalEquipmentMapper
 {
-    public static GetCapitalEquipmentResponse GetResponse(CapitalEquipmentItem capitalEquipmentItem, List<LookupValueItem> lookupValues)
+    public static GetCapitalEquipmentResponse GetResponse(CapitalEquipmentItem capitalEquipmentItem, List<LookupValueItem> lookupValues, List<FileServiceItem> fileServiceItems)
     {
         var requestingDepartmentIds = capitalEquipmentItem.RequestingDepartmentIds.Split(",")
             .Select(x => x.Trim());
@@ -114,6 +115,10 @@ public static class CapitalEquipmentMapper
             OtherFundings = fundingItems.Where(x => x.FundingType == FundingTab.Other).ToList(),
         };
 
+        var attachmentIds = capitalEquipmentItem.FileIds.Split(",").Select(x => Guid.Parse(x.Trim()));
+
+        var attachments = fileServiceItems.Where(x => attachmentIds.Contains(x.Id));
+
         return new GetCapitalEquipmentResponse(
             capitalEquipmentItem.Id,
             capitalEquipmentItem.BudgetId,
@@ -127,7 +132,8 @@ public static class CapitalEquipmentMapper
             existingAssetInfo,
             operatingBudgetImpact,
             approvalOversightInfo,
-            funding
+            funding,
+            attachments.ToList()
             );
     }
 }

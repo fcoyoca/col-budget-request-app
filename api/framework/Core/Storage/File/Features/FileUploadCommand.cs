@@ -6,6 +6,7 @@ public class FileUploadCommand : IRequest<FileUploadResponse>
 {
     public string Name { get; set; } = default!;
     public string Extension { get; set; } = default!;
+    public double Size { get; set; }
     public string Data { get; set; } = default!;
 }
 

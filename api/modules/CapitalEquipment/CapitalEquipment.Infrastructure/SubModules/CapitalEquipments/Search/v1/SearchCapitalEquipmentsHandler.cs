@@ -2,6 +2,7 @@ using FSH.Framework.Core.Paging;
 using FSH.Framework.Core.Persistence;
 using budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Get.v1;
 using budget_request_app.WebApi.CapitalEquipment.Domain;
+using budget_request_app.WebApi.FileService.Domain;
 using budget_request_app.WebApi.LookupValue.Domain;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,7 +25,7 @@ public sealed class SearchCapitalEquipmentsHandler(
         var lookupValues = await lookupRepository.ListAsync();
 
         var itemsMapped = items.Select(
-            x => CapitalEquipmentMapper.GetResponse(x, lookupValues)
+            x => CapitalEquipmentMapper.GetResponse(x, lookupValues, new List<FileServiceItem>())
             );
         
         return new PagedList<GetCapitalEquipmentResponse>(itemsMapped?.ToList(), request!.PageNumber, request!.PageSize, totalCount);
