@@ -98,7 +98,7 @@ public static class CapitalEquipmentMapper
         {
             HasPurchaseBeenApprovedByOversight = capitalEquipmentItem.HasPurchaseBeenApprovedByOversight,
             LegistarApprovalItemNumber = capitalEquipmentItem.LegistarApprovalItemNumber,
-            ApprovingOversightBoard = capitalEquipmentItem.ApprovingOversightBoard,
+            ApprovingOversightBoard = capitalEquipmentItem.ApprovingOversightBoard != string.Empty ? Guid.Parse(capitalEquipmentItem.ApprovingOversightBoard) : null,
             DateOfOversightApproval = capitalEquipmentItem.DateOfOversightApproval,
             PurchasingBuyerReview = capitalEquipmentItem.PurchasingBuyerReview,
             AdditionalNotes = capitalEquipmentItem.AdditionalNotes,

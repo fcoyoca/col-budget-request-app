@@ -106,7 +106,7 @@ public sealed class UpdateCapitalEquipmentHandler(
             operatingBudgetImpact.AnnualRevenueFromEquipment,
             approvalOversightInfo.HasPurchaseBeenApprovedByOversight,
             approvalOversightInfo.LegistarApprovalItemNumber,
-            approvalOversightInfo.ApprovingOversightBoard,
+            approvalOversightInfo.ApprovingOversightBoard.ToString(),
             approvalOversightInfo.DateOfOversightApproval,
             approvalOversightInfo.PurchasingBuyerReview,
             approvalOversightInfo.AdditionalNotes,

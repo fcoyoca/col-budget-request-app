@@ -90,7 +90,7 @@ public sealed class CreateCapitalEquipmentHandler(
             operatingBudgetImpact.AnnualRevenueFromEquipment,
             approvalOversightInfo.HasPurchaseBeenApprovedByOversight,
             approvalOversightInfo.LegistarApprovalItemNumber ?? string.Empty,
-            approvalOversightInfo.ApprovingOversightBoard ?? string.Empty,
+            approvalOversightInfo.ApprovingOversightBoard.ToString(),
             approvalOversightInfo.DateOfOversightApproval,
             approvalOversightInfo.PurchasingBuyerReview,
             approvalOversightInfo.AdditionalNotes ?? string.Empty,

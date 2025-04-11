@@ -87,7 +87,7 @@ public class ApprovalOversightInfo
 {
     public bool? HasPurchaseBeenApprovedByOversight { get; set; }
     public string LegistarApprovalItemNumber { get; set; }
-    public string ApprovingOversightBoard { get; set; }
+    public Guid? ApprovingOversightBoard { get; set; }
     public DateTime? DateOfOversightApproval { get; set; }
     public bool? PurchasingBuyerReview { get; set; }
     public string AdditionalNotes { get; set; }
