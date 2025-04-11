@@ -3,7 +3,7 @@ using budget_request_app.WebApi.CapitalEquipment.Domain;
 
 namespace budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Get.v1;
 
-public class GetCapitalEquipmentByIdSpec : Specification<CapitalEquipmentItem, CapitalEquipmentItem>
+public class GetCapitalEquipmentByIdSpec : Specification<CapitalEquipmentItem>
 {
     public GetCapitalEquipmentByIdSpec(Guid id)
     {

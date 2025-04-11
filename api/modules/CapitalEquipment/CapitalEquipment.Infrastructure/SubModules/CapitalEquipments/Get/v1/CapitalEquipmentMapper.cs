@@ -2,6 +2,7 @@ using budget_request_app.WebApi.CapitalEquipment.Domain;
 using budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Create.v1;
 using budget_request_app.WebApi.FileService.Domain;
 using budget_request_app.WebApi.LookupValue.Domain;
+using Mapster;
 
 namespace budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Get.v1;
 
@@ -117,7 +118,12 @@ public static class CapitalEquipmentMapper
 
         var attachmentIds = capitalEquipmentItem.FileIds.Split(",").Select(x => Guid.Parse(x.Trim()));
 
-        var attachments = fileServiceItems.Where(x => attachmentIds.Contains(x.Id));
+        var attachments = fileServiceItems.Where(x => attachmentIds.Contains(x.Id)).Adapt<List<AttachmentDTO>>().ToList();
+
+        foreach (var attachment in attachments)
+        {
+            attachment.Type = Path.GetExtension(attachment.FileName);
+        }
 
         return new GetCapitalEquipmentResponse(
             capitalEquipmentItem.Id,
@@ -133,7 +139,7 @@ public static class CapitalEquipmentMapper
             operatingBudgetImpact,
             approvalOversightInfo,
             funding,
-            attachments.ToList()
+            attachments
             );
     }
 }

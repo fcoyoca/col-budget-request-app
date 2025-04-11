@@ -17,7 +17,7 @@ public sealed record GetCapitalEquipmentResponse(
     OperatingBudgetImpact OperatingBudgetImpact,
     ApprovalOversightInfo ApprovalOversightInfo,
     FundingResponseDTO Funding,
-    List<FileServiceItem>? FileServiceItems
+    List<AttachmentDTO>? Attachments
     );
 
 public class FundingResponseDTO
@@ -28,5 +28,14 @@ public class FundingResponseDTO
     public List<FundingItem> SpecialFundings { get; set; }
     public List<FundingItem> OtherFundings { get; set; }
     public List<FundingItem> OutsideFundings { get; set; }
+}
+
+public class AttachmentDTO
+{
+    public string Id { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public double Size { get; set; }
+    public string Type { get; set; } = string.Empty;
+    public string FileName { get; set; } = string.Empty;
 }
 
