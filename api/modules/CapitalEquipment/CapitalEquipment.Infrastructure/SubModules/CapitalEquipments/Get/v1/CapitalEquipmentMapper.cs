@@ -1,3 +1,4 @@
+using System.Net.Mail;
 using budget_request_app.WebApi.CapitalEquipment.Domain;
 using budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Create.v1;
 using budget_request_app.WebApi.FileService.Domain;
@@ -115,16 +116,21 @@ public static class CapitalEquipmentMapper
             SpecialFundings = fundingItems.Where(x => x.FundingType == FundingTab.Special).ToList(),
             OtherFundings = fundingItems.Where(x => x.FundingType == FundingTab.Other).ToList(),
         };
+        
+        var attachments = new List<AttachmentDTO>();
 
-        var attachmentIds = capitalEquipmentItem.FileIds.Split(",").Select(x => Guid.Parse(x.Trim()));
-
-        var attachments = fileServiceItems.Where(x => attachmentIds.Contains(x.Id)).Adapt<List<AttachmentDTO>>().ToList();
-
-        foreach (var attachment in attachments)
+        if (capitalEquipmentItem.FileIds != string.Empty)
         {
-            attachment.Type = Path.GetExtension(attachment.FileName);
+            var attachmentIds = capitalEquipmentItem.FileIds.Trim().Split(",");
+            var guids = attachmentIds.Select(Guid.Parse);
+            attachments = fileServiceItems.Where(x => guids.Contains(x.Id)).Adapt<List<AttachmentDTO>>();
+            
+            foreach (var attachment in attachments)
+            {
+                attachment.Type = Path.GetExtension(attachment.FileName);
+            }
         }
-
+        
         return new GetCapitalEquipmentResponse(
             capitalEquipmentItem.Id,
             capitalEquipmentItem.BudgetId,
