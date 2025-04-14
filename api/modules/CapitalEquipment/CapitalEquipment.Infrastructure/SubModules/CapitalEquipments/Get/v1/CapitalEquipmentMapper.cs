@@ -83,7 +83,7 @@ public static class CapitalEquipmentMapper
         {
             AssetBeingReplaced = capitalEquipmentItem.AssetBeingReplaced,
             ConditionOfAssetBeingReplaced = capitalEquipmentItem.ConditionOfAssetBeingReplaced,
-            OdometerReadingHours = capitalEquipmentItem.OdometerReadingHours,
+            OdometerReadingHours = Decimal.Parse(capitalEquipmentItem.OdometerReadingHours.Length > 0 ? capitalEquipmentItem.OdometerReadingHours : "0" ),
             StandardReplacementCycle = capitalEquipmentItem.StandardReplacementCycle,
             EstimatedLifeOfEquipment = capitalEquipmentItem.EstimatedLifeOfEquipment,
         };

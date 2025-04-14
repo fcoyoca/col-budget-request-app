@@ -82,7 +82,7 @@ public sealed class CreateCapitalEquipmentHandler(
             justificationMatrix.RevenueGenerationExplanation ?? string.Empty,
             existingAssetInfo.AssetBeingReplaced ?? string.Empty,
             existingAssetInfo.ConditionOfAssetBeingReplaced ?? string.Empty,
-            existingAssetInfo.OdometerReadingHours ?? string.Empty,
+            existingAssetInfo.OdometerReadingHours.ToString(),
             existingAssetInfo.StandardReplacementCycle ?? string.Empty,
             existingAssetInfo.EstimatedLifeOfEquipment,
             operatingBudgetImpact.DepartmentResponsibleForOperatingCosts ?? string.Empty,

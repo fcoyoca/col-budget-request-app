@@ -71,7 +71,7 @@ public class ExistingAssetInfo
 {
     public string AssetBeingReplaced { get; set; }
     public string ConditionOfAssetBeingReplaced { get; set; }
-    public string OdometerReadingHours { get; set; }
+    public decimal? OdometerReadingHours { get; set; }
     public string StandardReplacementCycle { get; set; }
     public int? EstimatedLifeOfEquipment { get; set; }
 }

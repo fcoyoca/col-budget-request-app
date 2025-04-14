@@ -98,7 +98,7 @@ public sealed class UpdateCapitalEquipmentHandler(
             justificationMatrix.RevenueGenerationExplanation,
             existingAssetInfo.AssetBeingReplaced,
             existingAssetInfo.ConditionOfAssetBeingReplaced,
-            existingAssetInfo.OdometerReadingHours,
+            existingAssetInfo.OdometerReadingHours.ToString(),
             existingAssetInfo.StandardReplacementCycle,
             existingAssetInfo.EstimatedLifeOfEquipment,
             operatingBudgetImpact.DepartmentResponsibleForOperatingCosts,
