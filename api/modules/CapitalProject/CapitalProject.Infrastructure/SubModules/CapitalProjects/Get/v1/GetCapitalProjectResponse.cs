@@ -13,5 +13,15 @@ public sealed record GetCapitalProjectResponse(
     OperatingBudgetImpactDTO? OperatingBudgetImpact,
     MinorProjectLocationDTO? MinorProjectLocation,
     FinancialDTO? Financial,
-    ProjectManagementDTO? ProjectManagement
+    ProjectManagementDTO? ProjectManagement,
+    List<ProjectAttachmentDTO>? Attachments
     );
+
+public class ProjectAttachmentDTO
+{
+    public string Id { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public double Size { get; set; }
+    public string Type { get; set; } = string.Empty;
+    public string FileName { get; set; } = string.Empty;
+}

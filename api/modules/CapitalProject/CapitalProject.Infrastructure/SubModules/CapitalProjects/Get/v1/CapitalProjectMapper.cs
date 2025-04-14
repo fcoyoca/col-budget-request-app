@@ -1,5 +1,6 @@
 using budget_request_app.WebApi.CapitalProject.Domain;
 using budget_request_app.WebApi.CapitalProject.Infrastructure.SubModules.CapitalProjects.Get.v1.DTOS;
+using budget_request_app.WebApi.FileService.Domain;
 //using budget_request_app.WebApi.CapitalProject.Infrastructure.SubModules.CapitalProjects.Create.v1;
 using budget_request_app.WebApi.LookupValue.Domain;
 using Mapster;
@@ -8,7 +9,7 @@ namespace budget_request_app.WebApi.CapitalProject.Infrastructure.SubModules.Cap
 
 public static class CapitalProjectMapper
 {
-    public static GetCapitalProjectResponse GetResponse(CapitalProjectItem capitalProjectItem, List<LookupValueItem> lookupValues, List<FundingYearItem> fundingYearItems)
+    public static GetCapitalProjectResponse GetResponse(CapitalProjectItem capitalProjectItem, List<LookupValueItem> lookupValues, List<FundingYearItem> fundingYearItems, List<FileServiceItem> fileServiceItems)
     {
         
         TimeJustificationApprovalDTO timeJustificationApproval = new()
@@ -69,6 +70,24 @@ public static class CapitalProjectMapper
             PastFundings = capitalProjectItem.PastFundings.Adapt<List<PastFundingDTO>>(),
             PastSpendings = capitalProjectItem.PastSpendings.Adapt<List<PastSpendingDTO>>(),
         };
+        
+        var attachments = new List<ProjectAttachmentDTO>();
+
+        if (!string.IsNullOrEmpty(capitalProjectItem.FileIds))
+        {
+            var attachmentIds = capitalProjectItem.FileIds?.Trim().Split(",");
+            
+            if (attachmentIds.Any())
+            {
+                 var guids = attachmentIds.Where(x => x != string.Empty).Select(Guid.Parse);
+                 attachments = fileServiceItems.Where(x => guids.Contains(x.Id)).Adapt<List<ProjectAttachmentDTO>>();
+                
+                 foreach (var attachment in attachments)
+                 {
+                     attachment.Type = Path.GetExtension(attachment.FileName);
+                 } 
+            }
+        }
 
         return new GetCapitalProjectResponse(
             capitalProjectItem.Id,
@@ -79,7 +98,8 @@ public static class CapitalProjectMapper
             operatingBudgetImpact,
             minorProjectLocation,
             financial,
-            capitalProjectItem.ProjectManagement.Adapt<ProjectManagementDTO>()
+            capitalProjectItem.ProjectManagement.Adapt<ProjectManagementDTO>(),
+            new List<ProjectAttachmentDTO>()
             );
     }
 }

@@ -11,6 +11,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\framework\Core\Core.csproj" />
     <ProjectReference Include="..\..\..\framework\Infrastructure\Infrastructure.csproj" />
+    <ProjectReference Include="..\..\FileService\FileService.csproj" />
     <ProjectReference Include="..\..\LookupValue\LookupValue.csproj" />
     <ProjectReference Include="..\CapitalProject.Application\CapitalProject.Application.csproj" />
   </ItemGroup>

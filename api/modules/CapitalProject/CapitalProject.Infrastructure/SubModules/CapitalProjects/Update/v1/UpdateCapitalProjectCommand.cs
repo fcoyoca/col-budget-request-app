@@ -14,5 +14,6 @@ public sealed record UpdateCapitalProjectCommand(
     OperatingBudgetImpactDTO? OperatingBudgetImpact,
     MinorProjectLocationDTO? MinorProjectLocation,
     FinancialDTO? Financial,
-    ProjectManagementDTO? ProjectManagement
+    ProjectManagementDTO? ProjectManagement,
+    string? FileIds
 ) : IRequest<UpdateCapitalProjectResponse>;

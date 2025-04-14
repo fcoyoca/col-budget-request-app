@@ -13,5 +13,6 @@ public sealed record CreateCapitalProjectCommand(
     OperatingBudgetImpactDTO? OperatingBudgetImpact,
     MinorProjectLocationDTO? MinorProjectLocation,
     FinancialDTO? Financial,
-    ProjectManagementDTO? ProjectManagement
+    ProjectManagementDTO? ProjectManagement,
+    string? FileIds
 ) : IRequest<CreateCapitalProjectResponse>;

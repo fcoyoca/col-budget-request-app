@@ -50,6 +50,7 @@ public class CapitalProjectItem : AuditableEntity, IAggregateRoot
     
     // project management
     public ProjectManagement? ProjectManagement { get; set; }
+    public string? FileIds { get; set; }
 
     public static CapitalProjectItem Create(
         

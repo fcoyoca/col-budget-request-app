@@ -66,7 +66,8 @@ public sealed class CreateCapitalProjectHandler(
             FundingChanges = fundingChanges.Adapt<List<FundingChange>>(),
             PastFundings = pastFundings.Adapt<List<PastFunding>>(),
             PastSpendings = pastSpendings.Adapt<List<PastSpending>>(),
-            ProjectManagement = projectManagement.Adapt<ProjectManagement>()
+            ProjectManagement = projectManagement.Adapt<ProjectManagement>(),
+            FileIds = request.FileIds,
         };
         
         await repository.AddAsync(capitalProject, cancellationToken);

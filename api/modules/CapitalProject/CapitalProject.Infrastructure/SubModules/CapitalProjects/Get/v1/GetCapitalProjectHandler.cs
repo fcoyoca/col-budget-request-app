@@ -4,6 +4,7 @@ using budget_request_app.WebApi.CapitalProject.Domain.Exceptions;
 using FSH.Framework.Core.Persistence;
 using FSH.Framework.Core.Caching;
 using budget_request_app.WebApi.CapitalProject.Domain;
+using budget_request_app.WebApi.FileService.Domain;
 //using budget_request_app.WebApi.CapitalProject.Infrastructure.SubModules.CapitalProjects.Create.v1;
 using budget_request_app.WebApi.LookupValue.Domain;
 using MediatR;
@@ -13,6 +14,7 @@ public sealed class GetCapitalProjectHandler(
     [FromKeyedServices("capitalProjects")] IReadRepository<CapitalProjectItem> repository,
     [FromKeyedServices("lookupValues")] IReadRepository<LookupValueItem> lookupRepository,
     [FromKeyedServices("capitalProjectsFundingYearItems")] IReadRepository<FundingYearItem> repositoryFundingYearItem,
+    [FromKeyedServices("fileServices")] IReadRepository<FileServiceItem> fileRepository,
     ICacheService cache)
     : IRequestHandler<GetCapitalProjectRequest, GetCapitalProjectResponse>
 {
@@ -23,8 +25,10 @@ public sealed class GetCapitalProjectHandler(
         var lookupValues = await lookupRepository.ListAsync();
 
         var capitalProjectItem = await repository.FirstOrDefaultAsync(new GetCapitalProjectByIdSpec(request.Id));
+        //var capitalProjectItem = await repository.GetByIdAsync(request.Id);
         if (capitalProjectItem == null) throw new CapitalProjectNotFoundException(request.Id);
         var fundingYearItems = await repositoryFundingYearItem.ListAsync(cancellationToken);
-        return CapitalProjectMapper.GetResponse(capitalProjectItem,lookupValues,fundingYearItems);
+        var files = await fileRepository.ListAsync();
+        return CapitalProjectMapper.GetResponse(capitalProjectItem,lookupValues,fundingYearItems,files);
     }
 }

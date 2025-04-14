@@ -70,6 +70,7 @@ public sealed class UpdateCapitalProjectHandler(
         capitalProject.PastFundings = pastFundings.Adapt<List<PastFunding>>();
         capitalProject.PastSpendings = pastSpendings.Adapt<List<PastSpending>>();
         capitalProject.ProjectManagement = projectManagement.Adapt<ProjectManagement>();
+        capitalProject.FileIds = request.FileIds;
         
         await repository.UpdateAsync(capitalProject, cancellationToken);
         logger.LogInformation("CapitalProject updated {CapitalProjectId}", capitalProject.Id);
