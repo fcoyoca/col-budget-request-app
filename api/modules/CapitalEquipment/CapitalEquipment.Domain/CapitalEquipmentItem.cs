@@ -203,7 +203,7 @@ public class CapitalEquipmentItem : AuditableEntity, IAggregateRoot
         int? estimatedLifeOfEquipment,
         string departmentResponsibleForOperatingCosts,
         decimal? annualOperatingCosts,
-        decimal annualRevenueFromEquipment,
+        decimal? annualRevenueFromEquipment,
         bool? hasPurchaseBeenApprovedByOversight,
         string legistarApprovalItemNumber,
         string approvingOversightBoard,
