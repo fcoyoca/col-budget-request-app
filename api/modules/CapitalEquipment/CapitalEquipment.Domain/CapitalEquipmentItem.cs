@@ -45,7 +45,7 @@ public class CapitalEquipmentItem : AuditableEntity, IAggregateRoot
     public int? EstimatedLifeOfEquipment { get; set; }
     public string DepartmentResponsibleForOperatingCosts { get; set; }
     public decimal? AnnualOperatingCosts { get; set; }
-    public decimal AnnualRevenueFromEquipment { get; set; }
+    public decimal? AnnualRevenueFromEquipment { get; set; }
     public bool? HasPurchaseBeenApprovedByOversight { get; set; }
     public string LegistarApprovalItemNumber { get; set; }
     public string ApprovingOversightBoard { get; set; }
@@ -95,7 +95,7 @@ public class CapitalEquipmentItem : AuditableEntity, IAggregateRoot
         int? estimatedLifeOfEquipment,
         string departmentResponsibleForOperatingCosts,
         decimal? annualOperatingCosts,
-        decimal annualRevenueFromEquipment,
+        decimal? annualRevenueFromEquipment,
         bool? hasPurchaseBeenApprovedByOversight,
         string legistarApprovalItemNumber,
         string approvingOversightBoard,
