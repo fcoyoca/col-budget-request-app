@@ -103,7 +103,7 @@ public sealed class UpdateCapitalEquipmentHandler(
             existingAssetInfo.EstimatedLifeOfEquipment,
             operatingBudgetImpact.DepartmentResponsibleForOperatingCosts,
             operatingBudgetImpact.AnnualOperatingCosts,
-            operatingBudgetImpact.AnnualRevenueFromEquipment,
+            operatingBudgetImpact.AnnualRevenueFromEquipment.GetValueOrDefault(),
             approvalOversightInfo.HasPurchaseBeenApprovedByOversight,
             approvalOversightInfo.LegistarApprovalItemNumber,
             approvalOversightInfo.ApprovingOversightBoard.ToString(),

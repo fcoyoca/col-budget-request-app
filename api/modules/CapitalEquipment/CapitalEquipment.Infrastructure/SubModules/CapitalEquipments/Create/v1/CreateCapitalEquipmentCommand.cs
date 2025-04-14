@@ -80,7 +80,7 @@ public class OperatingBudgetImpact
 {
     public string DepartmentResponsibleForOperatingCosts { get; set; }
     public decimal? AnnualOperatingCosts { get; set; }
-    public decimal AnnualRevenueFromEquipment { get; set; }
+    public decimal? AnnualRevenueFromEquipment { get; set; }
 }
 
 public class ApprovalOversightInfo

@@ -87,7 +87,7 @@ public sealed class CreateCapitalEquipmentHandler(
             existingAssetInfo.EstimatedLifeOfEquipment,
             operatingBudgetImpact.DepartmentResponsibleForOperatingCosts ?? string.Empty,
             operatingBudgetImpact.AnnualOperatingCosts,
-            operatingBudgetImpact.AnnualRevenueFromEquipment,
+            operatingBudgetImpact.AnnualRevenueFromEquipment.GetValueOrDefault(),
             approvalOversightInfo.HasPurchaseBeenApprovedByOversight,
             approvalOversightInfo.LegistarApprovalItemNumber ?? string.Empty,
             approvalOversightInfo.ApprovingOversightBoard.ToString(),
