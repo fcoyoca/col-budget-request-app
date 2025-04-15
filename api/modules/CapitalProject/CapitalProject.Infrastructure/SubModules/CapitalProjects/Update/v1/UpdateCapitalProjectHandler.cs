@@ -1,5 +1,8 @@
-﻿using FSH.Framework.Core.Persistence;
+﻿using System.Reflection;
+using FSH.Framework.Core.Persistence;
 using budget_request_app.WebApi.CapitalProject.Domain;
+using budget_request_app.WebApi.CapitalProject.Infrastructure.SubModules.CapitalProjects.Get.v1;
+using budget_request_app.WebApi.CapitalProject.Infrastructure.SubModules.CapitalProjects.Get.v1.DTOS;
 using Mapster;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -38,30 +41,24 @@ public sealed class UpdateCapitalProjectHandler(
         var pastSpendings = request.Financial?.Past?.PastSpendings;
         var projectManagement = request.ProjectManagement;
 
-        var capitalProject = await repository.GetByIdAsync(request.Id, cancellationToken);
+        var capitalProject = await repository.FirstOrDefaultAsync(new GetCapitalProjectByIdSpec(request.Id), cancellationToken);
 
-        capitalProject.BudgetId = request.BudgetId;
-        capitalProject.RevisionTitle = request.RevisionTitle;
-        capitalProject.GeneralInformation = new GeneralInformation()
-        {
-            Title = request.GeneralInformation.Title
-        };
-        capitalProject.JustificationPrioritization = justificationPrioritization.Adapt<JustificationPrioritization>();
-        capitalProject.StatusTimeline = statusTimeline.Adapt<StatusTimeline>();
-        capitalProject.ApprovalOversight = approvalOversight.Adapt<ApprovalOversight>();
-        capitalProject.GrantFundingOpportunity = grantFundingOpportunity.Adapt<GrantFundingOpportunity>();
-        capitalProject.OperatingCosts = operatingCosts.Adapt<List<OperatingCost>>();
-        capitalProject.OperatingRevenues = operatingRevenues.Adapt<List<OperatingRevenue>>();
-        capitalProject.IsMappedRequest = request.MinorProjectLocation?.RequestLocation?.IsMappedRequest;
-        capitalProject.GISMappingDescription = request.MinorProjectLocation?.RequestLocation?.GISMappingDescription;
-        capitalProject.MinorProjects = minorProjects.Adapt<List<MinorProject>>();
-        capitalProject.StreetSegments = streetSegments.Adapt<List<StreetSegment>>();
-        capitalProject.TIFFundingIds = tifFundingIds;
+        capitalProject.BorrowingFundings = new();
+        capitalProject.OperatingFundings = new();
+        capitalProject.GrantFundings = new();
+        capitalProject.DonationFundings = new();
+        capitalProject.SpecialFundings = new();
+        capitalProject.OtherFundings = new();
+        capitalProject.SpendingBudgets = new();
+        capitalProject.FundingChanges = new();
+        capitalProject.PastFundings = new();
+        capitalProject.PastSpendings = new();
+
+        await repository.SaveChangesAsync(cancellationToken);
+        
         capitalProject.BorrowingFundings = borrowingFundings.Adapt<List<BorrowingFunding>>();
         capitalProject.OperatingFundings = operatingFundings.Adapt<List<OperatingFunding>>();
         capitalProject.GrantFundings = grantFundings.Adapt<List<GrantFunding>>();
-        capitalProject.DonationFundingIsDonatedFundsUsed = donationFundingIsDonatedFundsUsed;
-        capitalProject.DonationFundingIsContributeFundsRequired = donationFundingIsContributeFundsRequired;
         capitalProject.DonationFundings = donationFundings.Adapt<List<DonationFunding>>();
         capitalProject.SpecialFundings = specialFundings.Adapt<List<SpecialFunding>>();
         capitalProject.OtherFundings = otherFundings.Adapt<List<OtherFunding>>();
@@ -69,11 +66,55 @@ public sealed class UpdateCapitalProjectHandler(
         capitalProject.FundingChanges = fundingChanges.Adapt<List<FundingChange>>();
         capitalProject.PastFundings = pastFundings.Adapt<List<PastFunding>>();
         capitalProject.PastSpendings = pastSpendings.Adapt<List<PastSpending>>();
-        capitalProject.ProjectManagement = projectManagement.Adapt<ProjectManagement>();
+
+        capitalProject.BudgetId = request.BudgetId;
+        capitalProject.RevisionTitle = request.RevisionTitle;
+        
+        CopyFields(request.GeneralInformation,capitalProject.GeneralInformation);
+        CopyFields(justificationPrioritization, capitalProject.JustificationPrioritization);
+        CopyFields(statusTimeline, capitalProject.StatusTimeline);
+        CopyFields(approvalOversight, capitalProject.ApprovalOversight);
+        CopyFields(grantFundingOpportunity, capitalProject.GrantFundingOpportunity);
+        CopyFields(operatingCosts, capitalProject.OperatingCosts);
+        CopyFields(operatingRevenues, capitalProject.OperatingRevenues);
+        CopyFields(minorProjects, capitalProject.MinorProjects);
+        CopyFields(streetSegments, capitalProject.StreetSegments);
+        CopyFields(projectManagement, capitalProject.ProjectManagement);
+        
+        capitalProject.IsMappedRequest = request.MinorProjectLocation?.RequestLocation?.IsMappedRequest;
+        capitalProject.GISMappingDescription = request.MinorProjectLocation?.RequestLocation?.GISMappingDescription;
+        capitalProject.TIFFundingIds = tifFundingIds;
+        capitalProject.DonationFundingIsDonatedFundsUsed = donationFundingIsDonatedFundsUsed;
+        capitalProject.DonationFundingIsContributeFundsRequired = donationFundingIsContributeFundsRequired;
         capitalProject.FileIds = request.FileIds;
         
         await repository.UpdateAsync(capitalProject, cancellationToken);
+        
         logger.LogInformation("CapitalProject updated {CapitalProjectId}", capitalProject.Id);
-        return new UpdateCapitalProjectResponse(capitalProject.Id, "Kimper success!!");
+        return new UpdateCapitalProjectResponse(capitalProject.Id, "Kimper success!! " + capitalProject.TIFFundingIds );
+    }
+    
+    public void CopyFields(dynamic source, dynamic target)
+    {
+        if (source == null || target == null)
+            throw new ArgumentNullException();
+
+        Type sourceType = source.GetType();
+        Type targetType = target.GetType();
+
+        var sourceFields = sourceType.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+
+        foreach (var field in sourceFields)
+        {
+            var targetField = targetType.GetField(field.Name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            if (targetField != null && targetField.FieldType == field.FieldType)
+            {
+                if (field.Name != "Id")
+                {
+                    var value = field.GetValue(source);
+                    targetField.SetValue(target, value);
+                }
+            }
+        }
     }
 }
