@@ -99,7 +99,7 @@ public static class CapitalProjectMapper
             minorProjectLocation,
             financial,
             capitalProjectItem.ProjectManagement.Adapt<ProjectManagementDTO>(),
-            new List<ProjectAttachmentDTO>()
+            attachments
             );
     }
 }
