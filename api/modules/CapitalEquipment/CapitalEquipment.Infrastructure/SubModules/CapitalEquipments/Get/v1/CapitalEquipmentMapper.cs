@@ -30,6 +30,8 @@ public static class CapitalEquipmentMapper
         {
             requestStatusName = requestStatus.Name;
         }
+        
+        var equipmentCategoryName = lookupValues.FirstOrDefault(x => x.Id.ToString() == capitalEquipmentItem.EquipmentCategoryId)?.Name;
 
         GeneralInfo generalInfo = new GeneralInfo()
         {
@@ -41,8 +43,8 @@ public static class CapitalEquipmentMapper
             EquipmentCategoryId = capitalEquipmentItem.EquipmentCategoryId,
             RequestingDepartmentValue = string.Join(",", requestingDepartments),
             DepartmentHeadRequestorValue = string.Join(",", requestingDepartmentHeads),
-            RequestStatusValue = requestStatusName
-            
+            RequestStatusValue = requestStatusName,
+            EquipmentCategoryValue = equipmentCategoryName
         };
 
         EquipmentInfo equipmentInfo = new EquipmentInfo()
@@ -66,11 +68,17 @@ public static class CapitalEquipmentMapper
         JustificationMatrix justificationMatrix = new JustificationMatrix()
         {
             RequiredMandatedPriority = capitalEquipmentItem.RequiredMandatedPriority,
+            RequiredMandatedPriorityValue = lookupValues.FirstOrDefault(x => x.Id.ToString() == capitalEquipmentItem.RequiredMandatedPriority)?.Name,
             SafetyPriority = capitalEquipmentItem.SafetyPriority,
+            SafetyPriorityValue = lookupValues.FirstOrDefault(x => x.Id.ToString() == capitalEquipmentItem.SafetyPriority)?.Name,
             PaybackPeriodPriority = capitalEquipmentItem.PaybackPeriodPriority,
+            PaybackPeriodPriorityValue = lookupValues.FirstOrDefault(x => x.Id.ToString() == capitalEquipmentItem.PaybackPeriodPriority)?.Name,
             SustainabilityPriority = capitalEquipmentItem.SustainabilityPriority,
+            SustainabilityPriorityValue = lookupValues.FirstOrDefault(x => x.Id.ToString() == capitalEquipmentItem.SustainabilityPriority)?.Name,
             CostToOperatePriority = capitalEquipmentItem.CostToOperatePriority,
+            CostToOperatePriorityValue = lookupValues.FirstOrDefault(x => x.Id.ToString() == capitalEquipmentItem.CostToOperatePriority)?.Name,
             RevenueGenerationPriority = capitalEquipmentItem.RevenueGenerationPriority,
+            RevenueGenerationPriorityValue = lookupValues.FirstOrDefault(x => x.Id.ToString() == capitalEquipmentItem.RevenueGenerationPriority)?.Name,
             RequiredMandatedExplanation = capitalEquipmentItem.RequiredMandatedExplanation,
             SafetyExplanation = capitalEquipmentItem.SafetyExplanation,
             PaybackPeriodExplanation = capitalEquipmentItem.PaybackPeriodExplanation,
@@ -91,6 +99,7 @@ public static class CapitalEquipmentMapper
         OperatingBudgetImpact operatingBudgetImpact = new OperatingBudgetImpact()
         {
             DepartmentResponsibleForOperatingCosts = capitalEquipmentItem.DepartmentResponsibleForOperatingCosts,
+            DepartmentResponsibleForOperatingCostsValue = lookupValues.FirstOrDefault(x => x.Id.ToString() == capitalEquipmentItem.DepartmentResponsibleForOperatingCosts)?.Name,
             AnnualOperatingCosts = capitalEquipmentItem.AnnualOperatingCosts,
             AnnualRevenueFromEquipment = capitalEquipmentItem.AnnualRevenueFromEquipment
         };
@@ -100,13 +109,20 @@ public static class CapitalEquipmentMapper
             HasPurchaseBeenApprovedByOversight = capitalEquipmentItem.HasPurchaseBeenApprovedByOversight,
             LegistarApprovalItemNumber = capitalEquipmentItem.LegistarApprovalItemNumber,
             ApprovingOversightBoard = capitalEquipmentItem.ApprovingOversightBoard != string.Empty ? Guid.Parse(capitalEquipmentItem.ApprovingOversightBoard) : null,
+            ApprovingOversightBoardValue = lookupValues.FirstOrDefault(x => x.Id.ToString() == capitalEquipmentItem.ApprovingOversightBoard)?.Name,
             DateOfOversightApproval = capitalEquipmentItem.DateOfOversightApproval,
             PurchasingBuyerReview = capitalEquipmentItem.PurchasingBuyerReview,
             AdditionalNotes = capitalEquipmentItem.AdditionalNotes,
         };
 
-        List<FundingItem> fundingItems = capitalEquipmentItem.FundingItems;
-        
+        List<FundingItemDTO> fundingItems = capitalEquipmentItem.FundingItems.Adapt<List<FundingItemDTO>>();
+
+        foreach (FundingItemDTO fundingItem in fundingItems)
+        {
+            fundingItem.FundingSourceValue = lookupValues.FirstOrDefault(x => x.Id == fundingItem.FundingSource)?.Name;
+            fundingItem.GrantingAgencyValue = lookupValues.FirstOrDefault(x => x.Id.ToString() == fundingItem.GrantingAgency)?.Name;
+        }
+
         FundingResponseDTO funding = new()
         {
             BorrowingFundings = fundingItems.Where(x => x.FundingType == FundingTab.Borrowing).ToList(),

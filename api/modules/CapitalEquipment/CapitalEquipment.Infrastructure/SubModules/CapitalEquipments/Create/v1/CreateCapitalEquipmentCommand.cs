@@ -31,6 +31,7 @@ public class GeneralInfo
     public string? DepartmentHeadRequestorValue { get; set; }
     public string EquipmentName { get; set; }
     public string EquipmentCategoryId { get; set; }
+    public string? EquipmentCategoryValue { get; set; }
 }
 
 public class EquipmentInfo
@@ -54,11 +55,17 @@ public class JustificationPrioritization
 public class JustificationMatrix
 {
     public string RequiredMandatedPriority { get; set; }
+    public string? RequiredMandatedPriorityValue { get; set; }
     public string SafetyPriority { get; set; }
+    public string? SafetyPriorityValue { get; set; }
     public string PaybackPeriodPriority { get; set; }
+    public string? PaybackPeriodPriorityValue { get; set; }
     public string SustainabilityPriority { get; set; }
+    public string? SustainabilityPriorityValue { get; set; }
     public string CostToOperatePriority { get; set; }
+    public string? CostToOperatePriorityValue { get; set; }
     public string RevenueGenerationPriority { get; set; }
+    public string? RevenueGenerationPriorityValue { get; set; }
     public string RequiredMandatedExplanation { get; set; }
     public string SafetyExplanation { get; set; }
     public string PaybackPeriodExplanation { get; set; }
@@ -79,6 +86,7 @@ public class ExistingAssetInfo
 public class OperatingBudgetImpact
 {
     public string DepartmentResponsibleForOperatingCosts { get; set; }
+    public string? DepartmentResponsibleForOperatingCostsValue { get; set; }
     public decimal? AnnualOperatingCosts { get; set; }
     public decimal? AnnualRevenueFromEquipment { get; set; }
 }
@@ -88,6 +96,7 @@ public class ApprovalOversightInfo
     public bool? HasPurchaseBeenApprovedByOversight { get; set; }
     public string LegistarApprovalItemNumber { get; set; }
     public Guid? ApprovingOversightBoard { get; set; }
+    public string? ApprovingOversightBoardValue { get; set; }
     public DateTime? DateOfOversightApproval { get; set; }
     public bool? PurchasingBuyerReview { get; set; }
     public string AdditionalNotes { get; set; }

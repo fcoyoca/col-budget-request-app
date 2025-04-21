@@ -22,12 +22,23 @@ public sealed record GetCapitalEquipmentResponse(
 
 public class FundingResponseDTO
 {
-    public List<FundingItem> BorrowingFundings { get; set; }
-    public List<FundingItem> OueFundings { get; set; }
-    public List<FundingItem> GrantFundings { get; set; }
-    public List<FundingItem> SpecialFundings { get; set; }
-    public List<FundingItem> OtherFundings { get; set; }
-    public List<FundingItem> OutsideFundings { get; set; }
+    public List<FundingItemDTO> BorrowingFundings { get; set; }
+    public List<FundingItemDTO> OueFundings { get; set; }
+    public List<FundingItemDTO> GrantFundings { get; set; }
+    public List<FundingItemDTO> SpecialFundings { get; set; }
+    public List<FundingItemDTO> OtherFundings { get; set; }
+    public List<FundingItemDTO> OutsideFundings { get; set; }
+}
+
+public class FundingItemDTO
+{
+    public string FundingType  { get; set; }
+    public Guid? FundingSource { get; set; } = Guid.Empty;
+    public string? FundingSourceValue { get; set; }
+    public string? GrantingAgency { get; set; }
+    public string? GrantingAgencyValue { get; set; }
+    public FundingYearItem? CurrentYearRequested { get; set; }
+    public List<FundingYearItem>? YearEstimates { get; set; } = new();
 }
 
 public class AttachmentDTO
