@@ -5,10 +5,12 @@ using budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.Capit
 using budget_request_app.WebApi.CapitalEquipment.Domain;
 
 namespace budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Search.v1;
-public class SearchCapitalEquipmentSpecs : EntitiesByPaginationFilterSpec<CapitalEquipmentItem, CapitalEquipmentItem>
+public class SearchCapitalEquipmentSpecs : EntitiesByPaginationFilterSpec<CapitalEquipmentItem>
 {
     public SearchCapitalEquipmentSpecs(SearchCapitalEquipmentsCommand command)
         : base(command) =>
         Query
+            .Include(x => x.FundingItems)
+            .ThenInclude(x => x.YearEstimates)
             .OrderBy(c => c.Id, !command.HasOrderBy());
 }
