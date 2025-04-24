@@ -87,9 +87,7 @@ public static class Extensions
         app.UseOpenApi();
         app.UseJobDashboard(app.Configuration);
         app.UseRouting();
-        app.UseAuthentication();
-        app.UseAuthorization();
-        app.UseAntiforgery();
+        
         app.UseStaticFiles();
         app.UseStaticFiles(new StaticFileOptions()
         {
@@ -101,6 +99,10 @@ public static class Extensions
             FileProvider = new PhysicalFileProvider($"{config["FileStorage:FileProvider"]}"),
             RequestPath = new PathString($"{config["FileStorage:RequestPath"]}")
         });
+        
+        app.UseAuthentication();
+        app.UseAuthorization();
+        app.UseAntiforgery();
         
         app.MapTenantEndpoints();
         app.MapIdentityEndpoints();
