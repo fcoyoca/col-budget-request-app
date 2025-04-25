@@ -28,6 +28,7 @@ public class FundingResponseDTO
     public List<FundingItemDTO> SpecialFundings { get; set; }
     public List<FundingItemDTO> OtherFundings { get; set; }
     public List<FundingItemDTO> OutsideFundings { get; set; }
+    public List<PastFundingDTO> PastFundings { get; set; }
 }
 
 public class FundingItemDTO
@@ -39,6 +40,17 @@ public class FundingItemDTO
     public string? GrantingAgencyValue { get; set; }
     public FundingYearItem? CurrentYearRequested { get; set; }
     public List<FundingYearItem>? YearEstimates { get; set; } = new();
+}
+
+public class PastFundingDTO
+{
+    public string? Details { get; set; }
+    public int? Year  { get; set; }
+    public decimal? Amount { get; set; }
+    public string? Request { get; set; }
+    public Guid? FundingSource { get; set; } = Guid.Empty;
+    public Guid? FundingSubSource { get; set; } = Guid.Empty;
+    public string? SOF  { get; set; }
 }
 
 public class AttachmentDTO

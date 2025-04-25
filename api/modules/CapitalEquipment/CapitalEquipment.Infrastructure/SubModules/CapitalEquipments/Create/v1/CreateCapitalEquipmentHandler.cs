@@ -4,6 +4,7 @@ using Mapster;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using PastFunding = budget_request_app.WebApi.CapitalProject.Domain.PastFunding;
 
 namespace budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Create.v1;
 public sealed class CreateCapitalEquipmentHandler(
@@ -95,6 +96,7 @@ public sealed class CreateCapitalEquipmentHandler(
             approvalOversightInfo.PurchasingBuyerReview,
             approvalOversightInfo.AdditionalNotes ?? string.Empty,
             fundingItems,
+            request.Funding.PastFundings.Adapt<List<CapitalEquipment.Domain.PastFunding>>(),
             request.FileIds ?? string.Empty
             );
         

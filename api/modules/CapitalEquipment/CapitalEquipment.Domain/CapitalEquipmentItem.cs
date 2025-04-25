@@ -53,6 +53,7 @@ public class CapitalEquipmentItem : AuditableEntity, IAggregateRoot
     public bool? PurchasingBuyerReview { get; set; }
     public string AdditionalNotes { get; set; }
     public List<FundingItem> FundingItems { get; set; }
+    public List<PastFunding> PastFundings { get; set; }
     public string FileIds { get; set; }
 
     public static CapitalEquipmentItem Create(
@@ -103,6 +104,7 @@ public class CapitalEquipmentItem : AuditableEntity, IAggregateRoot
         bool? purchasingBuyerReview,
         string additionalNotes,
         List<FundingItem> fundingItems,
+        List<PastFunding> pastFundings,
         string fileIds
         )
     {
@@ -155,6 +157,7 @@ public class CapitalEquipmentItem : AuditableEntity, IAggregateRoot
         CapitalEquipment.PurchasingBuyerReview = purchasingBuyerReview;
         CapitalEquipment.AdditionalNotes = additionalNotes;
         CapitalEquipment.FundingItems = fundingItems;
+        CapitalEquipment.PastFundings = pastFundings;
         CapitalEquipment.FileIds = fileIds;
         
         CapitalEquipment.QueueDomainEvent(new CapitalEquipmentCreated() { CapitalEquipment = CapitalEquipment });

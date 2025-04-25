@@ -131,6 +131,7 @@ public static class CapitalEquipmentMapper
             OutsideFundings = fundingItems.Where(x => x.FundingType == FundingTab.Outside).ToList(),
             SpecialFundings = fundingItems.Where(x => x.FundingType == FundingTab.Special).ToList(),
             OtherFundings = fundingItems.Where(x => x.FundingType == FundingTab.Other).ToList(),
+            PastFundings = capitalEquipmentItem.PastFundings.Adapt<List<PastFundingDTO>>()
         };
         
         var attachments = new List<AttachmentDTO>();

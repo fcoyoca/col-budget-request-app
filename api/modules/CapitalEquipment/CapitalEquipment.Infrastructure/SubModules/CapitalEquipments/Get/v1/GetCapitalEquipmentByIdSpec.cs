@@ -12,6 +12,7 @@ public class GetCapitalEquipmentByIdSpec : Specification<CapitalEquipmentItem>
             .Include(x => x.FundingItems)
             .ThenInclude(x => x.CurrentYearRequested)
             .Include(x => x.FundingItems)
-            .ThenInclude(x => x.YearEstimates);
+            .ThenInclude(x => x.YearEstimates)
+            .Include(x => x.PastFundings);
     }
 }

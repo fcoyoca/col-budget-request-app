@@ -110,11 +110,11 @@ public class FundingCreateDTO
     public List<FundingItemCreateDTO> OutsideFundings { get; set; }
     public List<FundingItemCreateDTO> SpecialFundings { get; set; }
     public List<FundingItemCreateDTO> OtherFundings { get; set; }
+    public List<PastFundingCreateDTO> PastFundings { get; set; }
 }
 
 public class FundingItemCreateDTO
 {
-    //public Guid? Id { get; set; } = Guid.Empty;
     public Guid? FundingSource { get; set; } = Guid.Empty;
     public string? GrantingAgency { get; set; }
     public FundingYearItemCreateDTO CurrentYearRequested { get; set; }
@@ -126,6 +126,17 @@ public class FundingYearItemCreateDTO
     //public Guid? Id { get; set; } = Guid.Empty;
     public int? Year { get; set; }
     public decimal? Value { get; set; }
+}
+
+public class PastFundingCreateDTO
+{
+    public string? Details { get; set; }
+    public int? Year  { get; set; }
+    public decimal? Amount { get; set; }
+    public string? Request { get; set; }
+    public Guid? FundingSource { get; set; } = Guid.Empty;
+    public Guid? FundingSubSource { get; set; } = Guid.Empty;
+    public string? SOF  { get; set; }
 }
 
 public static class FundingTab
