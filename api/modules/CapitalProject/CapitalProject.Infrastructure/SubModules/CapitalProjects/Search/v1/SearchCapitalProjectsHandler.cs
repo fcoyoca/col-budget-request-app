@@ -40,8 +40,16 @@ public sealed class SearchCapitalProjectsHandler(
 
     private string MapToLookupNames(string delimitedIds, List<LookupValueItem> items)
     {
-        var ids = delimitedIds.Split(",").Select(id => Guid.Parse(id.Trim()));
-        
+        if (string.IsNullOrWhiteSpace(delimitedIds))
+        {
+            return string.Empty;
+        }
+
+        var ids = delimitedIds
+            .Trim()
+            .Split(",")
+            .Select(id => Guid.Parse(id.Trim()));
+
         items = items.Where(x => ids.Contains(x.Id)).ToList();
         
         var names = items.Select(x => x.Name).ToList();
