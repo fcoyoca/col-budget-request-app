@@ -1,7 +1,10 @@
+using System.Runtime.InteropServices.JavaScript;
 using budget_request_app.WebApi.CapitalEquipment.Domain;
 using budget_request_app.WebApi.CapitalEquipment.Domain.Exceptions;
 using budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Create.v1;
+using budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Get.v1;
 using FSH.Framework.Core.Persistence;
+using Mapster;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -16,7 +19,7 @@ public sealed class UpdateCapitalEquipmentHandler(
     public async Task<UpdateCapitalEquipmentResponse> Handle(UpdateCapitalEquipmentCommand request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
-        var capitalEquipment = await repository.GetByIdAsync(request.Id, cancellationToken);
+        var capitalEquipment = await repository.FirstOrDefaultAsync(new GetCapitalEquipmentByIdSpec(request.Id), cancellationToken);
         _ = capitalEquipment ?? throw new CapitalEquipmentNotFoundException(request.Id);
         
         GeneralInfo generalInfo = new GeneralInfo();
@@ -61,6 +64,8 @@ public sealed class UpdateCapitalEquipmentHandler(
         }
         
         await repositoryFundingItem.AddRangeAsync(fundingItems, cancellationToken);
+        
+        capitalEquipment.PastFundings.Clear();
         
         var updatedCapitalEquipment = CapitalEquipmentItem.Update(
             capitalEquipment,
@@ -114,6 +119,14 @@ public sealed class UpdateCapitalEquipmentHandler(
             );
         
         await repository.UpdateAsync(updatedCapitalEquipment, cancellationToken);
+
+        var pastFundingOverwrites = request.Funding.PastFundings.Adapt<List<PastFunding>>();
+        
+        //capitalEquipment.PastFundings.AddRange(request.Funding.PastFundings.Adapt<List<PastFunding>>());
+        updatedCapitalEquipment = await repository.GetByIdAsync(request.Id);
+        updatedCapitalEquipment.PastFundings = request.Funding.PastFundings.Adapt<List<PastFunding>>();
+        await repository.SaveChangesAsync(cancellationToken);
+        
         logger.LogInformation("CapitalEquipment with id : {CapitalEquipmentId} updated.", updatedCapitalEquipment.Id);
         return new UpdateCapitalEquipmentResponse(capitalEquipment.Id);
     }

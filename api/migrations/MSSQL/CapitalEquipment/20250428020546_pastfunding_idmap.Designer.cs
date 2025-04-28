@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using budget_request_app.WebApi.CapitalEquipment.Infrastructure.Persistence;
 
@@ -11,9 +12,11 @@ using budget_request_app.WebApi.CapitalEquipment.Infrastructure.Persistence;
 namespace budget_request_app.WebApi.Migrations.MSSQL.CapitalEquipment
 {
     [DbContext(typeof(CapitalEquipmentDbContext))]
-    partial class CapitalEquipmentDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250428020546_pastfunding_idmap")]
+    partial class pastfunding_idmap
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -339,7 +342,7 @@ namespace budget_request_app.WebApi.Migrations.MSSQL.CapitalEquipment
                     b.Property<decimal?>("Amount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<Guid?>("CapitalEquipmentId")
+                    b.Property<Guid>("CapitalEquipmentId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTimeOffset>("Created")

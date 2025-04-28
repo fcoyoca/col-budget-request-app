@@ -18,6 +18,7 @@ public sealed class CapitalEquipmentDbContext : FshDbContext
 
     public DbSet<CapitalEquipmentItem> CapitalEquipments { get; set; } = null!;
     public DbSet<FundingItem> FundingItem { get; set; } = null!;
+    public DbSet<PastFunding> PastFunding { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -28,5 +29,6 @@ public sealed class CapitalEquipmentDbContext : FshDbContext
         //soft deletes
         modelBuilder.Entity<CapitalEquipmentItem>().HasQueryFilter(p => p.Deleted == null);
         modelBuilder.Entity<FundingItem>().HasQueryFilter(p => p.Deleted == null);
+        modelBuilder.Entity<PastFunding>().HasQueryFilter(p => p.Deleted == null);
     }
 }

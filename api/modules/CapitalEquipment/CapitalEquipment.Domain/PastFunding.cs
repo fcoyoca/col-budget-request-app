@@ -14,4 +14,7 @@ public class PastFunding : AuditableEntity, IAggregateRoot
     public Guid? FundingSource { get; set; } = Guid.Empty;
     public Guid? FundingSubSource { get; set; } = Guid.Empty;
     public string? SOF  { get; set; }
+    public Guid? CapitalEquipmentId { get; set; } = Guid.Empty;
+    [NotMapped, JsonIgnore]
+    public CapitalEquipmentItem? CapitalEquipment { get; set; }
 }

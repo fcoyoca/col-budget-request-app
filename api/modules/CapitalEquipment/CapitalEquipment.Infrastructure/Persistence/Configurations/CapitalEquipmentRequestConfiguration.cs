@@ -13,6 +13,10 @@ internal sealed class CapitalEquipmentRequestConfiguration : IEntityTypeConfigur
         builder.HasMany<FundingItem>(x => x.FundingItems)
             .WithOne(x => x.CapitalEquipment)
             .HasForeignKey(x => x.CapitalEquipmentId);
+        builder.HasMany<PastFunding>(x => x.PastFundings)
+            .WithOne(x => x.CapitalEquipment)
+            .HasForeignKey(x => x.CapitalEquipmentId);
+        
     }
 }
 
@@ -24,3 +28,4 @@ internal sealed class FundingConfiguration : IEntityTypeConfiguration<FundingIte
         builder.HasKey(x => x.Id);
     }
 }
+
