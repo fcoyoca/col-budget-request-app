@@ -13,7 +13,8 @@ namespace budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.C
 public sealed class UpdateCapitalEquipmentHandler(
     ILogger<UpdateCapitalEquipmentHandler> logger,
     [FromKeyedServices("capitalEquipments")] IRepository<CapitalEquipmentItem> repository,
-    [FromKeyedServices("capitalEquipmentsFundingItems")] IRepository<FundingItem> repositoryFundingItem)
+    [FromKeyedServices("capitalEquipmentsFundingItems")] IRepository<FundingItem> repositoryFundingItem,
+    [FromKeyedServices("capitalEquipmentsPastFundings")] IRepository<PastFunding> repositoryPastFunding)
     : IRequestHandler<UpdateCapitalEquipmentCommand, UpdateCapitalEquipmentResponse>
 {
     public async Task<UpdateCapitalEquipmentResponse> Handle(UpdateCapitalEquipmentCommand request, CancellationToken cancellationToken)
@@ -118,16 +119,21 @@ public sealed class UpdateCapitalEquipmentHandler(
             request.FileIds
             );
         
+        updatedCapitalEquipment.PastFundings.Clear();
+        
         await repository.UpdateAsync(updatedCapitalEquipment, cancellationToken);
 
-        var pastFundingOverwrites = request.Funding.PastFundings.Adapt<List<PastFunding>>();
+        var pastFundingChildren = request.Funding.PastFundings.Adapt<List<PastFunding>>();
         
-        //capitalEquipment.PastFundings.AddRange(request.Funding.PastFundings.Adapt<List<PastFunding>>());
-        updatedCapitalEquipment = await repository.GetByIdAsync(request.Id);
-        updatedCapitalEquipment.PastFundings = request.Funding.PastFundings.Adapt<List<PastFunding>>();
-        await repository.SaveChangesAsync(cancellationToken);
+        foreach (PastFunding pastFunding in pastFundingChildren)
+        {
+            pastFunding.CapitalEquipmentId = request.Id;
+        }
+
+        await repositoryPastFunding.AddRangeAsync(pastFundingChildren, cancellationToken);
         
         logger.LogInformation("CapitalEquipment with id : {CapitalEquipmentId} updated.", updatedCapitalEquipment.Id);
+        
         return new UpdateCapitalEquipmentResponse(capitalEquipment.Id);
     }
 }

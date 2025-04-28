@@ -7,6 +7,7 @@ using budget_request_app.WebApi.CapitalProject.Infrastructure;
 using budget_request_app.WebApi.FileService;
 using Carter;
 using FluentValidation;
+using FSH.Framework.Core.Persistence;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace budget_request_app.WebApi.Host;
@@ -42,6 +43,14 @@ public static class Extensions
         builder.RegisterCapitalEquipmentServices();
         builder.RegisterCapitalProjectServices();
         builder.RegisterFileServiceServices();
+
+        foreach (var service in builder.Services)
+        {
+            if (service.ServiceType.IsGenericType && service.ServiceType.GetGenericTypeDefinition() == typeof(IRepository<>))
+            {
+                Console.WriteLine($"Keyed Service: {service.ServiceType.FullName}, Lifetime: {service.Lifetime}");
+            }
+        }
 
         //add carter endpoint modules
         builder.Services.AddCarter(configurator: config =>
