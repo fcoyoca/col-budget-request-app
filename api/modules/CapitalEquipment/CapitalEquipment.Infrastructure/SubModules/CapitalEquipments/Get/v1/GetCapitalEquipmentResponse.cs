@@ -28,7 +28,7 @@ public class FundingResponseDTO
     public List<FundingItemDTO> SpecialFundings { get; set; }
     public List<FundingItemDTO> OtherFundings { get; set; }
     public List<FundingItemDTO> OutsideFundings { get; set; }
-    public List<PastFundingDTO> PastFundings { get; set; }
+    public List<CapitalEquipmentPastFundingDTO> PastFundings { get; set; }
 }
 
 public class FundingItemDTO
@@ -42,7 +42,7 @@ public class FundingItemDTO
     public List<FundingYearItem>? YearEstimates { get; set; } = new();
 }
 
-public class PastFundingDTO
+public class CapitalEquipmentPastFundingDTO
 {
     public string? Details { get; set; }
     public int? Year  { get; set; }
