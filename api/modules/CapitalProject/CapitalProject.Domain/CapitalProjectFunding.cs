@@ -34,6 +34,7 @@ public class GrantFunding : CapitalProjectFundingBase
     public string? GrantingAgency { get; set; }
     public decimal? CashMatchPercentage { get; set; }
     public decimal? CashMatchAmount { get; set; }
+    public string? Description { get; set; }
 }
 
 public class DonationFunding : CapitalProjectFundingBase
