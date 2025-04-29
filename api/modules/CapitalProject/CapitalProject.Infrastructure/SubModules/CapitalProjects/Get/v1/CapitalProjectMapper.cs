@@ -50,7 +50,9 @@ public static class CapitalProjectMapper
                 DonationFundingIsContributeFundsRequired = capitalProjectItem.DonationFundingIsContributeFundsRequired,
                 DonationFundingIsDonatedFundsUsed = capitalProjectItem.DonationFundingIsDonatedFundsUsed,
                 DonationFundings = capitalProjectItem.DonationFundings.Adapt<List<DonationFundingDTO>>()
-            }
+            },
+            SpecialFundings = capitalProjectItem.SpecialFundings.Adapt<List<SpecialFundingDTO>>(),
+            OtherFundings = capitalProjectItem.OtherFundings.Adapt<List<OtherFundingDTO>>(),
         };
         
         

@@ -53,6 +53,8 @@ public sealed class UpdateCapitalProjectHandler(
         capitalProject.FundingChanges = new();
         capitalProject.PastFundings = new();
         capitalProject.PastSpendings = new();
+        capitalProject.OperatingCosts = new();
+        capitalProject.OperatingRevenues = new();
 
         await repository.SaveChangesAsync(cancellationToken);
         
@@ -67,6 +69,9 @@ public sealed class UpdateCapitalProjectHandler(
         capitalProject.PastFundings = pastFundings.Adapt<List<PastFunding>>();
         capitalProject.PastSpendings = pastSpendings.Adapt<List<PastSpending>>();
 
+        capitalProject.OperatingCosts = operatingCosts.Adapt<List<OperatingCost>>();
+        capitalProject.OperatingRevenues = operatingRevenues.Adapt<List<OperatingRevenue>>();
+
         capitalProject.BudgetId = request.BudgetId;
         capitalProject.RevisionTitle = request.RevisionTitle;
         
@@ -75,8 +80,6 @@ public sealed class UpdateCapitalProjectHandler(
         CopyFields(statusTimeline, capitalProject.StatusTimeline);
         CopyFields(approvalOversight, capitalProject.ApprovalOversight);
         CopyFields(grantFundingOpportunity, capitalProject.GrantFundingOpportunity);
-        CopyFields(operatingCosts, capitalProject.OperatingCosts);
-        CopyFields(operatingRevenues, capitalProject.OperatingRevenues);
         CopyFields(minorProjects, capitalProject.MinorProjects);
         CopyFields(streetSegments, capitalProject.StreetSegments);
         CopyFields(projectManagement, capitalProject.ProjectManagement);
@@ -98,7 +101,6 @@ public sealed class UpdateCapitalProjectHandler(
     {
         if (source == null || target == null)
             throw new ArgumentNullException();
-
         Type sourceType = source.GetType();
         Type targetType = target.GetType();
 
@@ -106,13 +108,16 @@ public sealed class UpdateCapitalProjectHandler(
 
         foreach (var field in sourceFields)
         {
-            var targetField = targetType.GetField(field.Name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-            if (targetField != null && targetField.FieldType == field.FieldType)
+            if (field.Name != "Id")
             {
-                if (field.Name != "Id")
+                var targetField = targetType.GetField(field.Name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                if (targetField != null && targetField.FieldType == field.FieldType)
                 {
                     var value = field.GetValue(source);
-                    targetField.SetValue(target, value);
+                    if (value != null)
+                    {
+                        targetField.SetValue(target, value);
+                    }
                 }
             }
         }
