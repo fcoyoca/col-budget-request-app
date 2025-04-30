@@ -10,5 +10,15 @@ public sealed record SearchCapitalProjectResponse(
     string? RequestingDepartment,
     string? DepartmentHeadRequestor,
     string? RequestStatus,
-    string? DepartmentPriorityRanking
+    string? DepartmentPriorityRanking,
+    
+    string? BudgetId,
+    string? RevisionTitle,
+    GeneralInformationDTO? GeneralInformation,
+    TimeJustificationApprovalDTO? TimeJustificationApproval,
+    OperatingBudgetImpactDTO? OperatingBudgetImpact,
+    MinorProjectLocationDTO? MinorProjectLocation,
+    FinancialDTO? Financial,
+    ProjectManagementDTO? ProjectManagement,
+    List<ProjectAttachmentDTO>? Attachments
     );
