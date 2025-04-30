@@ -56,7 +56,7 @@ public sealed class UpdateCapitalProjectHandler(
         capitalProject.OperatingCosts = new();
         capitalProject.OperatingRevenues = new();
 
-        await repository.SaveChangesAsync(cancellationToken);
+        //await repository.SaveChangesAsync(cancellationToken);
         
         capitalProject.BorrowingFundings = borrowingFundings.Adapt<List<BorrowingFunding>>();
         capitalProject.OperatingFundings = operatingFundings.Adapt<List<OperatingFunding>>();
