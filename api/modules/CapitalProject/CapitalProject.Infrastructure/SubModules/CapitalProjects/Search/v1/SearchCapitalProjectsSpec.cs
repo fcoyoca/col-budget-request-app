@@ -25,7 +25,7 @@ public class SearchCapitalProjectsSpec : EntitiesByPaginationFilterSpec<CapitalP
             .Include(x => x.StreetSegments)
 
             .Include(x => x.BorrowingFundings)
-            
+
             .Include(x => x.OperatingFundings)
             .Include(x => x.GrantFundings)
             .Include(x => x.DonationFundings)
@@ -36,5 +36,6 @@ public class SearchCapitalProjectsSpec : EntitiesByPaginationFilterSpec<CapitalP
             .Include(x => x.PastFundings)
             .Include(x => x.PastSpendings)
             .Include(x => x.ProjectManagement)
-            .Where(x => x.Id == Guid.Parse("26109f84-54f4-40f0-a319-3f9404ddd545"));
+            .AsSplitQuery();
+    //.Where(x => x.Id == Guid.Parse("26109f84-54f4-40f0-a319-3f9404ddd545"));
 }

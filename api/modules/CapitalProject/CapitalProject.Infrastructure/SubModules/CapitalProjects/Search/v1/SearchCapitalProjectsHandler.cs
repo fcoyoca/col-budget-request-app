@@ -59,8 +59,7 @@ public sealed class SearchCapitalProjectsHandler(
                 x.Attachments
                 )
             );
-        
-        Console.WriteLine("miming");
+
         return new PagedList<SearchCapitalProjectResponse>(itemsMapped.ToList(), request!.PageNumber, request!.PageSize, totalCount);
     }
 }
