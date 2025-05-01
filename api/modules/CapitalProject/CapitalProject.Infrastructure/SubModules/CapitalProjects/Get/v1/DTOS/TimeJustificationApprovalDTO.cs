@@ -46,6 +46,7 @@ public class ApprovalOversightDTO
     public DateTime? DateOfOversightApproval { get; set; }
     public string? LegistarApprovalNumber { get; set; }
     public bool? HasRequiredOtherApproval { get; set; } = false;
+    public bool? RequireOtherApproval { get; set; } = false;
     public bool? HasReceivedOtherApproval { get; set; } = false;
     public string? ReceivedOtherApprovals { get; set; }
     public string? RemainingOtherApprovals { get; set; }
