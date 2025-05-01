@@ -32,7 +32,7 @@ public sealed class SearchCapitalProjectsHandler(
         
         var fundingYearItems = await repositoryFundingYearItem.ListAsync(cancellationToken);
         var files = await fileRepository.ListAsync();
-
+        
         var mappedToGetResponse = items.Select(
             x => CapitalProjectMapper.GetResponse(x,lookupValues,fundingYearItems,files)
         );
@@ -59,6 +59,8 @@ public sealed class SearchCapitalProjectsHandler(
                 x.Attachments
                 )
             );
+        
+        Console.WriteLine("miming");
         return new PagedList<SearchCapitalProjectResponse>(itemsMapped.ToList(), request!.PageNumber, request!.PageSize, totalCount);
     }
 }
