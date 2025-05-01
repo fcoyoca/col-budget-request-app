@@ -24,7 +24,7 @@ public static class CapitalProjectMapper
         TimeJustificationApprovalDTO timeJustificationApproval = new()
         {
             JustificationPrioritization = capitalProjectItem.JustificationPrioritization.Adapt<JustificationPrioritizationDTO>(),
-            GrantFundingOpportunity = capitalProjectItem.GrantFundingOpportunity.Adapt<GrantFundingOpportunityDTO>(),
+            GrantFundingOpportunity = grantFundingOpportunity,
             ApprovalOversight = approvalOversight,
             StatusTimeline = statusTimeline,
         };
