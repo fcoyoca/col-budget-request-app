@@ -25,6 +25,7 @@ public class StatusTimelineDTO
     public string? EndYearMonth { get; set; }
     public string? CurrentStatus { get; set; }
     public string? DepartmentPointOfContactId { get; set; }
+    public string? DepartmentPointOfContactValue { get; set; }
     public string? ReasonForMoreThanOneYear { get; set; }
 }
 
@@ -35,6 +36,7 @@ public class GrantFundingOpportunityDTO
     public decimal? TimeSpentReviewingGrantFunding { get; set; }
     public bool? WasCongressionallyDirectedSpendingRequestMade { get; set; } = false;
     public string? CongressionallyDirectedSpendingRequestOffice { get; set; }
+    public string? CongressionallyDirectedSpendingRequestOfficeValue { get; set; }
 }
 
 public class ApprovalOversightDTO
@@ -45,6 +47,7 @@ public class ApprovalOversightDTO
     public DateTime? ApprovedMasterPlanDate { get; set; }
     public bool? HasRequestBeenApprovedByOversight { get; set; } = false;
     public Guid? ApprovingOversightBoardId { get; set; }
+    public string? ApprovingOversightBoardValue { get; set; }
     public DateTime? DateOfOversightApproval { get; set; }
     public string? LegistarApprovalNumber { get; set; }
     public bool? HasRequiredOtherApproval { get; set; } = false;

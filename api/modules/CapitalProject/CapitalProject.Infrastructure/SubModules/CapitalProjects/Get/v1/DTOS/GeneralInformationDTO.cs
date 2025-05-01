@@ -8,9 +8,13 @@ public class GeneralInformationDTO
     public string? Title { get; set; }
     public string? Description { get; set; }
     public string? RequestingDepartmentIds { get; set; }
+    public string? RequestingDepartmentValue { get; set; }
     public string? DepartmentHeadRequestorId { get; set; }
+    public string? DepartmentHeadRequestorValue { get; set; }
     public string? RequestTypeId { get; set; }
+    public string? RequestTypeValue { get; set; }
     public bool? RequiresTwoThirdsApproval { get; set; } = false;
     public string? RemarksPrintout { get; set; }
     public string? RequestGroupId { get; set; }
+    public string? RequestGroupValue { get; set; }
 }

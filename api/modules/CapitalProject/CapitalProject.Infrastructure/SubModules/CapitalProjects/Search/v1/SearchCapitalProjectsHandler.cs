@@ -43,8 +43,8 @@ public sealed class SearchCapitalProjectsHandler(
             x => new SearchCapitalProjectResponse(
                 x.Id,
                 x.GeneralInformation?.Title,
-                MapToLookupNames(x.GeneralInformation.RequestingDepartmentIds, lookupValues),
-                MapToLookupNames(x.GeneralInformation.DepartmentHeadRequestorId, lookupValues),
+                CapitalProjectMapper.MapToLookupNames(x.GeneralInformation.RequestingDepartmentIds, lookupValues),
+                CapitalProjectMapper.MapToLookupNames(x.GeneralInformation.DepartmentHeadRequestorId, lookupValues),
                 lookupValues.FirstOrDefault(y => y.Id == Guid.Parse(x.GeneralInformation.RequestStatusId))?.Name,
                 x.TimeJustificationApproval.JustificationPrioritization.DepartmentPriorityRanking.ToString(),
                 
@@ -60,24 +60,6 @@ public sealed class SearchCapitalProjectsHandler(
                 )
             );
         return new PagedList<SearchCapitalProjectResponse>(itemsMapped.ToList(), request!.PageNumber, request!.PageSize, totalCount);
-    }
-
-    private string MapToLookupNames(string delimitedIds, List<LookupValueItem> items)
-    {
-        if (string.IsNullOrWhiteSpace(delimitedIds))
-        {
-            return string.Empty;
-        }
-
-        var ids = delimitedIds
-            .Trim()
-            .Split(",")
-            .Select(id => Guid.Parse(id.Trim()));
-
-        items = items.Where(x => ids.Contains(x.Id)).ToList();
-        
-        var names = items.Select(x => x.Name).ToList();
-        return string.Join(',', names);
     }
 }
 

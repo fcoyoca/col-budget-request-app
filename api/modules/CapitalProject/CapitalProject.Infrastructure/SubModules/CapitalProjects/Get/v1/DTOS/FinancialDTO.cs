@@ -46,6 +46,9 @@ public class CapitalProjectFundingBase
 {
     public Guid? Id { get; set; }
     public Guid? ExpenditureCategoryId { get; set; } = Guid.Empty;
+    public string? ExpenditureCategoryName { get; set; }
+    public string? FundingSourceName { get; set; }
+    
     public FundingYearItemDTO? YearRequested { get; set; }
     public List<FundingYearItemDTO>? YearEstimates { get; set; } = new();
 }
@@ -90,6 +93,7 @@ public class OtherFundingDTO : CapitalProjectFundingBase
 public class SpendingBudgetDTO : CapitalProjectFundingBase
 {
     public Guid? SpendingPurposeId { get; set; } = Guid.Empty;
+    public string? SpendingPurposeName { get; set; }
 }
 public class FundingYearItemDTO
 {
@@ -102,7 +106,9 @@ public class FundingChangeDTO
 {
     public Guid Id { get; set; }
     public Guid? ChangeSetId { get; set; }
+    public string? ChangeSetValue { get; set; }
     public string? ChangeTypeIds { get; set; }
+    public string? ChangeTypeValue { get; set; }
     public string? Changes { get; set; }
 }
 
@@ -110,18 +116,23 @@ public class PastFundingDTO
 {
     public Guid Id { get; set; }
     public Guid? ExpenditureCategoryId { get; set; }
+    public string? ExpenditureCategoryName { get; set; }
     public string? SourceOfFunds { get; set; }
     public string? Details { get; set; }
     public int? Year { get; set; }
     public decimal? Amount { get; set; }
     public string? CIPItemNumber { get; set; }
     public Guid? FundingSourceId { get; set; }
+    public string? FundingSourceName { get; set; }
     public Guid? FundingSubSourceId { get; set; }
+    public string? FundingSubSourceName { get; set; }
 }
 
 public class PastSpendingDTO
 {
     public Guid Id { get; set; }
     public Guid? ExpenditureCategoryId { get; set; }
+    public string? ExpenditureCategoryName { get; set; }
     public Guid? SpendingPurposeId { get; set; } = Guid.Empty;
+    public string? SpendingPurposeName { get; set; }
 }
