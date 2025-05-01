@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using budget_request_app.WebApi.CapitalProject.Infrastructure.Persistence;
 
@@ -11,9 +12,11 @@ using budget_request_app.WebApi.CapitalProject.Infrastructure.Persistence;
 namespace budget_request_app.WebApi.Migrations.MSSQL.CapitalProject
 {
     [DbContext(typeof(CapitalProjectDbContext))]
-    partial class CapitalProjectDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250501020707_approvaloversight")]
+    partial class approvaloversight
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

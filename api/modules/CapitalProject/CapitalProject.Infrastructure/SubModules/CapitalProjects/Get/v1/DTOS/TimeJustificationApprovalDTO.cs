@@ -41,6 +41,8 @@ public class ApprovalOversightDTO
 {
     public Guid? Id { get; set; }
     public bool? PartOfApprovedMasterPlan  { get; set; } = false;
+    public string? ApprovedMasterPlanTitle { get; set; }
+    public DateTime? ApprovedMasterPlanDate { get; set; }
     public bool? HasRequestBeenApprovedByOversight { get; set; } = false;
     public Guid? ApprovingOversightBoardId { get; set; }
     public DateTime? DateOfOversightApproval { get; set; }
