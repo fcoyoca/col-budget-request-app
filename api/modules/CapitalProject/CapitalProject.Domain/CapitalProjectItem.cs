@@ -35,6 +35,11 @@ public class CapitalProjectItem : AuditableEntity, IAggregateRoot
     public List<DonationFunding> DonationFundings { get; set; }
     public bool? DonationFundingIsContributeFundsRequired { get; set; }
     public bool? DonationFundingIsDonatedFundsUsed { get; set; } = false;
+    public decimal? AmountAdvanced { get; set; }
+    public string? AdvancedFundsDescription { get; set; }
+    public decimal? DonatedAmountCollected { get; set; }
+    public decimal? AmountDonated { get; set; }
+    public string? DonationArrangements { get; set; }
     public List<SpecialFunding> SpecialFundings { get; set; }
     public List<OtherFunding> OtherFundings { get; set; }
     

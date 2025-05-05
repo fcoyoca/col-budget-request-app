@@ -39,6 +39,11 @@ public class DonationFundingParentDTO
 {
     public bool? DonationFundingIsContributeFundsRequired { get; set; }
     public bool? DonationFundingIsDonatedFundsUsed { get; set; }
+    public decimal? AmountAdvanced { get; set; }
+    public string? AdvancedFundsDescription { get; set; }
+    public decimal? DonatedAmountCollected { get; set; }
+    public decimal? AmountDonated { get; set; }
+    public string? DonationArrangements { get; set; }
     public List<DonationFundingDTO>? DonationFundings { get; set; }
 }
 

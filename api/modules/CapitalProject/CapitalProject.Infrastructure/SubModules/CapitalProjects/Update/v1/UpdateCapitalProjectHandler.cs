@@ -17,6 +17,8 @@ public sealed class UpdateCapitalProjectHandler(
     public async Task<UpdateCapitalProjectResponse> Handle(UpdateCapitalProjectCommand request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
+
+        var donationFundingParent = request.Financial?.Funding?.DonationFunding;
         
         var justificationPrioritization = request.TimeJustificationApproval?.JustificationPrioritization;
         var statusTimeline = request.TimeJustificationApproval?.StatusTimeline;
@@ -30,9 +32,14 @@ public sealed class UpdateCapitalProjectHandler(
         var borrowingFundings = request.Financial?.Funding?.BorrowingFundings;
         var operatingFundings = request.Financial?.Funding?.OperatingFundings;
         var grantFundings = request.Financial?.Funding?.GrantFundings;
-        var donationFundingIsDonatedFundsUsed = request.Financial?.Funding?.DonationFunding?.DonationFundingIsDonatedFundsUsed;
-        var donationFundingIsContributeFundsRequired = request.Financial?.Funding?.DonationFunding?.DonationFundingIsContributeFundsRequired;
-        var donationFundings = request.Financial?.Funding?.DonationFunding?.DonationFundings;
+        var donationFundingIsDonatedFundsUsed = donationFundingParent?.DonationFundingIsDonatedFundsUsed;
+        var donationFundingIsContributeFundsRequired = donationFundingParent?.DonationFundingIsContributeFundsRequired;
+        var amountAdvanced = donationFundingParent?.AmountAdvanced;
+        var advancedFundsDescription = donationFundingParent?.AdvancedFundsDescription;
+        var donatedAmountCollected = donationFundingParent?.DonatedAmountCollected;
+        var amountDonated = donationFundingParent?.AmountDonated;
+        var donationArrangements = donationFundingParent?.DonationArrangements;
+        var donationFundings = donationFundingParent?.DonationFundings;
         var specialFundings = request.Financial?.Funding?.SpecialFundings;
         var otherFundings = request.Financial?.Funding?.OtherFundings;
         var spendingBudgets = request.Financial?.Spending?.SpendingBudgets;
@@ -89,6 +96,12 @@ public sealed class UpdateCapitalProjectHandler(
         capitalProject.TIFFundingIds = tifFundingIds;
         capitalProject.DonationFundingIsDonatedFundsUsed = donationFundingIsDonatedFundsUsed;
         capitalProject.DonationFundingIsContributeFundsRequired = donationFundingIsContributeFundsRequired;
+        capitalProject.AmountAdvanced = amountAdvanced;
+        capitalProject.AdvancedFundsDescription = advancedFundsDescription;
+        capitalProject.DonatedAmountCollected = donatedAmountCollected;
+        capitalProject.AmountDonated = amountDonated;
+        capitalProject.DonationArrangements = donationArrangements;
+        
         capitalProject.FileIds = request.FileIds;
         
         await repository.UpdateAsync(capitalProject, cancellationToken);

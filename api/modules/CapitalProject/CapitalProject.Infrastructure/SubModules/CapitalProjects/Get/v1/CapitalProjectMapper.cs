@@ -63,28 +63,28 @@ public static class CapitalProjectMapper
             operatingFunding.FundingSourceName = MapToLookupNames(operatingFunding.FundingSourceId.GetValueOrDefault(), lookupValues);
         }
         
-        var grantFundings = capitalProjectItem.OperatingFundings.Adapt<List<GrantFundingDTO>>();
+        var grantFundings = capitalProjectItem.GrantFundings.Adapt<List<GrantFundingDTO>>();
         foreach (var grantFunding in grantFundings)
         {
             grantFunding.ExpenditureCategoryName = MapToLookupNames(grantFunding.ExpenditureCategoryId.GetValueOrDefault(), lookupValues);
             grantFunding.FundingSourceName = MapToLookupNames(grantFunding.FundingSourceId.GetValueOrDefault(), lookupValues);
         }
         
-        var donationFundings = capitalProjectItem.OperatingFundings.Adapt<List<DonationFundingDTO>>();
+        var donationFundings = capitalProjectItem.DonationFundings.Adapt<List<DonationFundingDTO>>();
         foreach (var donationFunding in donationFundings)
         {
             donationFunding.ExpenditureCategoryName = MapToLookupNames(donationFunding.ExpenditureCategoryId.GetValueOrDefault(), lookupValues);
             donationFunding.FundingSourceName = MapToLookupNames(donationFunding.FundingSourceId.GetValueOrDefault(), lookupValues);
         }
         
-        var specialFundings = capitalProjectItem.OperatingFundings.Adapt<List<SpecialFundingDTO>>();
+        var specialFundings = capitalProjectItem.SpecialFundings.Adapt<List<SpecialFundingDTO>>();
         foreach (var specialFunding in specialFundings)
         {
             specialFunding.ExpenditureCategoryName = MapToLookupNames(specialFunding.ExpenditureCategoryId.GetValueOrDefault(), lookupValues);
             specialFunding.FundingSourceName = MapToLookupNames(specialFunding.FundingSourceId.GetValueOrDefault(), lookupValues);
         }
         
-        var otherFundings = capitalProjectItem.OperatingFundings.Adapt<List<OtherFundingDTO>>();
+        var otherFundings = capitalProjectItem.OtherFundings.Adapt<List<OtherFundingDTO>>();
         foreach (var otherFunding in otherFundings)
         {
             otherFunding.ExpenditureCategoryName = MapToLookupNames(otherFunding.ExpenditureCategoryId.GetValueOrDefault(), lookupValues);
@@ -101,6 +101,10 @@ public static class CapitalProjectMapper
             {
                 DonationFundingIsContributeFundsRequired = capitalProjectItem.DonationFundingIsContributeFundsRequired,
                 DonationFundingIsDonatedFundsUsed = capitalProjectItem.DonationFundingIsDonatedFundsUsed,
+                AmountAdvanced  = capitalProjectItem.AmountAdvanced,
+                AdvancedFundsDescription = capitalProjectItem.AdvancedFundsDescription,
+                DonatedAmountCollected = capitalProjectItem.DonatedAmountCollected,
+                AmountDonated = capitalProjectItem.AmountDonated,
                 DonationFundings = donationFundings
             },
             SpecialFundings = specialFundings,

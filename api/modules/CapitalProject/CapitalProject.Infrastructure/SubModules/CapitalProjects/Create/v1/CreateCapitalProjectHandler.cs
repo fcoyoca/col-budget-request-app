@@ -14,6 +14,8 @@ public sealed class CreateCapitalProjectHandler(
     public async Task<CreateCapitalProjectResponse> Handle(CreateCapitalProjectCommand request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
+
+        var donationFundingParent = request.Financial?.Funding?.DonationFunding;
         
         var justificationPrioritization = request.TimeJustificationApproval?.JustificationPrioritization;
         var statusTimeline = request.TimeJustificationApproval?.StatusTimeline;
@@ -27,9 +29,14 @@ public sealed class CreateCapitalProjectHandler(
         var borrowingFundings = request.Financial?.Funding?.BorrowingFundings;
         var operatingFundings = request.Financial?.Funding?.OperatingFundings;
         var grantFundings = request.Financial?.Funding?.GrantFundings;
-        var donationFundingIsDonatedFundsUsed = request.Financial?.Funding?.DonationFunding?.DonationFundingIsDonatedFundsUsed;
-        var donationFundingIsContributeFundsRequired = request.Financial?.Funding?.DonationFunding?.DonationFundingIsContributeFundsRequired;
-        var donationFundings = request.Financial?.Funding?.DonationFunding?.DonationFundings;
+        var donationFundingIsDonatedFundsUsed = donationFundingParent?.DonationFundingIsDonatedFundsUsed;
+        var donationFundingIsContributeFundsRequired = donationFundingParent?.DonationFundingIsContributeFundsRequired;
+        var amountAdvanced = donationFundingParent?.AmountAdvanced;
+        var advancedFundsDescription = donationFundingParent?.AdvancedFundsDescription;
+        var donatedAmountCollected = donationFundingParent?.DonatedAmountCollected;
+        var amountDonated = donationFundingParent?.AmountDonated;
+        var donationArrangements = donationFundingParent?.DonationArrangements;
+        var donationFundings = donationFundingParent?.DonationFundings;
         var specialFundings = request.Financial?.Funding?.SpecialFundings;
         var otherFundings = request.Financial?.Funding?.OtherFundings;
         var spendingBudgets = request.Financial?.Spending?.SpendingBudgets;
@@ -59,6 +66,11 @@ public sealed class CreateCapitalProjectHandler(
             GrantFundings = grantFundings.Adapt<List<GrantFunding>>(),
             DonationFundingIsDonatedFundsUsed = donationFundingIsDonatedFundsUsed,
             DonationFundingIsContributeFundsRequired = donationFundingIsContributeFundsRequired,
+            AmountAdvanced = amountAdvanced,
+            AdvancedFundsDescription = advancedFundsDescription,
+            DonatedAmountCollected = donatedAmountCollected,
+            AmountDonated = amountDonated,
+            DonationArrangements = donationArrangements,
             DonationFundings = donationFundings.Adapt<List<DonationFunding>>(),
             SpecialFundings = specialFundings.Adapt<List<SpecialFunding>>(),
             OtherFundings = otherFundings.Adapt<List<OtherFunding>>(),
