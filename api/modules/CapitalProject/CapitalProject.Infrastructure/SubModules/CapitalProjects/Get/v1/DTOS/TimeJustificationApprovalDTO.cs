@@ -16,6 +16,8 @@ public class JustificationPrioritizationDTO
     public string? OutcomeMeasurement { get; set; }
     public string? BudgetDetermination { get; set; }
     public string? SustainabilityGoals { get; set; }
+    public decimal? ProjectRankScore { get; set; }
+    public int? ProjectScoreYear { get; set; }
 }
 
 public class StatusTimelineDTO
