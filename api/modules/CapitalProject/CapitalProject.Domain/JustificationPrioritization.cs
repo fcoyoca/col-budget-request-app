@@ -10,4 +10,6 @@ public class JustificationPrioritization : AuditableEntity, IAggregateRoot
     public string? OutcomeMeasurement { get; set; }
     public string? BudgetDetermination { get; set; }
     public string? SustainabilityGoals { get; set; }
+    public decimal? ProjectRankScore { get; set; }
+    public int? ProjectScoreYear { get; set; }
 }
