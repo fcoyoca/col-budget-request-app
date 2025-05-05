@@ -49,7 +49,9 @@ public class CapitalEquipmentPastFundingDTO
     public decimal? Amount { get; set; }
     public string? Request { get; set; }
     public Guid? FundingSource { get; set; } = Guid.Empty;
+    public string? FundingSourceValue { get; set; }
     public Guid? FundingSubSource { get; set; } = Guid.Empty;
+    public string? FundingSubSourceValue { get; set; }
     public string? SOF  { get; set; }
 }
 

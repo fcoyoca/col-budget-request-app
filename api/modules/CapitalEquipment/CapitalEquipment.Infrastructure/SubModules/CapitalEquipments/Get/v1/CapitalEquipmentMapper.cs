@@ -123,6 +123,13 @@ public static class CapitalEquipmentMapper
             fundingItem.GrantingAgencyValue = lookupValues.FirstOrDefault(x => x.Id.ToString() == fundingItem.GrantingAgency)?.Name;
         }
 
+        var pastFundings = capitalEquipmentItem.PastFundings.Adapt<List<CapitalEquipmentPastFundingDTO>>();
+        foreach (CapitalEquipmentPastFundingDTO pastFunding in pastFundings)
+        {
+            pastFunding.FundingSourceValue = lookupValues.FirstOrDefault(x => x.Id == pastFunding.FundingSource)?.Name;
+            pastFunding.FundingSubSourceValue = lookupValues.FirstOrDefault(x => x.Id == pastFunding.FundingSubSource)?.Name;
+        }
+
         FundingResponseDTO funding = new()
         {
             BorrowingFundings = fundingItems.Where(x => x.FundingType == FundingTab.Borrowing).ToList(),
@@ -131,7 +138,7 @@ public static class CapitalEquipmentMapper
             OutsideFundings = fundingItems.Where(x => x.FundingType == FundingTab.Outside).ToList(),
             SpecialFundings = fundingItems.Where(x => x.FundingType == FundingTab.Special).ToList(),
             OtherFundings = fundingItems.Where(x => x.FundingType == FundingTab.Other).ToList(),
-            PastFundings = capitalEquipmentItem.PastFundings.Adapt<List<CapitalEquipmentPastFundingDTO>>()
+            PastFundings = pastFundings
         };
         
         var attachments = new List<AttachmentDTO>();
