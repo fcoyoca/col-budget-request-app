@@ -101,6 +101,7 @@ public static class CapitalProjectMapper
             {
                 DonationFundingIsContributeFundsRequired = capitalProjectItem.DonationFundingIsContributeFundsRequired,
                 DonationFundingIsDonatedFundsUsed = capitalProjectItem.DonationFundingIsDonatedFundsUsed,
+                DonationArrangements = capitalProjectItem.DonationArrangements,
                 AmountAdvanced  = capitalProjectItem.AmountAdvanced,
                 AdvancedFundsDescription = capitalProjectItem.AdvancedFundsDescription,
                 DonatedAmountCollected = capitalProjectItem.DonatedAmountCollected,
