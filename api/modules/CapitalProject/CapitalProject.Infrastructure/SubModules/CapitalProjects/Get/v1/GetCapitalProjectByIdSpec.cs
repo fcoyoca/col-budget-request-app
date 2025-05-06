@@ -33,7 +33,8 @@ public class GetCapitalProjectByIdSpec : Specification<CapitalProjectItem>
             .Include(x => x.FundingChanges)
             .Include(x => x.PastFundings)
             .Include(x => x.PastSpendings)
-            .Include(x => x.ProjectManagement);
+            .Include(x => x.ProjectManagement)
+            .AsSplitQuery();
 
     }
 }
