@@ -2,6 +2,7 @@
 using Asp.Versioning.Conventions;
 using budget_request_app.WebApi.LookupCategory;
 using budget_request_app.WebApi.LookupValue;
+using budget_request_app.WebApi.BudgetYear;
 using budget_request_app.WebApi.CapitalEquipment.Infrastructure;
 using budget_request_app.WebApi.CapitalProject.Infrastructure;
 using budget_request_app.WebApi.FileService;
@@ -26,6 +27,7 @@ public static class Extensions
             typeof(CapitalEquipmentModule).Assembly,
             typeof(CapitalProjectModule).Assembly,
             typeof(FileServiceModule).Assembly,
+            typeof(BudgetYearModule).Assembly,
         };
 
         //register validators
@@ -43,14 +45,7 @@ public static class Extensions
         builder.RegisterCapitalEquipmentServices();
         builder.RegisterCapitalProjectServices();
         builder.RegisterFileServiceServices();
-
-        foreach (var service in builder.Services)
-        {
-            if (service.ServiceType.IsGenericType && service.ServiceType.GetGenericTypeDefinition() == typeof(IRepository<>))
-            {
-                Console.WriteLine($"Keyed Service: {service.ServiceType.FullName}, Lifetime: {service.Lifetime}");
-            }
-        }
+        builder.RegisterBudgetYearServices();
 
         //add carter endpoint modules
         builder.Services.AddCarter(configurator: config =>
@@ -60,6 +55,7 @@ public static class Extensions
             config.WithModule<CapitalEquipmentModule.Endpoints>();
             config.WithModule<CapitalProjectModule.Endpoints>();
             config.WithModule<FileServiceModule.Endpoints>();
+            config.WithModule<BudgetYearModule.Endpoints>();
         });
         
         return builder;
@@ -75,6 +71,7 @@ public static class Extensions
         app.UseCapitalEquipmentModule();
         app.UseCapitalProjectModule();
         app.UseFileServiceModule();
+        app.UseBudgetYearModule();
 
         //register api versions
         var versions = app.NewApiVersionSet()
