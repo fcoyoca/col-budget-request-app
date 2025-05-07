@@ -112,7 +112,7 @@ public static class CapitalProjectMapper
             OtherFundings = otherFundings,
         };
         
-        var spendingBudgets = capitalProjectItem.OperatingFundings.Adapt<List<SpendingBudgetDTO>>();
+        var spendingBudgets = capitalProjectItem.SpendingBudgets.Adapt<List<SpendingBudgetDTO>>();
         foreach (var spendingBudget in spendingBudgets)
         {
             spendingBudget.ExpenditureCategoryName = MapToLookupNames(spendingBudget.ExpenditureCategoryId.GetValueOrDefault(), lookupValues);
@@ -124,7 +124,7 @@ public static class CapitalProjectMapper
             SpendingBudgets = spendingBudgets,
         };
         
-        var fundingChanges = capitalProjectItem.OperatingFundings.Adapt<List<FundingChangeDTO>>();
+        var fundingChanges = capitalProjectItem.FundingChanges.Adapt<List<FundingChangeDTO>>();
         foreach (var fundingChange in fundingChanges)
         {
             fundingChange.ChangeSetValue = MapToLookupNames(fundingChange.ChangeSetId.GetValueOrDefault(), lookupValues);
