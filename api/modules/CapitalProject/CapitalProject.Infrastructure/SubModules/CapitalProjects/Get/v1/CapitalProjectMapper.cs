@@ -136,7 +136,7 @@ public static class CapitalProjectMapper
             FundingChanges = fundingChanges,
         };
         
-        var pastFundings = capitalProjectItem.OperatingFundings.Adapt<List<PastFundingDTO>>();
+        var pastFundings = capitalProjectItem.PastFundings.Adapt<List<PastFundingDTO>>();
         foreach (var pastFunding in pastFundings)
         {
             pastFunding.ExpenditureCategoryName = MapToLookupNames(pastFunding.ExpenditureCategoryId.GetValueOrDefault(), lookupValues);
@@ -144,7 +144,7 @@ public static class CapitalProjectMapper
             pastFunding.FundingSubSourceName = MapToLookupNames(pastFunding.FundingSubSourceId.GetValueOrDefault(), lookupValues);
         }
         
-        var pastSpendings = capitalProjectItem.OperatingFundings.Adapt<List<PastSpendingDTO>>();
+        var pastSpendings = capitalProjectItem.PastSpendings.Adapt<List<PastSpendingDTO>>();
         foreach (var pastSpending in pastSpendings)
         {
             pastSpending.ExpenditureCategoryName = MapToLookupNames(pastSpending.ExpenditureCategoryId.GetValueOrDefault(), lookupValues);
