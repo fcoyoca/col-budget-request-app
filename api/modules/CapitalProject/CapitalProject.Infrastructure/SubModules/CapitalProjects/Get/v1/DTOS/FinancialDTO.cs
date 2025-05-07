@@ -140,4 +140,9 @@ public class PastSpendingDTO
     public string? ExpenditureCategoryName { get; set; }
     public Guid? SpendingPurposeId { get; set; } = Guid.Empty;
     public string? SpendingPurposeName { get; set; }
+    
+    public string? Details { get; set; }
+    public int? Year { get; set; }
+    public decimal? Amount { get; set; }
+    public string? CIPItemNumber { get; set; }
 }

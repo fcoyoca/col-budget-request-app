@@ -87,4 +87,8 @@ public class PastSpending : AuditableEntity, IAggregateRoot
 {
     public Guid? ExpenditureCategoryId { get; set; }
     public Guid? SpendingPurposeId { get; set; } = Guid.Empty;
+    public string? Details { get; set; }
+    public int? Year { get; set; }
+    public decimal? Amount { get; set; }
+    public string? CIPItemNumber { get; set; }
 }
