@@ -77,6 +77,7 @@ public static class FshPermissions
         new("Export CapitalProjects", FshActions.Export, FshResources.CapitalProjects),
         
         new("Create FileServiceItem", FshActions.Create, FshResources.FileServices),
+        new("Budget Year Cutover", FshActions.Create, FshResources.BudgetYears),
 
          new("View Hangfire", FshActions.View, FshResources.Hangfire),
          new("View Dashboard", FshActions.View, FshResources.Dashboard),

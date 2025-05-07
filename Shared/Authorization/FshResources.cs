@@ -18,4 +18,5 @@ public static class FshResources
     public const string FundingItems = nameof(FundingItems);
     public const string CapitalProjects = nameof(CapitalProjects);
     public const string FileServices = nameof(FileServices);
+    public const string BudgetYears = nameof(BudgetYears);
 }

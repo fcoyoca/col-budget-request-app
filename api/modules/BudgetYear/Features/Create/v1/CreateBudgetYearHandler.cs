@@ -12,18 +12,37 @@ public sealed class CreateBudgetYearHandler(
 {
     public async Task<CreateBudgetYearResponse> Handle(CreateBudgetYearCommand request, CancellationToken cancellationToken)
     {
-        ArgumentNullException.ThrowIfNull(request);
-
         var all = await repository.ListAsync(cancellationToken);
-
-        var maxYear = all.Select(x => x.BudgetYear).Max();
         var currentYear = DateTime.Now.Year;
 
-        if (maxYear >= currentYear)
+        if (all.Any() && !request.IsUndo.GetValueOrDefault())
         {
-            ArgumentNullException.ThrowIfNull(request);
+            var maxYear = all.Select(x => x.BudgetYear).Max();
+            if (maxYear < currentYear)
+            {
+                return await GetResponse(cancellationToken);
+            }
         }
 
+        if (!all.Any() && !request.IsUndo.GetValueOrDefault())
+        {
+
+            return await GetResponse(cancellationToken);
+        }
+
+        if (request.IsUndo.GetValueOrDefault())
+        {
+            var currentYearInserted = all.FirstOrDefault(x => x.BudgetYear == currentYear);
+            
+            await repository.DeleteAsync(currentYearInserted, cancellationToken);
+        }
+
+        return new CreateBudgetYearResponse(null);
+    }
+
+    private async Task<CreateBudgetYearResponse> GetResponse(CancellationToken cancellationToken)
+    {
+        var currentYear = DateTime.Now.Year;
         var item = BudgetYearItem.Create(currentYear);
         await repository.AddAsync(item, cancellationToken).ConfigureAwait(false);
         await repository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
