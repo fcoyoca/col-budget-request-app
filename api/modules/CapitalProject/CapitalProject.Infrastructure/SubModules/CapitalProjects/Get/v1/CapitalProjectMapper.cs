@@ -34,16 +34,30 @@ public static class CapitalProjectMapper
             OperatingRevenues = capitalProjectItem.OperatingRevenues.Adapt<List<OperatingRevenueDTO>>(),
             OperatingCosts = capitalProjectItem.OperatingCosts.Adapt<List<OperatingCostDTO>>()
         };
+
+        var minorProjects = capitalProjectItem.MinorProjects.Adapt<List<MinorProjectDTO>>();
+
+        foreach (var minorProject in minorProjects)
+        {
+            minorProject.ExpenditureCategoryValue = MapToLookupNames(minorProject.ExpenditureCategoryId, lookupValues);
+        }
         
+        var streetSegments = capitalProjectItem.StreetSegments.Adapt<List<StreetSegmentDTO>>();
+
+        foreach (var streetSegment in streetSegments)
+        {
+            streetSegment.StreetValue = MapToLookupNames(streetSegment.StreetValue, lookupValues);
+        }
+
         MinorProjectLocationDTO minorProjectLocation = new()
         {
-            MinorProjects = capitalProjectItem.MinorProjects.Adapt<List<MinorProjectDTO>>(),
+            MinorProjects = minorProjects,
             RequestLocation = new()
             {
                 IsMappedRequest = capitalProjectItem.IsMappedRequest,
                 GISMappingDescription = capitalProjectItem.GISMappingDescription,
             },
-            StreetSegments = capitalProjectItem.StreetSegments.Adapt<List<StreetSegmentDTO>>(),
+            StreetSegments = streetSegments,
         };
 
         FinancialDTO financial = new();
@@ -94,6 +108,7 @@ public static class CapitalProjectMapper
         financial.Funding = new()
         {
             TIFFundingIds = capitalProjectItem.TIFFundingIds,
+            TIFFundingValue = MapToLookupNames(capitalProjectItem.TIFFundingIds, lookupValues),
             BorrowingFundings = borrowingFundings,
             OperatingFundings = operatingFundings,
             GrantFundings = grantFundings,
@@ -211,7 +226,7 @@ public static class CapitalProjectMapper
         items = items.Where(x => ids.Contains(x.Id)).ToList();
         
         var names = items.Select(x => x.Name).ToList();
-        return string.Join(',', names);
+        return string.Join(", ", names);
     }
 
     public static string MapToLookupNames(Guid id, List<LookupValueItem> items)

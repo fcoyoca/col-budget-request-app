@@ -11,6 +11,7 @@ public class FinancialDTO
 public class FundingDTO
 {
     public string? TIFFundingIds { get; set; }
+    public string? TIFFundingValue { get; set; }
     public List<BorrowingFundingDTO>? BorrowingFundings { get; set; }
     public List<OperatingFundingDTO>? OperatingFundings { get; set; }
     public List<GrantFundingDTO>? GrantFundings { get; set; }
