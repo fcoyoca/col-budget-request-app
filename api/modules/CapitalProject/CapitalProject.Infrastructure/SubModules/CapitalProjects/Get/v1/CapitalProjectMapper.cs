@@ -62,7 +62,14 @@ public static class CapitalProjectMapper
 
         foreach (var streetSegment in streetSegments)
         {
-            streetSegment.StreetValue = MapToLookupNames(streetSegment.StreetValue, lookupValues);
+            streetSegment.PavementRatingValue = MapToLookupNames(streetSegment.PavementRating, lookupValues);
+            streetSegment.CurbRatingValue = MapToLookupNames(streetSegment.CurbRating, lookupValues);
+            streetSegment.PaveValue = MapToLookupNames(streetSegment.Pave, lookupValues);
+            streetSegment.RightOfWayValue = MapToLookupNames(streetSegment.RightOfWay, lookupValues);
+            streetSegment.SafetyImprovementsValue = MapToLookupNames(streetSegment.SafetyImprovements, lookupValues);
+            streetSegment.UtilityWorkValue = MapToLookupNames(streetSegment.UtilityWork, lookupValues);
+            streetSegment.StreetscapingLightingValue = MapToLookupNames(streetSegment.StreetscapingLighting, lookupValues);
+            streetSegment.SidewalksValue = MapToLookupNames(streetSegment.Sidewalks, lookupValues);
         }
 
         MinorProjectLocationDTO minorProjectLocation = new()

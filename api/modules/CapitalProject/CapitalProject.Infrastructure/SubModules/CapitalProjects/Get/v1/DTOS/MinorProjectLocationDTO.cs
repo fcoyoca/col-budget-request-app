@@ -32,13 +32,22 @@ public class StreetSegmentDTO
     public string Description { get; set; }
     public decimal Length { get; set; }
     public string PavementRating { get; set; }
+    public string? PavementRatingValue { get; set; }
     public string CurbRating { get; set; }
+    public string? CurbRatingValue { get; set; }
     public string CurbAndGutter { get; set; }
+    public string? CurbAndGutterValue { get; set; }
     public string Pave { get; set; }
+    public string? PaveValue { get; set; }
     public string RightOfWay { get; set; }
+    public string? RightOfWayValue { get; set; }
     public string SafetyImprovements { get; set; }
+    public string? SafetyImprovementsValue { get; set; }
     public string UtilityWork { get; set; }
+    public string? UtilityWorkValue { get; set; }
     public string StreetscapingLighting { get; set; }
+    public string? StreetscapingLightingValue { get; set; }
     public string Sidewalks { get; set; }
+    public string? SidewalksValue { get; set; }
     public string OtherWork { get; set; }
 }
