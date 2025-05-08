@@ -28,11 +28,27 @@ public static class CapitalProjectMapper
             ApprovalOversight = approvalOversight,
             StatusTimeline = statusTimeline,
         };
+
+        var operatingRevenues = capitalProjectItem.OperatingRevenues.Adapt<List<OperatingRevenueDTO>>();
+
+        foreach (var operatingRevenue in operatingRevenues)
+        {
+            operatingRevenue.FundingSourceValue = MapToLookupNames(operatingRevenue.FundingSourceId,lookupValues);
+            operatingRevenue.DepartmentValue = MapToLookupNames(operatingRevenue.DepartmentId,lookupValues);
+        }
         
+        var operatingCosts = capitalProjectItem.OperatingCosts.Adapt<List<OperatingCostDTO>>();
+
+        foreach (var operatingCost in operatingCosts)
+        {
+            operatingCost.FundingSourceValue = MapToLookupNames(operatingCost.FundingSourceId,lookupValues);
+            operatingCost.DepartmentValue = MapToLookupNames(operatingCost.DepartmentId,lookupValues);
+        }
+
         OperatingBudgetImpactDTO operatingBudgetImpact = new()
         {
-            OperatingRevenues = capitalProjectItem.OperatingRevenues.Adapt<List<OperatingRevenueDTO>>(),
-            OperatingCosts = capitalProjectItem.OperatingCosts.Adapt<List<OperatingCostDTO>>()
+            OperatingRevenues = operatingRevenues,
+            OperatingCosts = operatingCosts,
         };
 
         var minorProjects = capitalProjectItem.MinorProjects.Adapt<List<MinorProjectDTO>>();

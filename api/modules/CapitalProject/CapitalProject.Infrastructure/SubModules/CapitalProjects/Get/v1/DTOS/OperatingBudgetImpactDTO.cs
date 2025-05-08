@@ -12,7 +12,9 @@ public class OperatingCostDTO
 {
     public Guid? Id { get; set; }
     public Guid FundingSourceId { get; set; }
+    public string? FundingSourceValue { get; set; }
     public Guid DepartmentId { get; set; }
+    public string? DepartmentValue { get; set; }
     public string Description { get; set; }
     public int FTCount { get; set; }
     public decimal Amount { get; set; }
@@ -22,7 +24,9 @@ public class OperatingRevenueDTO
 {
     public Guid? Id { get; set; }
     public Guid FundingSourceId { get; set; }
+    public string? FundingSourceValue { get; set; }
     public Guid DepartmentId { get; set; }
+    public string? DepartmentValue { get; set; }
     public string Description { get; set; }
     public decimal Amount { get; set; }
 }
