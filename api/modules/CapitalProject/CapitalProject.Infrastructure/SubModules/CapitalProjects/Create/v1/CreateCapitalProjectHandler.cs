@@ -1,5 +1,7 @@
-﻿using FSH.Framework.Core.Persistence;
+﻿using budget_request_app.WebApi.BudgetYear.Domain;
+using FSH.Framework.Core.Persistence;
 using budget_request_app.WebApi.CapitalProject.Domain;
+using FSH.Framework.Core.Exceptions;
 using Mapster;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,12 +10,22 @@ using Microsoft.Extensions.Logging;
 namespace budget_request_app.WebApi.CapitalProject.Infrastructure.SubModules.CapitalProjects.Create.v1;
 public sealed class CreateCapitalProjectHandler(
     ILogger<CreateCapitalProjectHandler> logger,
-    [FromKeyedServices("capitalProjects")] IRepository<CapitalProjectItem> repository)
+    [FromKeyedServices("capitalProjects")] IRepository<CapitalProjectItem> repository,
+    [FromKeyedServices("budgetYears")] IRepository<BudgetYearItem> budgetYearRepository)
     : IRequestHandler<CreateCapitalProjectCommand, CreateCapitalProjectResponse>
 {
     public async Task<CreateCapitalProjectResponse> Handle(CreateCapitalProjectCommand request, CancellationToken cancellationToken)
     {
+        var budgetYears = await budgetYearRepository.ListAsync();
+
+        if (budgetYears.Count == 0)
+        {
+            throw new NotFoundException("budget year not found");
+        }
+
         ArgumentNullException.ThrowIfNull(request);
+        
+        var maxBudgetYear = budgetYears.Select(x => x.BudgetYear).Max();
 
         var donationFundingParent = request.Financial?.Funding?.DonationFunding;
         
@@ -47,7 +59,7 @@ public sealed class CreateCapitalProjectHandler(
 
         var capitalProject = new CapitalProjectItem()
         {
-            BudgetId = request.BudgetId,
+            BudgetId = maxBudgetYear.ToString(),
             RevisionTitle = request.RevisionTitle,
             GeneralInformation = request.GeneralInformation?.Adapt<GeneralInformation>(),
             JustificationPrioritization = justificationPrioritization.Adapt<JustificationPrioritization>(),

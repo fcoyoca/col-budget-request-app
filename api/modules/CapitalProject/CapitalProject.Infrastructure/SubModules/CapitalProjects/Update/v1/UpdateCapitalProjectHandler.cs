@@ -78,8 +78,7 @@ public sealed class UpdateCapitalProjectHandler(
 
         capitalProject.OperatingCosts = operatingCosts.Adapt<List<OperatingCost>>();
         capitalProject.OperatingRevenues = operatingRevenues.Adapt<List<OperatingRevenue>>();
-
-        capitalProject.BudgetId = request.BudgetId;
+        
         capitalProject.RevisionTitle = request.RevisionTitle;
         
         CopyFields(request.GeneralInformation,capitalProject.GeneralInformation);

@@ -1,5 +1,7 @@
-﻿using FSH.Framework.Core.Persistence;
+﻿using budget_request_app.WebApi.BudgetYear.Domain;
+using FSH.Framework.Core.Persistence;
 using budget_request_app.WebApi.CapitalEquipment.Domain;
+using FSH.Framework.Core.Exceptions;
 using Mapster;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,12 +11,22 @@ using PastFunding = budget_request_app.WebApi.CapitalProject.Domain.PastFunding;
 namespace budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Create.v1;
 public sealed class CreateCapitalEquipmentHandler(
     ILogger<CreateCapitalEquipmentHandler> logger,
-    [FromKeyedServices("capitalEquipments")] IRepository<CapitalEquipmentItem> repository)
+    [FromKeyedServices("capitalEquipments")] IRepository<CapitalEquipmentItem> repository,
+    [FromKeyedServices("budgetYears")] IRepository<BudgetYearItem> budgetYearRepository)
     : IRequestHandler<CreateCapitalEquipmentCommand, CreateCapitalEquipmentResponse>
 {
     public async Task<CreateCapitalEquipmentResponse> Handle(CreateCapitalEquipmentCommand request, CancellationToken cancellationToken)
     {
+        var budgetYears = await budgetYearRepository.ListAsync();
+
+        if (budgetYears.Count == 0)
+        {
+            throw new NotFoundException("budget year not found");
+        }
+        
         ArgumentNullException.ThrowIfNull(request);
+        
+        var maxBudgetYear = budgetYears.Select(x => x.BudgetYear).Max();
         
         GeneralInfo generalInfo = new GeneralInfo();
         EquipmentInfo equipmentInfo = new EquipmentInfo();
@@ -49,7 +61,7 @@ public sealed class CreateCapitalEquipmentHandler(
         fundingItems.AddRange(otherFundings);
         
         var data = CapitalEquipmentItem.Create(
-            request.BudgetId ?? string.Empty,
+            maxBudgetYear.ToString() ?? string.Empty,
             request.RevisionTitle ?? string.Empty,
             request.RequestId,
             request.Title ?? string.Empty,
