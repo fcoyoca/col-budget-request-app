@@ -10,14 +10,14 @@ public static class GetBudgetYearEndpoint
 {
     internal static RouteHandlerBuilder MapGetBudgetYearEndpoint(this IEndpointRouteBuilder endpoints)
     {
-        return endpoints.MapGet("/{id:guid}", async (Guid id, ISender mediator) =>
+        return endpoints.MapGet("/latest", async (ISender mediator) =>
                         {
-                            var response = await mediator.Send(new GetBudgetYearRequest(id));
+                            var response = await mediator.Send(new GetBudgetYearRequest());
                             return Results.Ok(response);
                         })
                         .WithName(nameof(GetBudgetYearEndpoint))
-                        .WithSummary("gets BudgetYear item by id")
-                        .WithDescription("gets BudgetYear item by id")
+                        .WithSummary("gets latest BudgetYear")
+                        .WithDescription("gets latest BudgetYear")
                         .Produces<GetBudgetYearResponse>()
                         .RequirePermission("Permissions.BudgetYears.View")
                         .MapToApiVersion(1);

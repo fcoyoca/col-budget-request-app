@@ -3,6 +3,7 @@ using FSH.Framework.Core.Persistence;
 using FSH.Framework.Infrastructure.Persistence;
 using budget_request_app.WebApi.BudgetYear.Domain;
 using budget_request_app.WebApi.BudgetYear.Features.Create.v1;
+using budget_request_app.WebApi.BudgetYear.Features.Get.v1;
 using budget_request_app.WebApi.BudgetYear.Persistence;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -20,6 +21,7 @@ public static class BudgetYearModule
         {
             var BudgetYearGroup = app.MapGroup("budgetYears").WithTags("Budget Years");
             BudgetYearGroup.MapBudgetYearItemCreationEndpoint();
+            BudgetYearGroup.MapGetBudgetYearEndpoint();
         }
     }
     public static WebApplicationBuilder RegisterBudgetYearServices(this WebApplicationBuilder builder)
