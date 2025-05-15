@@ -60,10 +60,27 @@ public sealed class CreateCapitalEquipmentHandler(
         fundingItems.AddRange(specialFundings);
         fundingItems.AddRange(otherFundings);
         
+        var allEquipmentRequests = await repository.ListAsync();
+
+        int requestId = 0;
+
+        if (allEquipmentRequests.Any())
+        {
+            var currentYearRequests = allEquipmentRequests
+                .Where(x => x.BudgetId.ToString() == maxBudgetYear.ToString());
+
+            if (currentYearRequests.Any())
+            {
+                requestId = currentYearRequests
+                    .Select(x => x.RequestId)
+                    .Max();
+            }
+        }
+
         var data = CapitalEquipmentItem.Create(
             maxBudgetYear.ToString() ?? string.Empty,
             request.RevisionTitle ?? string.Empty,
-            request.RequestId,
+            requestId,
             request.Title ?? string.Empty,
             generalInfo.RequestStatusId ?? string.Empty,
             generalInfo.RemarksPrintout ?? string.Empty,
