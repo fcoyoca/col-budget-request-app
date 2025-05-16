@@ -69,17 +69,20 @@ internal class AzureAdJwtBearerEvents : JwtBearerEvents
         // Lookup the tenant using the issuer.
         // TODO: we should probably cache this (root tenant and tenant per issuer)
         var tenantDb = context.HttpContext.RequestServices.GetRequiredService<TenantDbContext>();
-        var tenant = issuer == _config["SecuritySettings:AzureAd:RootIssuer"]
-            ? await tenantDb.TenantInfo.FindAsync(TenantConstants.Root.Id)
-            : await tenantDb.TenantInfo.FirstOrDefaultAsync(t => t.Issuer == issuer);
+        // var tenant = issuer == _config["SecuritySettings:AzureAd:RootIssuer"]
+        //     ? await tenantDb.TenantInfo.FindAsync(TenantConstants.Root.Id)
+        //     : await tenantDb.TenantInfo.FirstOrDefaultAsync(t => t.Issuer == issuer);
 
-        // if (tenant is null)
-        // {
-        //     _logger.TokenValidationFailed(objectId, issuer);
-        //
-        //     // The caller was not from a trusted issuer - throw to block the authentication flow.
-        //     throw new UnauthorizedException("Authentication Failed.");
-        // }
+        var tenant = await tenantDb.TenantInfo.FindAsync(TenantConstants.Root.Id);
+        
+        
+        if (tenant is null)
+        {
+            _logger.TokenValidationFailed(objectId, issuer);
+        
+            // The caller was not from a trusted issuer - throw to block the authentication flow.
+            throw new UnauthorizedException("Authentication Failed.");
+        }
 
         // The caller comes from an admin-consented, recorded issuer.
         var identity = principal.Identities.First();
