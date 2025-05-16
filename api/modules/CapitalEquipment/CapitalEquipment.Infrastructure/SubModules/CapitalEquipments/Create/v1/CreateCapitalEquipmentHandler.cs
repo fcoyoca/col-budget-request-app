@@ -73,7 +73,7 @@ public sealed class CreateCapitalEquipmentHandler(
             {
                 requestId = currentYearRequests
                     .Select(x => x.RequestId)
-                    .Max();
+                    .Max() + 1;
             }
         }
 
