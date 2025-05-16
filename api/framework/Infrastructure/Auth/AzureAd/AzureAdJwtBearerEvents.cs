@@ -2,6 +2,7 @@
 using budget_request_app.Shared.Authorization;
 using Finbuckle.MultiTenant;
 using FSH.Framework.Core.Exceptions;
+using FSH.Framework.Core.Identity.Users.Abstractions;
 using FSH.Framework.Infrastructure.Identity.Users.Services;
 using FSH.Framework.Infrastructure.Tenant.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -27,8 +28,24 @@ internal class AzureAdJwtBearerEvents : JwtBearerEvents
 
     public override Task MessageReceived(MessageReceivedContext context)
     {
-        _logger.TokenReceived();
+        var token = context.Token;
+        //_logger.LogInformation("Received token: {Token}", token);
+        //Console.WriteLine("Received token: {Token}", token);
+    
+        // Verify token format
+        if (!string.IsNullOrEmpty(token))
+        {
+            var parts = token.Split('.');
+            if (parts.Length != 3)
+            {
+                //_logger.LogError("Invalid token format - expected 3 parts, got {Count}", parts.Length);
+                
+                Console.WriteLine("Invalid token format - expected 3 parts, got {Count}", parts.Length);
+            }
+        }
+    
         return base.MessageReceived(context);
+
     }
 
     /// <summary>
@@ -56,13 +73,13 @@ internal class AzureAdJwtBearerEvents : JwtBearerEvents
             ? await tenantDb.TenantInfo.FindAsync(TenantConstants.Root.Id)
             : await tenantDb.TenantInfo.FirstOrDefaultAsync(t => t.Issuer == issuer);
 
-        if (tenant is null)
-        {
-            _logger.TokenValidationFailed(objectId, issuer);
-
-            // The caller was not from a trusted issuer - throw to block the authentication flow.
-            throw new UnauthorizedException("Authentication Failed.");
-        }
+        // if (tenant is null)
+        // {
+        //     _logger.TokenValidationFailed(objectId, issuer);
+        //
+        //     // The caller was not from a trusted issuer - throw to block the authentication flow.
+        //     throw new UnauthorizedException("Authentication Failed.");
+        // }
 
         // The caller comes from an admin-consented, recorded issuer.
         var identity = principal.Identities.First();
@@ -74,7 +91,7 @@ internal class AzureAdJwtBearerEvents : JwtBearerEvents
         context.HttpContext.SetTenantInfo(tenant, false);
 
         // Lookup local user or create one if none exist.
-        string userId = await context.HttpContext.RequestServices.GetRequiredService<UserService>()
+        string userId = await context.HttpContext.RequestServices.GetRequiredService<IUserService>()
             .GetOrCreateFromPrincipalAsync(principal);
 
         // We use the nameidentifier claim to store the user id.

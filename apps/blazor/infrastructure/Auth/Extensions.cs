@@ -31,8 +31,9 @@ public static class Extensions
                 .AddMsalAuthentication(options =>
                 {
                     config.Bind(nameof(AuthProvider.AzureAd), options.ProviderOptions.Authentication);
-                    options.ProviderOptions.DefaultAccessTokenScopes.Add(config[$"{nameof(AuthProvider.AzureAd)}:{ConfigNames.ApiScope}"]!);
+                    options.ProviderOptions.DefaultAccessTokenScopes.Add(ConfigNames.ApiScope);
                     options.ProviderOptions.LoginMode = "redirect";
+                    options.ProviderOptions.Authentication.Authority = "true";
                 })
                     .AddAccountClaimsPrincipalFactory<AzureAdClaimsPrincipalFactory>();
         }

@@ -105,23 +105,35 @@ internal sealed partial class UserService(
     /// </summary>
     public async Task<string> GetOrCreateFromPrincipalAsync(ClaimsPrincipal principal)
     {
-        string? objectId = principal.GetObjectId();
-        if (string.IsNullOrWhiteSpace(objectId))
+        try
         {
-            throw new InternalServerException("Invalid objectId");
+            string? objectId = principal.GetObjectId();
+            if (string.IsNullOrWhiteSpace(objectId))
+            {
+                throw new InternalServerException("Invalid objectId");
+            }
+
+            var user = await userManager.Users
+                .FirstOrDefaultAsync(u => u.ObjectId == objectId);
+
+            if (user == null)
+            {
+                user = await CreateOrUpdateFromPrincipalAsync(principal);
+            }
+
+            if (principal.FindFirstValue(ClaimTypes.Role) is string role &&
+                await roleManager.RoleExistsAsync(role) &&
+                !await userManager.IsInRoleAsync(user, role))
+            {
+                await userManager.AddToRoleAsync(user, role);
+            }
+
+            return user.Id;
         }
-
-        var user = await userManager.Users.Where(u => u.ObjectId == objectId).FirstOrDefaultAsync()
-            ?? await CreateOrUpdateFromPrincipalAsync(principal);
-
-        if (principal.FindFirstValue(ClaimTypes.Role) is string role &&
-            await roleManager.RoleExistsAsync(role) &&
-            !await userManager.IsInRoleAsync(user, role))
+        catch (Exception e)
         {
-            await userManager.AddToRoleAsync(user, role);
+            throw;
         }
-
-        return user.Id;
     }
 
     public async Task<FshUser> CreateOrUpdateFromPrincipalAsync(ClaimsPrincipal principal)
