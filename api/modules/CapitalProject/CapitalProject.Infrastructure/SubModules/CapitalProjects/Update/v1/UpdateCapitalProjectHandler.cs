@@ -50,6 +50,8 @@ public sealed class UpdateCapitalProjectHandler(
 
         var capitalProject = await repository.FirstOrDefaultAsync(new GetCapitalProjectByIdSpec(request.Id), cancellationToken);
 
+        capitalProject.MinorProjects = new List<MinorProject>();
+        capitalProject.StreetSegments = new List<StreetSegment>();
         capitalProject.BorrowingFundings = new();
         capitalProject.OperatingFundings = new();
         capitalProject.GrantFundings = new();
@@ -62,9 +64,12 @@ public sealed class UpdateCapitalProjectHandler(
         capitalProject.PastSpendings = new();
         capitalProject.OperatingCosts = new();
         capitalProject.OperatingRevenues = new();
+        
 
         //await repository.SaveChangesAsync(cancellationToken);
-        
+
+        capitalProject.MinorProjects = minorProjects.Adapt<List<MinorProject>>();
+        capitalProject.StreetSegments = streetSegments.Adapt<List<StreetSegment>>();
         capitalProject.BorrowingFundings = borrowingFundings.Adapt<List<BorrowingFunding>>();
         capitalProject.OperatingFundings = operatingFundings.Adapt<List<OperatingFunding>>();
         capitalProject.GrantFundings = grantFundings.Adapt<List<GrantFunding>>();
@@ -86,8 +91,8 @@ public sealed class UpdateCapitalProjectHandler(
         CopyFields(statusTimeline, capitalProject.StatusTimeline);
         CopyFields(approvalOversight, capitalProject.ApprovalOversight);
         CopyFields(grantFundingOpportunity, capitalProject.GrantFundingOpportunity);
-        CopyFields(minorProjects, capitalProject.MinorProjects);
-        CopyFields(streetSegments, capitalProject.StreetSegments);
+        //CopyFields(minorProjects, capitalProject.MinorProjects);
+        //CopyFields(streetSegments, capitalProject.StreetSegments);
         CopyFields(projectManagement, capitalProject.ProjectManagement);
         
         capitalProject.IsMappedRequest = request.MinorProjectLocation?.RequestLocation?.IsMappedRequest;
