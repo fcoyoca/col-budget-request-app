@@ -70,6 +70,7 @@ public static class CapitalProjectMapper
             streetSegment.UtilityWorkValue = MapToLookupNames(streetSegment.UtilityWork, lookupValues);
             streetSegment.StreetscapingLightingValue = MapToLookupNames(streetSegment.StreetscapingLighting, lookupValues);
             streetSegment.SidewalksValue = MapToLookupNames(streetSegment.Sidewalks, lookupValues);
+            streetSegment.CurbAndGutterValue = MapToLookupNames(streetSegment.CurbAndGutter, lookupValues);
         }
 
         MinorProjectLocationDTO minorProjectLocation = new()
