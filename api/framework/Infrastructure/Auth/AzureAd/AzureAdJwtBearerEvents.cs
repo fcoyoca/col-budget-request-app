@@ -76,6 +76,7 @@ internal class AzureAdJwtBearerEvents : JwtBearerEvents
         var tenant = await tenantDb.TenantInfo.FindAsync(TenantConstants.Root.Id);
         
         
+        
         if (tenant is null)
         {
             _logger.TokenValidationFailed(objectId, issuer);
@@ -86,13 +87,13 @@ internal class AzureAdJwtBearerEvents : JwtBearerEvents
 
         // The caller comes from an admin-consented, recorded issuer.
         var identity = principal.Identities.First();
-
+        identity.AddClaim(new Claim("tenant", tenant.Id));
         //// Adding tenant claim.
         //identity.AddClaim(new Claim(GPClaims.Tenant, tenant.Id));
 
         // Set new tenant info to the HttpContext so the right connectionstring is used.
         context.HttpContext.SetTenantInfo(tenant, false);
-
+        
         // Lookup local user or create one if none exist.
         string userId = await context.HttpContext.RequestServices.GetRequiredService<IUserService>()
             .GetOrCreateFromPrincipalAsync(principal);
