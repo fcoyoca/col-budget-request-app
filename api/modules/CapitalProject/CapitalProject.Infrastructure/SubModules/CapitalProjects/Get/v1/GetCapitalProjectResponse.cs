@@ -8,6 +8,7 @@ public sealed record GetCapitalProjectResponse(
     Guid Id,
     string? BudgetId,
     string? RevisionTitle,
+    int? RequestId,
     GeneralInformationDTO? GeneralInformation,
     TimeJustificationApprovalDTO? TimeJustificationApproval,
     OperatingBudgetImpactDTO? OperatingBudgetImpact,

@@ -7,6 +7,7 @@ public class CapitalProjectItem : AuditableEntity, IAggregateRoot
 {
     public string? BudgetId { get; set; }
     public string? RevisionTitle { get; set; }
+    public int RequestId { get; set; }
     // 1st tab
     public GeneralInformation? GeneralInformation { get; set; }
     // 2nd tab

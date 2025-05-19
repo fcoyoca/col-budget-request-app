@@ -56,11 +56,29 @@ public sealed class CreateCapitalProjectHandler(
         var pastFundings = request.Financial?.Past?.PastFundings;
         var pastSpendings = request.Financial?.Past?.PastSpendings;
         var projectManagement = request.ProjectManagement;
+        
+        var allProjectRequests = await repository.ListAsync();
+
+        int requestId = 1;
+
+        if (allProjectRequests.Any())
+        {
+            var currentYearRequests = allProjectRequests
+                .Where(x => x.BudgetId.ToString() == maxBudgetYear.ToString());
+
+            if (currentYearRequests.Any())
+            {
+                requestId = currentYearRequests
+                    .Select(x => x.RequestId)
+                    .Max() + 1;
+            }
+        }
 
         var capitalProject = new CapitalProjectItem()
         {
             BudgetId = maxBudgetYear.ToString(),
             RevisionTitle = request.RevisionTitle,
+            RequestId = requestId,
             GeneralInformation = request.GeneralInformation?.Adapt<GeneralInformation>(),
             JustificationPrioritization = justificationPrioritization.Adapt<JustificationPrioritization>(),
             StatusTimeline = statusTimeline.Adapt<StatusTimeline>(),

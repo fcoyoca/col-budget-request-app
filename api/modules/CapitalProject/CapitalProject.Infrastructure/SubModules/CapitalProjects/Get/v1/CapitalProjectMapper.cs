@@ -225,6 +225,7 @@ public static class CapitalProjectMapper
             capitalProjectItem.Id,
             capitalProjectItem.BudgetId,
             capitalProjectItem.RevisionTitle,
+            capitalProjectItem.RequestId,
             generalInformation,
             timeJustificationApproval,
             operatingBudgetImpact,
