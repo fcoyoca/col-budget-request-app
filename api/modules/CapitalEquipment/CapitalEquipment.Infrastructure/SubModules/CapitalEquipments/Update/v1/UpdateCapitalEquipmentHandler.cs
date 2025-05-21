@@ -71,7 +71,6 @@ public sealed class UpdateCapitalEquipmentHandler(
         var updatedCapitalEquipment = CapitalEquipmentItem.Update(
             capitalEquipment,
             request.RevisionTitle,
-            request.RequestId,
             request.Title,
             generalInfo.RequestStatusId,
             generalInfo.RemarksPrintout,

@@ -168,7 +168,6 @@ public class CapitalEquipmentItem : AuditableEntity, IAggregateRoot
     public static CapitalEquipmentItem Update(
         CapitalEquipmentItem capitalEquipment,
         string revisionTitle,
-        int requestId,
         string title,
         string requestStatusId,
         string remarksPrintout,
@@ -217,7 +216,6 @@ public class CapitalEquipmentItem : AuditableEntity, IAggregateRoot
     {
 
         capitalEquipment.RevisionTitle = revisionTitle;
-        capitalEquipment.RequestId = requestId;
         capitalEquipment.Title = title;
         capitalEquipment.RequestStatusId = requestStatusId;
         capitalEquipment.RemarksPrintout = remarksPrintout;
