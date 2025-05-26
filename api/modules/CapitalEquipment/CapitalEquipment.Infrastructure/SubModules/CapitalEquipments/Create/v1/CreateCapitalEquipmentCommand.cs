@@ -5,6 +5,8 @@ using MediatR;
 namespace budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Create.v1;
 
 public sealed record CreateCapitalEquipmentCommand(
+    int requestNumber,
+    string ProjectNumber,
     string BudgetId,
     string RevisionTitle,
     int RequestId,

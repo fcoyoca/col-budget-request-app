@@ -5,6 +5,8 @@ using budget_request_app.WebApi.FileService.Domain;
 namespace budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Get.v1;
 public sealed record GetCapitalEquipmentResponse(
     Guid Id,
+    int RequestNumber,
+    string ProjectNumber,
     string BudgetId,
     string RevisionTitle,
     int RequestId,

@@ -157,6 +157,8 @@ public static class CapitalEquipmentMapper
         
         return new GetCapitalEquipmentResponse(
             capitalEquipmentItem.Id,
+            capitalEquipmentItem.RequestNumber ?? 0,
+            capitalEquipmentItem.ProjectNumber,
             capitalEquipmentItem.BudgetId,
             capitalEquipmentItem.RevisionTitle,
             capitalEquipmentItem.RequestId,

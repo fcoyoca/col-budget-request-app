@@ -223,6 +223,8 @@ public static class CapitalProjectMapper
 
         return new GetCapitalProjectResponse(
             capitalProjectItem.Id,
+            capitalProjectItem.RequestNumber ?? 0,
+            capitalProjectItem.ProjectNumber,
             capitalProjectItem.BudgetId,
             capitalProjectItem.RevisionTitle,
             capitalProjectItem.RequestId,

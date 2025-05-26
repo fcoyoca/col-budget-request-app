@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using budget_request_app.WebApi.CapitalEquipment.Infrastructure.Persistence;
 
@@ -11,9 +12,11 @@ using budget_request_app.WebApi.CapitalEquipment.Infrastructure.Persistence;
 namespace budget_request_app.WebApi.Migrations.MSSQL.CapitalEquipment
 {
     [DbContext(typeof(CapitalEquipmentDbContext))]
-    partial class CapitalEquipmentDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250526045544_projectnumber")]
+    partial class projectnumber
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -150,8 +153,8 @@ namespace budget_request_app.WebApi.Migrations.MSSQL.CapitalEquipment
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ProjectNumber")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("ProjectNumber")
+                        .HasColumnType("int");
 
                     b.Property<bool?>("PurchasingBuyerReview")
                         .HasColumnType("bit");
@@ -168,9 +171,6 @@ namespace budget_request_app.WebApi.Migrations.MSSQL.CapitalEquipment
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("RequestId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("RequestNumber")
                         .HasColumnType("int");
 
                     b.Property<string>("RequestStatusId")

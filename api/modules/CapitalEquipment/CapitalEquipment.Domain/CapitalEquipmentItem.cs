@@ -5,6 +5,8 @@ using budget_request_app.WebApi.CapitalEquipment.Domain.Events;
 namespace budget_request_app.WebApi.CapitalEquipment.Domain;
 public class CapitalEquipmentItem : AuditableEntity, IAggregateRoot
 {
+    public int? RequestNumber { get; set; }
+    public string? ProjectNumber { get; set; }
     public string BudgetId { get; set; }
     public string RevisionTitle { get; set; }
     public int RequestId { get; set; }
@@ -57,6 +59,8 @@ public class CapitalEquipmentItem : AuditableEntity, IAggregateRoot
     public string FileIds { get; set; }
 
     public static CapitalEquipmentItem Create(
+        int? requestNumber,
+        string projectNumber,
         string budgetId,
         string revisionTitle,
         int requestId,
@@ -110,6 +114,7 @@ public class CapitalEquipmentItem : AuditableEntity, IAggregateRoot
     {
         var CapitalEquipment = new CapitalEquipmentItem();
 
+        CapitalEquipment.RequestNumber = requestNumber ?? 0;
         CapitalEquipment.BudgetId = budgetId;
         CapitalEquipment.RevisionTitle = revisionTitle;
         CapitalEquipment.RequestId = requestId;

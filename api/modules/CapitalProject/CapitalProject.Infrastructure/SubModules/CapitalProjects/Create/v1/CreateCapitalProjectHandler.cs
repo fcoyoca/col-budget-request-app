@@ -60,6 +60,7 @@ public sealed class CreateCapitalProjectHandler(
         var allProjectRequests = await repository.ListAsync();
 
         int requestId = 1;
+        int requestNumber = 0;
 
         if (allProjectRequests.Any())
         {
@@ -71,11 +72,19 @@ public sealed class CreateCapitalProjectHandler(
                 requestId = currentYearRequests
                     .Select(x => x.RequestId)
                     .Max() + 1;
+                
+                requestNumber = currentYearRequests
+                    .Select(x => x.RequestNumber ?? 0)
+                    .Max() + 1;
             }
         }
+        
+        var projectNumber = ( maxBudgetYear % 100 ) + "-" + (requestNumber % 1000).ToString("D3");
 
         var capitalProject = new CapitalProjectItem()
         {
+            RequestNumber = requestNumber,
+            ProjectNumber = projectNumber,
             BudgetId = maxBudgetYear.ToString(),
             RevisionTitle = request.RevisionTitle,
             RequestId = requestId,

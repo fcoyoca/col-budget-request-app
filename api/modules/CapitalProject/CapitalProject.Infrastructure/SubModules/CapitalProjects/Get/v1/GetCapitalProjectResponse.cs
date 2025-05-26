@@ -6,6 +6,8 @@ using budget_request_app.WebApi.CapitalProject.Infrastructure.SubModules.Capital
 namespace budget_request_app.WebApi.CapitalProject.Infrastructure.SubModules.CapitalProjects.Get.v1;
 public sealed record GetCapitalProjectResponse(
     Guid Id,
+    int RequestNumber,
+    string ProjectNumber,
     string? BudgetId,
     string? RevisionTitle,
     int? RequestId,

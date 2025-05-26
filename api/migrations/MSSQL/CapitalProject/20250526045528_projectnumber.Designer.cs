@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using budget_request_app.WebApi.CapitalProject.Infrastructure.Persistence;
 
@@ -11,9 +12,11 @@ using budget_request_app.WebApi.CapitalProject.Infrastructure.Persistence;
 namespace budget_request_app.WebApi.Migrations.MSSQL.CapitalProject
 {
     [DbContext(typeof(CapitalProjectDbContext))]
-    partial class CapitalProjectDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250526045528_projectnumber")]
+    partial class projectnumber
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -205,13 +208,10 @@ namespace budget_request_app.WebApi.Migrations.MSSQL.CapitalProject
                     b.Property<Guid?>("ProjectManagementId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ProjectNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("RequestId")
+                    b.Property<int?>("ProjectNumber")
                         .HasColumnType("int");
 
-                    b.Property<int?>("RequestNumber")
+                    b.Property<int>("RequestId")
                         .HasColumnType("int");
 
                     b.Property<string>("RevisionTitle")

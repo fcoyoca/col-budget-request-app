@@ -5,6 +5,8 @@ using budget_request_app.WebApi.CapitalProject.Domain.Events;
 namespace budget_request_app.WebApi.CapitalProject.Domain;
 public class CapitalProjectItem : AuditableEntity, IAggregateRoot
 {
+    public int? RequestNumber { get;  set; }
+    public string? ProjectNumber { get; set; }
     public string? BudgetId { get; set; }
     public string? RevisionTitle { get; set; }
     public int RequestId { get; set; }

@@ -64,6 +64,8 @@ public sealed class CreateCapitalEquipmentHandler(
 
         int requestId = 0;
 
+        int requestNumber = 0;
+
         if (allEquipmentRequests.Any())
         {
             var currentYearRequests = allEquipmentRequests
@@ -74,10 +76,18 @@ public sealed class CreateCapitalEquipmentHandler(
                 requestId = currentYearRequests
                     .Select(x => x.RequestId)
                     .Max() + 1;
+                
+                requestNumber = currentYearRequests
+                    .Select(x => x.RequestNumber ?? 0)
+                    .Max() + 1;
             }
         }
 
+        var projectNumber = ( maxBudgetYear % 100 ) + "-" + (requestNumber % 1000).ToString("D3");
+
         var data = CapitalEquipmentItem.Create(
+            requestNumber,
+            projectNumber,
             maxBudgetYear.ToString() ?? string.Empty,
             request.RevisionTitle ?? string.Empty,
             requestId,
