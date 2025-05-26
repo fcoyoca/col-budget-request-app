@@ -221,6 +221,9 @@ public static class CapitalProjectMapper
         generalInformation.RequestTypeValue = MapToLookupNames(generalInformation.RequestTypeId, lookupValues);
         generalInformation.RequestGroupValue = MapToLookupNames(generalInformation.RequestGroupId, lookupValues);
 
+        var projectManagement = capitalProjectItem.ProjectManagement.Adapt<ProjectManagementDTO>();
+        projectManagement.ProjectStatusValue = MapToLookupNames(projectManagement.ProjectStatusId.GetValueOrDefault(), lookupValues);
+
         return new GetCapitalProjectResponse(
             capitalProjectItem.Id,
             capitalProjectItem.RequestNumber ?? 0,
@@ -233,7 +236,7 @@ public static class CapitalProjectMapper
             operatingBudgetImpact,
             minorProjectLocation,
             financial,
-            capitalProjectItem.ProjectManagement.Adapt<ProjectManagementDTO>(),
+            projectManagement,
             attachments
             );
     }

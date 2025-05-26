@@ -4,6 +4,7 @@ public class ProjectManagementDTO
 {
     public Guid? Id { get; set; }
     public Guid? ProjectStatusId { get; set; }
+    public string? ProjectStatusValue { get; set; }
     public DateTime? StartDate { get; set; }
     public DateTime? EndDate { get; set; }
     public string? MunisAccounts { get; set; }
