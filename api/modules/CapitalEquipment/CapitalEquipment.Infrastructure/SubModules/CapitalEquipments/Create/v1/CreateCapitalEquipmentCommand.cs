@@ -24,6 +24,7 @@ public sealed record CreateCapitalEquipmentCommand(
 
 public class GeneralInfo
 {
+    public string? ProjectNumber { get; set; }
     public string RequestStatusId { get; set; }
     public string? RequestStatusValue { get; set; }
     public string RemarksPrintout { get; set; }

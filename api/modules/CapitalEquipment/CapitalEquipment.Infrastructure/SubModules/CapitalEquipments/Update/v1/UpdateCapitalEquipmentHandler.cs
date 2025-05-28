@@ -70,6 +70,7 @@ public sealed class UpdateCapitalEquipmentHandler(
         
         var updatedCapitalEquipment = CapitalEquipmentItem.Update(
             capitalEquipment,
+            request.ProjectNumber,
             request.RevisionTitle,
             request.Title,
             generalInfo.RequestStatusId,

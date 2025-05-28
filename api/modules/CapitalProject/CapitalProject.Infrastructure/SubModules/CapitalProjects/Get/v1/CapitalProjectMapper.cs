@@ -220,6 +220,7 @@ public static class CapitalProjectMapper
         generalInformation.DepartmentHeadRequestorValue = MapToLookupNames(generalInformation.DepartmentHeadRequestorId, lookupValues);
         generalInformation.RequestTypeValue = MapToLookupNames(generalInformation.RequestTypeId, lookupValues);
         generalInformation.RequestGroupValue = MapToLookupNames(generalInformation.RequestGroupId, lookupValues);
+        generalInformation.ProjectNumber = capitalProjectItem.ProjectNumber;
 
         var projectManagement = capitalProjectItem.ProjectManagement.Adapt<ProjectManagementDTO>();
         projectManagement.ProjectStatusValue = MapToLookupNames(projectManagement.ProjectStatusId.GetValueOrDefault(), lookupValues);

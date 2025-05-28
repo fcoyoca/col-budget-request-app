@@ -44,7 +44,8 @@ public static class CapitalEquipmentMapper
             RequestingDepartmentValue = string.Join(",", requestingDepartments),
             DepartmentHeadRequestorValue = string.Join(",", requestingDepartmentHeads),
             RequestStatusValue = requestStatusName,
-            EquipmentCategoryValue = equipmentCategoryName
+            EquipmentCategoryValue = equipmentCategoryName,
+            ProjectNumber = capitalEquipmentItem.ProjectNumber,
         };
 
         EquipmentInfo equipmentInfo = new EquipmentInfo()

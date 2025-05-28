@@ -5,6 +5,7 @@ using MediatR;
 namespace budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Update.v1;
 public sealed record UpdateCapitalEquipmentCommand(
     Guid Id,
+    string ProjectNumber,
     string BudgetId,
     string RevisionTitle,
     int RequestId,
