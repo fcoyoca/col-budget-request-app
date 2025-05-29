@@ -87,7 +87,7 @@ public sealed class CreateCapitalEquipmentHandler(
 
         var data = CapitalEquipmentItem.Create(
             requestNumber,
-            projectNumber,
+            request.ProjectNumber,
             maxBudgetYear.ToString() ?? string.Empty,
             request.RevisionTitle ?? string.Empty,
             requestId,

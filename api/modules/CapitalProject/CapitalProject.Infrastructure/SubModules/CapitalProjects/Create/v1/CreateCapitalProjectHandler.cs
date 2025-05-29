@@ -84,7 +84,7 @@ public sealed class CreateCapitalProjectHandler(
         var capitalProject = new CapitalProjectItem()
         {
             RequestNumber = requestNumber,
-            ProjectNumber = projectNumber,
+            ProjectNumber = request.ProjectNumber,
             BudgetId = maxBudgetYear.ToString(),
             RevisionTitle = request.RevisionTitle,
             RequestId = requestId,
