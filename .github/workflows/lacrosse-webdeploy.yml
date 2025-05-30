@@ -43,7 +43,7 @@ jobs:
           }
 
       # Deploy to IIS using msdeploy.exe
-      - name: Deploy to IIS
+      - name: Deploy to IIS to Lacrosse
         shell: powershell
         run: |
           $msdeployPath = "C:\Program Files\IIS\Microsoft Web Deploy V3\msdeploy.exe"
