@@ -8,6 +8,7 @@ namespace budget_request_app.WebApi.CapitalProject.Infrastructure.SubModules.Cap
 public sealed record CreateCapitalProjectCommand(
     string BudgetId,
     string ProjectNumber,
+    string MunisProjectNumber,
     string RevisionTitle,
     GeneralInformationDTO? GeneralInformation,
     TimeJustificationApprovalDTO? TimeJustificationApproval,

@@ -85,6 +85,7 @@ public sealed class UpdateCapitalProjectHandler(
         capitalProject.OperatingRevenues = operatingRevenues.Adapt<List<OperatingRevenue>>();
         
         capitalProject.ProjectNumber = request.ProjectNumber;
+        capitalProject.MunisProjectNumber = request.MunisProjectNumber;
         capitalProject.RevisionTitle = request.RevisionTitle;
         
         CopyFields(request.GeneralInformation,capitalProject.GeneralInformation);

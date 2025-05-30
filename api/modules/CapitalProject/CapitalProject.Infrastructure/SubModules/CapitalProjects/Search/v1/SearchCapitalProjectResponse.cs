@@ -8,6 +8,7 @@ public sealed record SearchCapitalProjectResponse(
     Guid Id,
     int RequestNumber,
     string ProjectNumber,
+    string MunisProjectNumber,
     string? Title,
     string? RequestingDepartment,
     string? DepartmentHeadRequestor,

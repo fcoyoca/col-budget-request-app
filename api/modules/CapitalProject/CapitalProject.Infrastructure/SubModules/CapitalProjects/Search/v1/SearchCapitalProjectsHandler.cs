@@ -44,6 +44,7 @@ public sealed class SearchCapitalProjectsHandler(
                 x.Id,
                 x.RequestNumber,
                 x.ProjectNumber,
+                x.MunisProjectNumber,
                 x.GeneralInformation?.Title,
                 CapitalProjectMapper.MapToLookupNames(x.GeneralInformation.RequestingDepartmentIds, lookupValues),
                 CapitalProjectMapper.MapToLookupNames(x.GeneralInformation.DepartmentHeadRequestorId, lookupValues),

@@ -8,6 +8,7 @@ namespace budget_request_app.WebApi.CapitalProject.Infrastructure.SubModules.Cap
 public sealed record UpdateCapitalProjectCommand(
     Guid Id,
     string ProjectNumber,
+    string MunisProjectNumber,
     string BudgetId,
     string RevisionTitle,
     GeneralInformationDTO? GeneralInformation,

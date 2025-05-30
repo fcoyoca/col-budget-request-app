@@ -4,6 +4,7 @@ public class GeneralInformationDTO
 {
     public Guid? Id { get; set; }
     public string? ProjectNumber { get; set; }
+    public string? MunisProjectNumber { get; set; }
     public int? RequestId { get; set; }
     public string? RequestStatusId { get; set; }
     public string? Title { get; set; }

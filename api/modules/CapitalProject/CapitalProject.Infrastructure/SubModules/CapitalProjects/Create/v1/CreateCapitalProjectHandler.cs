@@ -85,6 +85,7 @@ public sealed class CreateCapitalProjectHandler(
         {
             RequestNumber = requestNumber,
             ProjectNumber = request.ProjectNumber,
+            MunisProjectNumber = request.MunisProjectNumber,
             BudgetId = maxBudgetYear.ToString(),
             RevisionTitle = request.RevisionTitle,
             RequestId = requestId,

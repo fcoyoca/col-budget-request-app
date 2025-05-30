@@ -6,6 +6,7 @@ namespace budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.C
 
 public sealed record CreateCapitalEquipmentCommand(
     string ProjectNumber,
+    string MinusProjectNumber,
     string BudgetId,
     string RevisionTitle,
     int RequestId,

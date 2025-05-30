@@ -63,6 +63,7 @@ public static class Extensions
             {
                 options.DocExpansion(DocExpansion.None);
                 options.DisplayRequestDuration();
+                options.ConfigObject.AdditionalItems["operationsSorter"] = "alpha";
 
                 var swaggerEndpoints = app.DescribeApiVersions()
                     .Select(desc => new
