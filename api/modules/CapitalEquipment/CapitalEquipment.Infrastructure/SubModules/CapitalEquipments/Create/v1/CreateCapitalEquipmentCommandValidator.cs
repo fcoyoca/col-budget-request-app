@@ -1,13 +1,22 @@
-﻿using FluentValidation;
+﻿using budget_request_app.WebApi.CapitalEquipment.Domain;
+using FluentValidation;
+using FSH.Framework.Core.Persistence;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Create.v1;
 public class CreateCapitalEquipmentCommandValidator : AbstractValidator<CreateCapitalEquipmentCommand>
 {
-    public CreateCapitalEquipmentCommandValidator()
+    public CreateCapitalEquipmentCommandValidator(
+        [FromKeyedServices("capitalEquipments")] IRepository<CapitalEquipmentItem> repository
+        )
     {
         RuleFor(b => b.GeneralInfo.EquipmentName).NotEmpty();
-        // RuleFor(b => b.Funding.BorrowingFundings)
-        //     .Must(x => x.Any())
-        //     .WithMessage("walay sulod ang borrowing fundings");
+        RuleFor(b => b.ProjectNumber)
+            .MustAsync(async (value, cancellation) =>
+            {
+                var exists = (await repository.ListAsync())?.FirstOrDefault(x => x.ProjectNumber == value) != null;
+                return !exists;
+            })
+            .WithMessage("Project number must be unique.");
     }
 }
