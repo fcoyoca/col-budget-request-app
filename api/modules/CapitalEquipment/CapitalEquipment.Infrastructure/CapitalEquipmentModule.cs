@@ -24,6 +24,7 @@ public static class CapitalEquipmentModule
             capitalEquipmentGroup.MapGetCapitalEquipmentListEndpoint();
             capitalEquipmentGroup.MapCapitalEquipmentUpdateEndpoint();
             capitalEquipmentGroup.MapCapitalEquipmentDeleteEndpoint();
+            capitalEquipmentGroup.MapCapitalEquipmentUpdateStatusEndpoint();
         }
     }
     public static WebApplicationBuilder RegisterCapitalEquipmentServices(this WebApplicationBuilder builder)
