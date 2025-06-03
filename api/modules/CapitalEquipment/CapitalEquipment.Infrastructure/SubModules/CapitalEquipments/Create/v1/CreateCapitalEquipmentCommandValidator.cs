@@ -18,5 +18,6 @@ public class CreateCapitalEquipmentCommandValidator : AbstractValidator<CreateCa
                 return !exists;
             })
             .WithMessage("Project number must be unique.");
+        RuleFor(b => b.ProjectNumber).NotEmpty().Length(5);
     }
 }

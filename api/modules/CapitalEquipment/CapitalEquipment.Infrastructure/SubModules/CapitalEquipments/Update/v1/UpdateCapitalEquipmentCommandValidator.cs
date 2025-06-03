@@ -21,5 +21,6 @@ public class UpdateCapitalEquipmentCommandValidator : AbstractValidator<UpdateCa
                 return !(target is not null && target.Id != command.Id) ;
             })
             .WithMessage("Project number must be unique.");
+        RuleFor(b => b.ProjectNumber).NotEmpty().Length(5);
     }
 }

@@ -20,5 +20,6 @@ public class UpdateCapitalProjectCommandValidator : AbstractValidator<UpdateCapi
                 return !(target is not null && target.Id != command.Id) ;
             })
             .WithMessage("Project number must be unique.");
+        RuleFor(b => b.ProjectNumber).NotEmpty().Length(5);
     }
 }
