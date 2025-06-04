@@ -214,6 +214,7 @@ public static class CapitalProjectMapper
             }
         }
 
+
         var generalInformation = capitalProjectItem.GeneralInformation.Adapt<GeneralInformationDTO>();
         generalInformation.RequestingDepartmentValue =
             MapToLookupNames(generalInformation.RequestingDepartmentIds, lookupValues);
@@ -239,7 +240,8 @@ public static class CapitalProjectMapper
             minorProjectLocation,
             financial,
             projectManagement,
-            attachments
+            attachments,
+            capitalProjectItem.ImageId
             );
     }
     

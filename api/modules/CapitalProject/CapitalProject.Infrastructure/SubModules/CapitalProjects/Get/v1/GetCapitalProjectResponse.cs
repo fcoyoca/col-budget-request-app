@@ -17,7 +17,8 @@ public sealed record GetCapitalProjectResponse(
     MinorProjectLocationDTO? MinorProjectLocation,
     FinancialDTO? Financial,
     ProjectManagementDTO? ProjectManagement,
-    List<ProjectAttachmentDTO>? Attachments
+    List<ProjectAttachmentDTO>? Attachments,
+    string? ImageFileUrl
     );
 
 public class ProjectAttachmentDTO
@@ -27,4 +28,12 @@ public class ProjectAttachmentDTO
     public double Size { get; set; }
     public string Type { get; set; } = string.Empty;
     public string FileName { get; set; } = string.Empty;
+}
+
+public class ProjectImageFileDTO
+{
+    public string? ImageFile { get; set; } = string.Empty;
+    public string? ImageFileExt { get; set; } = string.Empty;
+    public string? ImageFileName { get; set; } = string.Empty;
+    public string? ImageFilePath { get; set; } = string.Empty;
 }

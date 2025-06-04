@@ -61,6 +61,8 @@ public class CapitalProjectItem : AuditableEntity, IAggregateRoot
     public ProjectManagement? ProjectManagement { get; set; }
     public string? FileIds { get; set; }
 
+    public string? ImageId { get; set; }
+
     public static CapitalProjectItem Create(
         
         )

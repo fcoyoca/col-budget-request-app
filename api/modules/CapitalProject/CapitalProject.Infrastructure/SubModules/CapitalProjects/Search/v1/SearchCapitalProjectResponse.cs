@@ -23,5 +23,6 @@ public sealed record SearchCapitalProjectResponse(
     MinorProjectLocationDTO? MinorProjectLocation,
     FinancialDTO? Financial,
     ProjectManagementDTO? ProjectManagement,
-    List<ProjectAttachmentDTO>? Attachments
+    List<ProjectAttachmentDTO>? Attachments,
+    string? ImageFileUrl
     );

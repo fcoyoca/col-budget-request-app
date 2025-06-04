@@ -7,9 +7,13 @@ using Mapster;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using FSH.Framework.Core.Storage;
+using FSH.Framework.Core.Storage.File;
+using FSH.Framework.Core.Storage.File.Features;
 
 namespace budget_request_app.WebApi.CapitalProject.Infrastructure.SubModules.CapitalProjects.Update.v1;
 public sealed class UpdateCapitalProjectHandler(
+    IStorageService storageService,
     ILogger<UpdateCapitalProjectHandler> logger,
     [FromKeyedServices("capitalProjects")] IRepository<CapitalProjectItem> repository)
     : IRequestHandler<UpdateCapitalProjectCommand, UpdateCapitalProjectResponse>
@@ -17,6 +21,26 @@ public sealed class UpdateCapitalProjectHandler(
     public async Task<UpdateCapitalProjectResponse> Handle(UpdateCapitalProjectCommand request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
+
+        if (request.ImageFile != null)
+        {
+            try
+            {
+                await CheckFileIfExist(request.ImageFile.ImageFileName + request.ImageFile.ImageFileExt);
+
+                FileUploadCommand fileUploadCommand = new FileUploadCommand();
+                fileUploadCommand.Data = request.ImageFile.ImageFile.Split(',')[1];
+                fileUploadCommand.Name = request.ImageFile.ImageFileName;
+                fileUploadCommand.Extension = request.ImageFile.ImageFileExt;
+
+                var uploadedFile = await storageService.UploadAttachmentAsync(fileUploadCommand, FileType.Image, cancellationToken);
+                request.ImageFile.ImageFilePath = uploadedFile.AbsoluteUri;
+            }
+            catch (Exception ex)
+            {
+                var message = ex.Message;
+            }
+        }
 
         var donationFundingParent = request.Financial?.Funding?.DonationFunding;
         
@@ -109,7 +133,8 @@ public sealed class UpdateCapitalProjectHandler(
         capitalProject.DonationArrangements = donationArrangements;
         
         capitalProject.FileIds = request.FileIds;
-        
+        capitalProject.ImageId = request.ImageFile?.ImageFilePath ?? string.Empty;
+
         await repository.UpdateAsync(capitalProject, cancellationToken);
         
         logger.LogInformation("CapitalProject updated {CapitalProjectId}", capitalProject.Id);
@@ -139,6 +164,19 @@ public sealed class UpdateCapitalProjectHandler(
                     }
                 }
             }
+        }
+    }
+
+    public async Task CheckFileIfExist(string filename)
+    {
+        var projects = await repository.ListAsync();
+
+        var hasProject = projects.Any(x =>
+            Path.GetFileName(x.ImageId)?.Equals(filename, StringComparison.OrdinalIgnoreCase) == true);
+
+        if (hasProject)
+        {
+            storageService.RemoveAttachment(filename);
         }
     }
 }

@@ -59,7 +59,8 @@ public sealed class SearchCapitalProjectsHandler(
                 x.MinorProjectLocation,
                 x.Financial,
                 x.ProjectManagement,
-                x.Attachments
+                x.Attachments,
+                x.ImageFileUrl
                 )
             );
 

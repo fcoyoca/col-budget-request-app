@@ -6,9 +6,13 @@ using Mapster;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using FSH.Framework.Core.Storage.File;
+using FSH.Framework.Core.Storage;
+using FSH.Framework.Core.Storage.File.Features;
 
 namespace budget_request_app.WebApi.CapitalProject.Infrastructure.SubModules.CapitalProjects.Create.v1;
 public sealed class CreateCapitalProjectHandler(
+    IStorageService storageService,
     ILogger<CreateCapitalProjectHandler> logger,
     [FromKeyedServices("capitalProjects")] IRepository<CapitalProjectItem> repository,
     [FromKeyedServices("budgetYears")] IRepository<BudgetYearItem> budgetYearRepository)
@@ -81,6 +85,26 @@ public sealed class CreateCapitalProjectHandler(
         
         var projectNumber = ( maxBudgetYear % 100 ) + "-" + (requestNumber % 1000).ToString("D3");
 
+        if (request.ImageFile != null)
+        {
+            try
+            {
+                await CheckFileIfExist(request.ImageFile.ImageFileName + request.ImageFile.ImageFileExt);
+
+                FileUploadCommand fileUploadCommand = new FileUploadCommand();
+                fileUploadCommand.Data = request.ImageFile.ImageFile.Split(',')[1];
+                fileUploadCommand.Name = request.ImageFile.ImageFileName;
+                fileUploadCommand.Extension = request.ImageFile.ImageFileExt;
+
+                var uploadedFile = await storageService.UploadAttachmentAsync(fileUploadCommand, FileType.Image, cancellationToken);
+                request.ImageFile.ImageFilePath = uploadedFile.AbsoluteUri;
+            }
+            catch (Exception ex)
+            {
+                var message = ex.Message;
+            }
+        }
+
         var capitalProject = new CapitalProjectItem()
         {
             RequestNumber = requestNumber,
@@ -120,10 +144,24 @@ public sealed class CreateCapitalProjectHandler(
             PastSpendings = pastSpendings.Adapt<List<PastSpending>>(),
             ProjectManagement = projectManagement.Adapt<ProjectManagement>(),
             FileIds = request.FileIds,
+            ImageId = request.ImageFile?.ImageFilePath ?? string.Empty
         };
         
         await repository.AddAsync(capitalProject, cancellationToken);
         logger.LogInformation("CapitalProject created {CapitalProjectId}", capitalProject.Id);
         return new CreateCapitalProjectResponse(capitalProject.Id, "Kimper success!!");
+    }
+
+    public async Task CheckFileIfExist(string filename)
+    {
+        var projects = await repository.ListAsync();
+
+        var hasProject = projects.Any(x =>
+            Path.GetFileName(x.ImageId)?.Equals(filename, StringComparison.OrdinalIgnoreCase) == true);
+
+        if (hasProject)
+        {
+            storageService.RemoveAttachment(filename);
+        }
     }
 }
