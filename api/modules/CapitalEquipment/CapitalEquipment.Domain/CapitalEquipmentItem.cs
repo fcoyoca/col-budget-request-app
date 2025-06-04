@@ -57,6 +57,7 @@ public class CapitalEquipmentItem : AuditableEntity, IAggregateRoot
     public List<FundingItem> FundingItems { get; set; }
     public List<PastFunding> PastFundings { get; set; }
     public string FileIds { get; set; }
+    public string ImageId { get; set; }
 
     public static CapitalEquipmentItem Create(
         int? requestNumber,
@@ -109,7 +110,8 @@ public class CapitalEquipmentItem : AuditableEntity, IAggregateRoot
         string additionalNotes,
         List<FundingItem> fundingItems,
         List<PastFunding> pastFundings,
-        string fileIds
+        string fileIds,
+        string imageId
         )
     {
         var CapitalEquipment = new CapitalEquipmentItem();
@@ -164,6 +166,7 @@ public class CapitalEquipmentItem : AuditableEntity, IAggregateRoot
         CapitalEquipment.FundingItems = fundingItems;
         CapitalEquipment.PastFundings = pastFundings;
         CapitalEquipment.FileIds = fileIds;
+        CapitalEquipment.ImageId = imageId;
         
         CapitalEquipment.QueueDomainEvent(new CapitalEquipmentCreated() { CapitalEquipment = CapitalEquipment });
 
@@ -217,7 +220,8 @@ public class CapitalEquipmentItem : AuditableEntity, IAggregateRoot
         DateTime? dateOfOversightApproval,
         bool? purchasingBuyerReview,
         string additionalNotes,
-        string fileIds
+        string fileIds,
+        string imageId
         )
     {
         capitalEquipment.ProjectNumber = projectNumber;
@@ -266,6 +270,7 @@ public class CapitalEquipmentItem : AuditableEntity, IAggregateRoot
         capitalEquipment.PurchasingBuyerReview = purchasingBuyerReview;
         capitalEquipment.AdditionalNotes = additionalNotes;
         capitalEquipment.FileIds = fileIds;
+        capitalEquipment.ImageId = imageId;
 
         capitalEquipment.QueueDomainEvent(new CapitalEquipmentUpdated() { CapitalEquipment = capitalEquipment });
 

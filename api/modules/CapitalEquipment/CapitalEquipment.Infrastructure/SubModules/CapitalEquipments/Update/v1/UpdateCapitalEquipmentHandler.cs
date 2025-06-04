@@ -4,13 +4,21 @@ using budget_request_app.WebApi.CapitalEquipment.Domain.Exceptions;
 using budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Create.v1;
 using budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Get.v1;
 using FSH.Framework.Core.Persistence;
+using FSH.Framework.Core.Storage.File;
+using FSH.Framework.Core.Storage;
 using Mapster;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using FSH.Framework.Core.Storage.File.Features;
+using FSH.Framework.Infrastructure.Jobs;
+using FSH.Framework.Core.Jobs;
+using budget_request_app.WebApi.FileService.Domain;
 
 namespace budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Update.v1;
 public sealed class UpdateCapitalEquipmentHandler(
+    IStorageService storageService,
+    IJobService hangfireService,
     ILogger<UpdateCapitalEquipmentHandler> logger,
     [FromKeyedServices("capitalEquipments")] IRepository<CapitalEquipmentItem> repository,
     [FromKeyedServices("capitalEquipmentsFundingItems")] IRepository<FundingItem> repositoryFundingItem,
@@ -67,7 +75,27 @@ public sealed class UpdateCapitalEquipmentHandler(
         await repositoryFundingItem.AddRangeAsync(fundingItems, cancellationToken);
         
         capitalEquipment.PastFundings.Clear();
-        
+
+        if (request.ImageFile != null)
+        {
+            try
+            {
+                await CheckFileIfExist(request.ImageFile.ImageFileName + request.ImageFile.ImageFileExt);
+
+                FileUploadCommand fileUploadCommand = new FileUploadCommand();
+                    fileUploadCommand.Data = request.ImageFile.ImageFile.Split(',')[1];
+                    fileUploadCommand.Name = request.ImageFile.ImageFileName;
+                    fileUploadCommand.Extension = request.ImageFile.ImageFileExt;
+
+                    var uploadedFile = await storageService.UploadAttachmentAsync(fileUploadCommand, FileType.Image, cancellationToken);
+                    request.ImageFile.ImageFilePath = uploadedFile.AbsoluteUri;
+            }
+            catch (Exception ex)
+            {
+                var message = ex.Message;
+            }
+        }
+ 
         var updatedCapitalEquipment = CapitalEquipmentItem.Update(
             capitalEquipment,
             request.ProjectNumber,
@@ -115,7 +143,8 @@ public sealed class UpdateCapitalEquipmentHandler(
             approvalOversightInfo.DateOfOversightApproval,
             approvalOversightInfo.PurchasingBuyerReview,
             approvalOversightInfo.AdditionalNotes,
-            request.FileIds
+            request.FileIds,
+            request.ImageFile?.ImageFilePath ?? string.Empty
             );
         
         updatedCapitalEquipment.PastFundings.Clear();
@@ -134,5 +163,18 @@ public sealed class UpdateCapitalEquipmentHandler(
         logger.LogInformation("CapitalEquipment with id : {CapitalEquipmentId} updated.", updatedCapitalEquipment.Id);
         
         return new UpdateCapitalEquipmentResponse(capitalEquipment.Id);
+    }
+
+    public async Task CheckFileIfExist(string filename)
+    {
+        var equipments = await repository.ListAsync();
+
+        var hasEquipment = equipments.Any(x =>
+            Path.GetFileName(x.ImageId)?.Equals(filename, StringComparison.OrdinalIgnoreCase) == true);
+
+        if (hasEquipment)
+        {
+            storageService.RemoveAttachment(filename);
+        }
     }
 }

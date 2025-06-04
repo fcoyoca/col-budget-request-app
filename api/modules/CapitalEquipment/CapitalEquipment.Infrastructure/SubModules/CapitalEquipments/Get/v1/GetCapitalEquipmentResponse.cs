@@ -19,7 +19,8 @@ public sealed record GetCapitalEquipmentResponse(
     OperatingBudgetImpact OperatingBudgetImpact,
     ApprovalOversightInfo ApprovalOversightInfo,
     FundingResponseDTO Funding,
-    List<AttachmentDTO>? Attachments
+    List<AttachmentDTO>? Attachments,
+    string? ImageFileUrl
     );
 
 public class FundingResponseDTO
@@ -66,3 +67,11 @@ public class AttachmentDTO
     public string FileName { get; set; } = string.Empty;
 }
 
+
+public class ImageFileDTO
+{
+    public string? ImageFile { get; set; } = string.Empty;
+    public string? ImageFileExt { get; set; } = string.Empty;
+    public string? ImageFileName { get; set; } = string.Empty;
+    public string? ImageFilePath { get; set; } = string.Empty;
+}

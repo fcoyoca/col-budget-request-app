@@ -7,9 +7,14 @@ using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using PastFunding = budget_request_app.WebApi.CapitalProject.Domain.PastFunding;
+using FSH.Framework.Core.Storage.File;
+using FSH.Framework.Core.Storage;
+using FSH.Framework.Core.Storage.File.Features;
+using Microsoft.AspNetCore.Components;
 
 namespace budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Create.v1;
 public sealed class CreateCapitalEquipmentHandler(
+    IStorageService storageService,
     ILogger<CreateCapitalEquipmentHandler> logger,
     [FromKeyedServices("capitalEquipments")] IRepository<CapitalEquipmentItem> repository,
     [FromKeyedServices("budgetYears")] IRepository<BudgetYearItem> budgetYearRepository)
@@ -85,6 +90,27 @@ public sealed class CreateCapitalEquipmentHandler(
 
         var projectNumber = ( maxBudgetYear % 100 ) + "-" + (requestNumber % 1000).ToString("D3");
 
+        if (request.ImageFile != null)
+        {
+            try
+            {
+                await CheckFileIfExist(request.ImageFile.ImageFileName + request.ImageFile.ImageFileExt);
+
+                FileUploadCommand fileUploadCommand = new FileUploadCommand();
+                fileUploadCommand.Data = request.ImageFile.ImageFile.Split(',')[1];
+                fileUploadCommand.Name = request.ImageFile.ImageFileName;
+                fileUploadCommand.Extension = request.ImageFile.ImageFileExt;
+
+                var uploadedFile = await storageService.UploadAttachmentAsync(fileUploadCommand, FileType.Image, cancellationToken);
+                request.ImageFile.ImageFilePath = uploadedFile.AbsoluteUri;
+            }
+            catch (Exception ex)
+            {
+                var message = ex.Message;
+            }
+        }
+
+
         var data = CapitalEquipmentItem.Create(
             requestNumber,
             request.ProjectNumber,
@@ -136,11 +162,25 @@ public sealed class CreateCapitalEquipmentHandler(
             approvalOversightInfo.AdditionalNotes ?? string.Empty,
             fundingItems,
             request.Funding.PastFundings.Adapt<List<CapitalEquipment.Domain.PastFunding>>(),
-            request.FileIds ?? string.Empty
+            request.FileIds ?? string.Empty,
+            request.ImageFile?.ImageFilePath ?? string.Empty
             );
         
         await repository.AddAsync(data, cancellationToken);
         logger.LogInformation("CapitalEquipment created {CapitalEquipmentId}", data.Id);
         return new CreateCapitalEquipmentResponse(data.Id);
+    }
+
+    public async Task CheckFileIfExist(string filename)
+    {
+        var equipments = await repository.ListAsync();
+
+        var hasEquipment = equipments.Any(x =>
+            Path.GetFileName(x.ImageId)?.Equals(filename, StringComparison.OrdinalIgnoreCase) == true);
+
+        if (hasEquipment)
+        {
+            storageService.RemoveAttachment(filename);
+        }
     }
 }

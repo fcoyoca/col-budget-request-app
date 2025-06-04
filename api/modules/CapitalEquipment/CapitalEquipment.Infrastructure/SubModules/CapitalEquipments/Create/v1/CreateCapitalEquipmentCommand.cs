@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using budget_request_app.WebApi.CapitalEquipment.Domain;
+using budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Get.v1;
 using MediatR;
 
 namespace budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Create.v1;
@@ -19,7 +20,8 @@ public sealed record CreateCapitalEquipmentCommand(
     OperatingBudgetImpact OperatingBudgetImpact,
     ApprovalOversightInfo ApprovalOversightInfo,
     FundingCreateDTO Funding,
-    string? FileIds
+    string? FileIds,
+    ImageFileDTO? ImageFile
 ) : IRequest<CreateCapitalEquipmentResponse>;
 
 public class GeneralInfo

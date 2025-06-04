@@ -143,6 +143,7 @@ public static class CapitalEquipmentMapper
         };
         
         var attachments = new List<AttachmentDTO>();
+        var imageFile = new ImageFileDTO();
 
         if (capitalEquipmentItem.FileIds != string.Empty)
         {
@@ -155,7 +156,7 @@ public static class CapitalEquipmentMapper
                 attachment.Type = Path.GetExtension(attachment.FileName);
             }
         }
-        
+
         return new GetCapitalEquipmentResponse(
             capitalEquipmentItem.Id,
             capitalEquipmentItem.RequestNumber ?? 0,
@@ -172,7 +173,8 @@ public static class CapitalEquipmentMapper
             operatingBudgetImpact,
             approvalOversightInfo,
             funding,
-            attachments
+            attachments,
+            capitalEquipmentItem.ImageId
             );
     }
 }
