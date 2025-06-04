@@ -12,7 +12,7 @@ on:
 
 jobs:
   build-and-deploy:
-    runs-on: windows-latest  # Make sure we're using a Windows runner
+    runs-on: LAX-FINAPP1-DEV-BACKEND
 
     steps:
       # Check out the repository
