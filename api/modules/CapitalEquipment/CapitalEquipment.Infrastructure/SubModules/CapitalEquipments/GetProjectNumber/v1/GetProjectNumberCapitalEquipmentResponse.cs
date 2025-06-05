@@ -1,0 +1,2 @@
+namespace budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.GetProjectNumber.v1;
+public sealed record GetProjectNumberCapitalEquipmentResponse(string projectNumber);
