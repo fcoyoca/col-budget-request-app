@@ -9,7 +9,7 @@ using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Update.v1;
+namespace budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.UpdateStatus.v1;
 public sealed class UpdateStatusCapitalEquipmentHandler(
     ILogger<UpdateStatusCapitalEquipmentHandler> logger,
     [FromKeyedServices("capitalEquipments")] IRepository<CapitalEquipmentItem> repository)
@@ -22,8 +22,13 @@ public sealed class UpdateStatusCapitalEquipmentHandler(
         var equipments = await repository.ListAsync();
         
         var targetEquipments = equipments.Where(x => request.Ids.Contains(x.Id)).ToList();
+
+        foreach (var equipment in targetEquipments)
+        {
+            equipment.RequestStatusId = request.StatusId.ToString();
+        }
         
-        
+        await repository.UpdateRangeAsync(targetEquipments, cancellationToken);
 
         return new UpdateStatusCapitalEquipmentResponse(request.Ids);
     }

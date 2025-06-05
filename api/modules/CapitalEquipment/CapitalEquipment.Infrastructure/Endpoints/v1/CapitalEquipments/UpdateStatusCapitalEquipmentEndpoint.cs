@@ -1,4 +1,5 @@
 using budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Update.v1;
+using budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.UpdateStatus.v1;
 using FSH.Framework.Infrastructure.Auth.Policy;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -11,7 +12,7 @@ public static class UpdateStatusCapitalEquipmentEndpoint
     internal static RouteHandlerBuilder MapCapitalEquipmentUpdateStatusEndpoint(this IEndpointRouteBuilder endpoints)
     {
         return endpoints
-            .MapPut("/statuses", async (Guid id, UpdateCapitalEquipmentCommand request, ISender mediator) =>
+            .MapPut("/statuses", async (UpdateStatusCapitalEquipmentCommand request, ISender mediator) =>
             {
                 var response = await mediator.Send(request);
                 return Results.Ok(response);
