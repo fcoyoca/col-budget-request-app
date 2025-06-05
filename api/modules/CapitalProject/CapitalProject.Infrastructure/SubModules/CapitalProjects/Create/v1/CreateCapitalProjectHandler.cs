@@ -89,11 +89,9 @@ public sealed class CreateCapitalProjectHandler(
         {
             try
             {
-                await CheckFileIfExist(request.ImageFile.ImageFileName + request.ImageFile.ImageFileExt);
-
                 FileUploadCommand fileUploadCommand = new FileUploadCommand();
                 fileUploadCommand.Data = request.ImageFile.ImageFile.Split(',')[1];
-                fileUploadCommand.Name = request.ImageFile.ImageFileName;
+                fileUploadCommand.Name = request.ImageFile.ImageFileName + '_' + Guid.NewGuid();
                 fileUploadCommand.Extension = request.ImageFile.ImageFileExt;
 
                 var uploadedFile = await storageService.UploadAttachmentAsync(fileUploadCommand, FileType.Image, cancellationToken);
@@ -150,18 +148,5 @@ public sealed class CreateCapitalProjectHandler(
         await repository.AddAsync(capitalProject, cancellationToken);
         logger.LogInformation("CapitalProject created {CapitalProjectId}", capitalProject.Id);
         return new CreateCapitalProjectResponse(capitalProject.Id, "Kimper success!!");
-    }
-
-    public async Task CheckFileIfExist(string filename)
-    {
-        var projects = await repository.ListAsync();
-
-        var hasProject = projects.Any(x =>
-            Path.GetFileName(x.ImageId)?.Equals(filename, StringComparison.OrdinalIgnoreCase) == true);
-
-        if (hasProject)
-        {
-            storageService.RemoveAttachment(filename);
-        }
     }
 }

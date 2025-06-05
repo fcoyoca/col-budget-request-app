@@ -94,11 +94,9 @@ public sealed class CreateCapitalEquipmentHandler(
         {
             try
             {
-                await CheckFileIfExist(request.ImageFile.ImageFileName + request.ImageFile.ImageFileExt);
-
                 FileUploadCommand fileUploadCommand = new FileUploadCommand();
                 fileUploadCommand.Data = request.ImageFile.ImageFile.Split(',')[1];
-                fileUploadCommand.Name = request.ImageFile.ImageFileName;
+                fileUploadCommand.Name = request.ImageFile.ImageFileName + '_' + Guid.NewGuid();
                 fileUploadCommand.Extension = request.ImageFile.ImageFileExt;
 
                 var uploadedFile = await storageService.UploadAttachmentAsync(fileUploadCommand, FileType.Image, cancellationToken);
@@ -169,18 +167,5 @@ public sealed class CreateCapitalEquipmentHandler(
         await repository.AddAsync(data, cancellationToken);
         logger.LogInformation("CapitalEquipment created {CapitalEquipmentId}", data.Id);
         return new CreateCapitalEquipmentResponse(data.Id);
-    }
-
-    public async Task CheckFileIfExist(string filename)
-    {
-        var equipments = await repository.ListAsync();
-
-        var hasEquipment = equipments.Any(x =>
-            Path.GetFileName(x.ImageId)?.Equals(filename, StringComparison.OrdinalIgnoreCase) == true);
-
-        if (hasEquipment)
-        {
-            storageService.RemoveAttachment(filename);
-        }
     }
 }
