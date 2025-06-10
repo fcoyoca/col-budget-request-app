@@ -19,7 +19,9 @@ public sealed class UpdateStatusCapitalProjectHandler(
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        var equipments = await repository.ListAsync();
+        var spec = new GetCapitalProjectGeneralInfoByIdsSpec(request.Ids);
+        
+        var equipments = await repository.ListAsync(spec, cancellationToken);
         
         var targetEquipments = equipments.Where(x => request.Ids.Contains(x.Id)).ToList();
 
