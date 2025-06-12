@@ -1,14 +1,14 @@
-name: Deploy to IIS [City Of Lacrosse Staging Environment]
+name: Deploy to IIS to Lacrosse
 
 # Run when commits are pushed to main
 on:
   push:
     branches:
-      - dev-azurevm
+      - dev
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
-      - dev-azurevm
+      - dev
 
 jobs:
   build-and-deploy:
@@ -36,20 +36,20 @@ jobs:
       - name: Publish the project
         shell: powershell
         run: |
-          dotnet publish api/server/Server.csproj --configuration Release --output ./publish -p:EnableContainerBuild=false -p:ContainerImageTags= -p:ContainerRegistry= -p:PublishProfile=
+          dotnet publish api/server/Server.csproj --configuration Release --output .\publish
 
       - name: Deploy published files to IIS folder
         shell: powershell # Using pwsh (PowerShell Core) is generally preferred for runners
         env:
           # Define variables for clarity and easy modification
           # Ensure this matches the actual physical path of your IIS website's wwwroot
-          DESTINATION_PATH: C:\inetpub\wwwroot\BudgetRequestWebService
+          DESTINATION_PATH: C:\inetpub\wwwroot\BudgetRequestWebService\wwwroot
           IIS_WEBSITE_NAME: BudgetRequestWebService # The exact name of your IIS website for stopping/starting
 
         run: |
             Write-Host "--- Starting File Deployment ---"
 
-            $source = "${{ github.workspace }}\publish"
+            $source = "${{ github.workspace }}\publish\wwwroot"
             $destination = "${{ env.DESTINATION_PATH }}"
             $iisWebsiteName = "${{ env.IIS_WEBSITE_NAME }}"
 
