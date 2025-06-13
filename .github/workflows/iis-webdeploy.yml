@@ -4,11 +4,11 @@ name: Deploy to IIS [Tritontek VM Staging Environment]
 on:
   push:
     branches:
-      - dev-azurevm
+      - dev
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
-      - dev-azurevm
+      - dev
 
 jobs:
   build-and-deploy:
