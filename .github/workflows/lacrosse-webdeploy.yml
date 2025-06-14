@@ -15,6 +15,16 @@ jobs:
     runs-on: LAX-FINAPP1-DEV-BACKEND
 
     steps:
+        # Use PowerShell to clone the repository
+        # This is necessary for Windows runners where git clone might not work as expected
+      - name: Checkout repository using PowerShell
+        shell: powershell
+        run: |
+          Write-Host "Cloning repository using PowerShell..."
+          git --version
+          git config --global --add safe.directory "$env:GITHUB_WORKSPACE"
+          git clone --branch $env:GITHUB_REF_NAME $env:GITHUB_REPOSITORY_URL "$env:GITHUB_WORKSPACE"
+
       # Check out the repository
       - name: Checkout code
         uses: actions/checkout@v3
