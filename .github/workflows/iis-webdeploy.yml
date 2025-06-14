@@ -15,9 +15,29 @@ jobs:
     runs-on: tritontek-lacrosse-vm
 
     steps:
-      # Check out the repository
+      # Enable long paths in Git before checkout
+      - name: Configure Git for long paths
+        run: |
+          git config --system core.longpaths true
+        shell: powershell
+
+      # Enable long paths in Windows (requires admin)
+      - name: Enable long paths in Windows
+        run: |
+          New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem" `
+                          -Name "LongPathsEnabled" `
+                          -Value 1 `
+                          -PropertyType DWORD `
+                          -Force
+        shell: powershell
+
+      # Use actions/checkout with specific config
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          lfs: true
+          clean: true
 
       # Set up .NET SDK
       - name: Setup .NET 9 SDK in user folder
