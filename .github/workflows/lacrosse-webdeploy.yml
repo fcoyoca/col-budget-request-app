@@ -24,13 +24,15 @@ jobs:
           git --version
           git config --system core.longpaths true
 
-          # Remove the directory if it exists
-          if (Test-Path "$env:GITHUB_WORKSPACE\cityoflacrosse-budgetrequestapp-api") {
-              Remove-Item -Recurse -Force "$env:GITHUB_WORKSPACE\cityoflacrosse-budgetrequestapp-api"
+          if (Test-Path "$env:GITHUB_WORKSPACE\cityoflacrosse-budgetrequestapp-api") { 
+            Remove-Item -Recurse -Force "$env:GITHUB_WORKSPACE\cityoflacrosse-budgetrequestapp-api" -ErrorAction SilentlyContinue 
           }
 
           git config --global --add safe.directory "$env:GITHUB_WORKSPACE"
           git clone --branch $env:GITHUB_REF_NAME $env:GITHUB_REPOSITORY_URL "$env:GITHUB_WORKSPACE"
+        env:
+          GITHUB_REF_NAME: ${{ github.ref_name }}
+          GITHUB_REPOSITORY_URL: https://github.com/${{ github.repository }}.git
 
       # Set up .NET SDK
       - name: Setup .NET 9 SDK in user folder
