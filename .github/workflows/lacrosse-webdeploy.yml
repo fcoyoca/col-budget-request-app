@@ -1,4 +1,4 @@
-name: Deploy to IIS to Lacrosse
+name: Deploy to IIS [City Of Lacrosse Staging Environment]
 
 # Run when commits are pushed to main
 on:
