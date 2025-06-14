@@ -4,11 +4,11 @@ name: Deploy to IIS [City Of Lacrosse Staging Environment]
 on:
   push:
     branches:
-      - dev
+      - dev-azurevm
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
-      - dev
+      - dev-azurevm
 
 jobs:
   build-and-deploy:
