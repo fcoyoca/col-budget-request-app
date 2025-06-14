@@ -49,7 +49,7 @@ jobs:
         run: |
             Write-Host "--- Starting File Deployment ---"
 
-            $source = "${{ github.workspace }}\publish\wwwroot"
+            $source = "${{ github.workspace }}\publish"
             $destination = "${{ env.DESTINATION_PATH }}"
             $iisWebsiteName = "${{ env.IIS_WEBSITE_NAME }}"
 
