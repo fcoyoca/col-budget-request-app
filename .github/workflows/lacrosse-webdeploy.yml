@@ -24,11 +24,7 @@ jobs:
           git --version
           git config --system core.longpaths true
 
-          $clonePath = Join-Path $env:GITHUB_WORKSPACE "cityoflacrosse-budgetrequestapp-api"
-
-          if (Test-Path $clonePath) { 
-            Remove-Item -Recurse -Force $clonePath -ErrorAction SilentlyContinue 
-          }
+          $clonePath = Join-Path $env:GITHUB_WORKSPACE "repo-$(Get-Random)"
 
           git config --global --add safe.directory "$env:GITHUB_WORKSPACE"
           git clone --branch $env:GITHUB_REF_NAME $env:GITHUB_REPOSITORY_URL $clonePath
