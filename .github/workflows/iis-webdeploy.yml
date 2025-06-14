@@ -1,4 +1,4 @@
-name: Deploy to Tritontek La Crosse VM
+name: Deploy to IIS [Tritontek VM Staging Environment]
 
 # Run when commits are pushed to main
 on:
