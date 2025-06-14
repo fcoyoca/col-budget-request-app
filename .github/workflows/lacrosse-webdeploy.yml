@@ -23,6 +23,12 @@ jobs:
           Write-Host "Cloning repository using PowerShell..."
           git --version
           git config --system core.longpaths true
+
+          # Remove the directory if it exists
+          if (Test-Path "$env:GITHUB_WORKSPACE\cityoflacrosse-budgetrequestapp-api") {
+              Remove-Item -Recurse -Force "$env:GITHUB_WORKSPACE\cityoflacrosse-budgetrequestapp-api"
+          }
+
           git config --global --add safe.directory "$env:GITHUB_WORKSPACE"
           git clone --branch $env:GITHUB_REF_NAME $env:GITHUB_REPOSITORY_URL "$env:GITHUB_WORKSPACE"
 
