@@ -18,7 +18,7 @@ jobs:
       # Enable long paths in Git before checkout
       - name: Configure Git for long paths
         run: |
-          git config --system core.longpaths true
+          git config --global core.longpaths true
         shell: powershell
 
       # Enable long paths in Windows (requires admin)
@@ -69,7 +69,7 @@ jobs:
         run: |
             Write-Host "--- Starting File Deployment ---"
 
-            $source = "${{ github.workspace }}\publish\wwwroot"
+            $source = "${{ github.workspace }}\publish"
             $destination = "${{ env.DESTINATION_PATH }}"
             $iisWebsiteName = "${{ env.IIS_WEBSITE_NAME }}"
 
