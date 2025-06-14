@@ -49,74 +49,77 @@ jobs:
           dotnet publish api/server/Server.csproj --configuration Release --output ./publish -p:EnableContainerBuild=false -p:ContainerImageTags= -p:ContainerRegistry= -p:PublishProfile=
 
       - name: Deploy published files to IIS folder
-        shell: powershell # Using pwsh (PowerShell Core) is generally preferred for runners
+        shell: powershell
         env:
-            # Define variables for clarity and easy modification
-            # Ensure this matches the actual physical path of your IIS website's wwwroot
-            DESTINATION_PATH: C:\WebApps\BudgetRequestWebService
-            IIS_WEBSITE_NAME: BudgetRequestWebService # The exact name of your IIS website for stopping/starting
-
+          DESTINATION_PATH: C:\WebApps\BudgetRequestWebService
+          IIS_WEBSITE_NAME: BudgetRequestWebService
+          IIS_APPPOOL_NAME: BudgetRequestWebService # <-- Update this to match your actual App Pool name
         run: |
-            Write-Host "--- Starting File Deployment ---"
+          Write-Host "--- Starting File Deployment ---"
 
-            $source = "${{ github.workspace }}\publish"
-            $destination = "${{ env.DESTINATION_PATH }}"
-            $iisWebsiteName = "${{ env.IIS_WEBSITE_NAME }}"
+          $source = "${{ github.workspace }}\publish"
+          $destination = "${{ env.DESTINATION_PATH }}"
+          $iisWebsiteName = "${{ env.IIS_WEBSITE_NAME }}"
+          $iisAppPoolName = "${{ env.IIS_APPPOOL_NAME }}"
+          $appOfflinePath = Join-Path $destination "app_offline.htm"
 
-            # --- Step 1: Stop IIS Website Gracefully (if not done previously) ---
-            # This is crucial for avoiding file locking issues during copy.
-            # If you're doing a full msdeploy then these stop/start might be redundant
-            # but for direct file copy, they are essential.
-            try {
-                Write-Host "Stopping IIS website '$iisWebsiteName'..."
-                Import-Module WebAdministration -ErrorAction Stop # Ensure module is loaded
-                Stop-Website -Name $iisWebsiteName -ErrorAction Stop
-                Write-Host "IIS website '$iisWebsiteName' stopped successfully."
-            } catch {
-                Write-Warning "Could not stop IIS website '$iisWebsiteName'. It might already be stopped or named incorrectly. Error: $($_.Exception.Message)"
-                # Continue if unable to stop, but be aware of potential file locking.
-            }
+          try {
+              Write-Host "Stopping IIS App Pool '$iisAppPoolName'..."
+              Import-Module WebAdministration -ErrorAction Stop
+              Stop-WebAppPool -Name $iisAppPoolName -ErrorAction Stop
+              Write-Host "App Pool '$iisAppPoolName' stopped successfully."
 
-            # --- Step 2: Ensure destination directory exists ---
-              Write-Host "Ensuring destination directory '$destination' exists..."
-              try {
-                  if (!(Test-Path $destination)) {
-                      New-Item -ItemType Directory -Force -Path $destination | Out-Null
-                      Write-Host "Created destination directory: $destination"
-                  } else {
-                      Write-Host "Destination directory already exists: $destination"
-                  }
-              } catch {
-                  Write-Error "Failed to ensure destination directory: $($_.Exception.Message)"
-                  exit 1
-              }
+              Write-Host "Stopping IIS website '$iisWebsiteName'..."
+              Stop-Website -Name $iisWebsiteName -ErrorAction Stop
+              Write-Host "IIS website '$iisWebsiteName' stopped successfully."
+          } catch {
+              Write-Warning "Could not stop IIS site or app pool. Error: $($_.Exception.Message)"
+          }
 
-            # --- Step 3: Perform Robocopy Deployment ---
-              Write-Host "Deploying files from '$source' to '$destination' using Robocopy..."
-              Write-Host "Robocopy command: robocopy $source $destination /MIR /Z /NP /R:3 /W:5 /XD logs /XF *.log"
-              robocopy $source $destination /MIR /Z /NP /R:3 /W:5 /XD logs /XF *.log /ETA /V
+          Write-Host "Ensuring destination directory '$destination' exists..."
+          if (!(Test-Path $destination)) {
+              New-Item -ItemType Directory -Force -Path $destination | Out-Null
+              Write-Host "Created destination directory: $destination"
+          } else {
+              Write-Host "Destination directory already exists: $destination"
+          }
 
-              $robocopyExitCode = $LASTEXITCODE
+          # Place app_offline.htm
+          Write-Host "Placing app_offline.htm to unload app domain..."
+          Set-Content $appOfflinePath "App is offline for deployment. Please try again later."
 
-              if ($robocopyExitCode -ge 8) {
-                Write-Error "Robocopy failed with exit code $robocopyExitCode. Check logs for details."
-                exit 1
-              } elseif ($robocopyExitCode -gt 0) {
-                Write-Warning "Robocopy completed with warnings (exit code $robocopyExitCode). Files copied, but check for mismatches or extra files."
-              } else {
-                Write-Host "Robocopy completed successfully with exit code $robocopyExitCode (no files copied or no changes needed)."
-              }
+          Write-Host "Deploying files from '$source' to '$destination' using Robocopy..."
+          robocopy $source $destination /MIR /Z /NP /R:3 /W:5 /XD logs /XF *.log /ETA /V
 
-             # --- Step 4: Start IIS Website ---
-              try {
-                  Write-Host "Starting IIS website '$iisWebsiteName'..."
-                  Import-Module WebAdministration -ErrorAction Stop
-                  Start-Website -Name $iisWebsiteName -ErrorAction Stop
-                  Write-Host "IIS website '$iisWebsiteName' started successfully."
-              } catch {
-                  Write-Error "Failed to start IIS website '$iisWebsiteName'. Error: $($_.Exception.Message)"
-                  exit 1
-              }
+          $robocopyExitCode = $LASTEXITCODE
 
-              Write-Host "--- File Deployment Completed ---"
-              $LASTEXITCODE = 0
+          if ($robocopyExitCode -ge 8) {
+              Write-Error "Robocopy failed with exit code $robocopyExitCode. Check logs for details."
+              exit 1
+          } elseif ($robocopyExitCode -gt 0) {
+              Write-Warning "Robocopy completed with warnings (exit code $robocopyExitCode)."
+          } else {
+              Write-Host "Robocopy completed successfully (exit code 0)."
+          }
+
+          # Remove app_offline.htm
+          if (Test-Path $appOfflinePath) {
+              Remove-Item $appOfflinePath -Force
+              Write-Host "Removed app_offline.htm."
+          }
+
+          try {
+              Write-Host "Starting App Pool '$iisAppPoolName'..."
+              Start-WebAppPool -Name $iisAppPoolName -ErrorAction Stop
+              Write-Host "App Pool '$iisAppPoolName' started."
+
+              Write-Host "Starting IIS Website '$iisWebsiteName'..."
+              Start-Website -Name $iisWebsiteName -ErrorAction Stop
+              Write-Host "IIS Website '$iisWebsiteName' started."
+          } catch {
+              Write-Error "Failed to restart IIS site or app pool. Error: $($_.Exception.Message)"
+              exit 1
+          }
+
+          Write-Host "--- File Deployment Completed ---"
+          $LASTEXITCODE = 0
