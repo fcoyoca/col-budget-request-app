@@ -1,4 +1,4 @@
-name: Deploy to IIS
+name: Deploy to Tritontek La Crosse VM
 
 # Run when commits are pushed to main
 on:
@@ -12,7 +12,7 @@ on:
 
 jobs:
   build-and-deploy:
-    runs-on: [self-hosted, windows, cityOfLacrosseV]
+    runs-on: [self-hosted, windows, tritontek-lacrosse-vm]
 
     steps:
       # Check out the repository
