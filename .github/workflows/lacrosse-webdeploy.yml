@@ -56,7 +56,7 @@ jobs:
         env:
           # Define variables for clarity and easy modification
           # Ensure this matches the actual physical path of your IIS website's wwwroot
-          DESTINATION_PATH: C:\inetpub\wwwroot\BudgetRequestWebService\wwwroot
+          DESTINATION_PATH: C:\inetpub\wwwroot\BudgetRequestWebService
           IIS_WEBSITE_NAME: BudgetRequestWebService # The exact name of your IIS website for stopping/starting
 
         run: |
