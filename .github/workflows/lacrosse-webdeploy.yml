@@ -15,22 +15,9 @@ jobs:
     runs-on: LAX-FINAPP1-DEV-BACKEND
 
     steps:
-        # Use PowerShell to clone the repository
-        # This is necessary for Windows runners where git clone might not work as expected
-      - name: Checkout repository using PowerShell
-        shell: powershell
-        run: |
-          Write-Host "Cloning repository using PowerShell..."
-          git --version
-          git config --system core.longpaths true
-
-          $clonePath = Join-Path $env:GITHUB_WORKSPACE "repo-$(Get-Random)"
-
-          git config --global --add safe.directory "$env:GITHUB_WORKSPACE"
-          git clone --branch $env:GITHUB_REF_NAME $env:GITHUB_REPOSITORY_URL $clonePath
-        env:
-          GITHUB_REF_NAME: ${{ github.ref_name }}
-          GITHUB_REPOSITORY_URL: https://github.com/${{ github.repository }}.git
+      # Check out the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
 
       # Set up .NET SDK
       - name: Setup .NET 9 SDK in user folder
