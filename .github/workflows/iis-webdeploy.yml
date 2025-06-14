@@ -12,7 +12,7 @@ on:
 
 jobs:
   build-and-deploy:
-    runs-on: [self-hosted, windows, tritontek-lacrosse-vm]
+    runs-on: tritontek-lacrosse-vm
 
     steps:
       # Check out the repository
