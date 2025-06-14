@@ -24,8 +24,10 @@ jobs:
           git --version
           git config --system core.longpaths true
 
-          if (Test-Path "$env:GITHUB_WORKSPACE\cityoflacrosse-budgetrequestapp-api") { 
-            Remove-Item -Recurse -Force "$env:GITHUB_WORKSPACE\cityoflacrosse-budgetrequestapp-api" -ErrorAction SilentlyContinue 
+          $clonePath = Join-Path $env:GITHUB_WORKSPACE "cityoflacrosse-budgetrequestapp-api"
+
+          if (Test-Path $clonePath) { 
+            Remove-Item -Recurse -Force $clonePath -ErrorAction SilentlyContinue 
           }
 
           git config --global --add safe.directory "$env:GITHUB_WORKSPACE"
