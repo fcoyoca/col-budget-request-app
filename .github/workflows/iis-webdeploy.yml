@@ -28,6 +28,12 @@ jobs:
           fetch-depth: 0
           lfs: true
           clean: true
+      - name: App Settings Variable Substitution
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: 'api/server/appsettings.json'
+        env:
+          DatabaseOptions.ConnectionString: ${{ secrets.CONNECTION_STRING }}
 
       # Set up .NET SDK
       - name: Setup .NET 9 SDK in user folder
