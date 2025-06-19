@@ -6,6 +6,7 @@ using budget_request_app.WebApi.BudgetYear;
 using budget_request_app.WebApi.CapitalEquipment.Infrastructure;
 using budget_request_app.WebApi.CapitalProject.Infrastructure;
 using budget_request_app.WebApi.FileService;
+using budget_request_app.WebApi.ProjectFundingSource;
 using Carter;
 using FluentValidation;
 using FSH.Framework.Core.Persistence;
@@ -28,6 +29,7 @@ public static class Extensions
             typeof(CapitalProjectModule).Assembly,
             typeof(FileServiceModule).Assembly,
             typeof(BudgetYearModule).Assembly,
+            typeof(ProjectFundingSourceModule).Assembly
         };
 
         //register validators
@@ -46,6 +48,7 @@ public static class Extensions
         builder.RegisterCapitalProjectServices();
         builder.RegisterFileServiceServices();
         builder.RegisterBudgetYearServices();
+        builder.RegisterProjectFundingSourceServices();
 
         //add carter endpoint modules
         builder.Services.AddCarter(configurator: config =>
@@ -56,6 +59,7 @@ public static class Extensions
             config.WithModule<CapitalProjectModule.Endpoints>();
             config.WithModule<FileServiceModule.Endpoints>();
             config.WithModule<BudgetYearModule.Endpoints>();
+            config.WithModule<ProjectFundingSourceModule.Endpoints>();
         });
         
         return builder;
@@ -72,6 +76,7 @@ public static class Extensions
         app.UseCapitalProjectModule();
         app.UseFileServiceModule();
         app.UseBudgetYearModule();
+        app.UseProjectFundingSourceModule();
 
         //register api versions
         var versions = app.NewApiVersionSet()
