@@ -78,6 +78,13 @@ public static class Extensions
     {
         var config = app.Configuration;
 
+        var relativePath = config["FileStorage:FileProvider"];
+        var requestPath = config["FileStorage:RequestPath"];
+
+        // Get the system drive or root of the app
+        var rootDrive = Path.GetPathRoot(AppContext.BaseDirectory); // e.g., "D:\", "C:\"
+        var fullPath = Path.Combine(rootDrive, relativePath);
+
         app.MapDefaultEndpoints();
         app.UseRateLimit();
         app.UseSecurityHeaders();
@@ -94,12 +101,19 @@ public static class Extensions
             FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "assets")),
             RequestPath = new PathString("/assets")
         });
+
+        // Ensure directory exists
+        if (!Directory.Exists(fullPath))
+        {
+            Directory.CreateDirectory(fullPath);
+        }
+
         app.UseStaticFiles(new StaticFileOptions
         {
-            FileProvider = new PhysicalFileProvider($"{config["FileStorage:FileProvider"]}"),
-            RequestPath = new PathString($"{config["FileStorage:RequestPath"]}")
+            FileProvider = new PhysicalFileProvider(fullPath),
+            RequestPath = new PathString(requestPath)
         });
-        
+
         app.UseAuthentication();
         app.UseAuthorization();
         app.UseAntiforgery();

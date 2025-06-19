@@ -70,7 +70,11 @@ namespace FSH.Framework.Infrastructure.Storage.Files
         public async Task<Uri> UploadAttachmentAsync(FileUploadCommand? request, FileType supportedFileType,
             CancellationToken cancellationToken = default)
         {
-            string folderName = configuration.GetValue<string>("FileStorage:FileProvider");
+            string relativePath = configuration.GetValue<string>("FileStorage:FileProvider");
+            var rootDrive = Path.GetPathRoot(AppContext.BaseDirectory); // e.g., "D:\", "C:\"
+            var fileProviderFullPath = Path.Combine(rootDrive, relativePath);
+
+            string folderName = fileProviderFullPath;
             string requestPath = configuration.GetValue<string>("FileStorage:RequestPath");
             if (request == null || request.Data == null)
             {
@@ -123,7 +127,11 @@ namespace FSH.Framework.Infrastructure.Storage.Files
 
         public void RemoveAttachment(string filename)
         {
-            string folderName = configuration.GetValue<string>("FileStorage:FileProvider");
+            string relativePath = configuration.GetValue<string>("FileStorage:FileProvider");
+            var rootDrive = Path.GetPathRoot(AppContext.BaseDirectory); // e.g., "D:\", "C:\"
+            var fileProviderFullPath = Path.Combine(rootDrive, relativePath);
+
+            string folderName = fileProviderFullPath;
             string path = Path.Combine(folderName, filename);
             var pathString = path!.ToString();
             if (File.Exists(pathString))
