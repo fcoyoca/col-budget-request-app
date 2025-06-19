@@ -35,6 +35,7 @@ jobs:
         env:
           DatabaseOptions.ConnectionString: ${{ secrets.TTT_LAX_VM_DBCONNECTSTRING }}
           OriginOptions.OriginUrl: 'https://20.243.136.207:444'
+          CorsOptions.AllowedOrigins: "[\"https://20.243.136.207:447\", \"http://48.210.64.131:446\", \"https://localhost:7100\", \"http://localhost:7100\" ]"
 
       # Set up .NET SDK
       - name: Setup .NET 9 SDK in user folder
