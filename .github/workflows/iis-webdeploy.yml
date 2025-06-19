@@ -33,7 +33,7 @@ jobs:
         with:
           files: 'api/server/appsettings.json'
         env:
-          DatabaseOptions.ConnectionString: ${{ secrets.CONNECTION_STRING }}
+          DatabaseOptions.ConnectionString: ${{ secrets.TTT_LAX_VM_DBCONNECTSTRING }}
           OriginOptions.OriginUrl: 'https://20.243.136.207:444'
 
       # Set up .NET SDK
