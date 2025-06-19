@@ -24,7 +24,7 @@ jobs:
           files: 'api/server/appsettings.json'
         env:
           DatabaseOptions.ConnectionString: ${{ secrets.DB_DEV_CONNECTIONSTRING }}
-          OriginOptions.OriginUrl: 'https://budget-dev.cityoflacrosse.org'
+          OriginOptions.OriginUrl: 'https://budget-api-dev.cityoflacrosse.org/'
           CorsOptions.AllowedOrigins: "[\"https://budget-dev.cityoflacrosse.org\", \"https://localhost:7100\", \"http://localhost:7100\" ]"
 
       # Set up .NET SDK
