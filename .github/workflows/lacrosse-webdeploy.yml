@@ -42,22 +42,20 @@ jobs:
       - name: Publish the project
         shell: powershell
         run: |
-          dotnet publish api/server/Server.csproj --configuration Release --output .\publish
+          dotnet publish api/server/Server.csproj --configuration Release --output ./publish -p:EnableContainerBuild=false -p:ContainerImageTags= -p:ContainerRegistry= -p:PublishProfile=
 
       - name: Deploy published files to IIS folder
         shell: powershell # Using pwsh (PowerShell Core) is generally preferred for runners
         env:
           # Define variables for clarity and easy modification
           # Ensure this matches the actual physical path of your IIS website's wwwroot
-
-          DESTINATION_PATH: C:\inetpub\wwwroot\BudgetRequestWebService\wwwroot
+          DESTINATION_PATH: C:\inetpub\wwwroot\BudgetRequestWebService
           IIS_WEBSITE_NAME: BudgetRequestWebService # The exact name of your IIS website for stopping/starting
 
         run: |
             Write-Host "--- Starting File Deployment ---"
 
-            $source = "${{ github.workspace }}\publish\wwwroot"
-
+            $source = "${{ github.workspace }}\publish"
             $destination = "${{ env.DESTINATION_PATH }}"
             $iisWebsiteName = "${{ env.IIS_WEBSITE_NAME }}"
 
