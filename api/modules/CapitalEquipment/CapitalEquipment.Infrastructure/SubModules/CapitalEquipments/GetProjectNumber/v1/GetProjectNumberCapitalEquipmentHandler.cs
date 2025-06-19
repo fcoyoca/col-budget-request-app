@@ -26,7 +26,9 @@ public sealed class GetProjectNumberCapitalEquipmentHandler(
 
         if (budgetYears.Count == 0)
         {
-            throw new NotFoundException("budget year not found");
+            //throw new NotFoundException("budget year not found");
+            await budgetYearRepository.AddAsync(new BudgetYearItem() { BudgetYear = DateTime.UtcNow.Year }, cancellationToken);
+            budgetYears = await budgetYearRepository.ListAsync();
         }
         
         var maxBudgetYear = budgetYears.Select(x => x.BudgetYear).Max();
