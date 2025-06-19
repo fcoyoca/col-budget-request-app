@@ -37,9 +37,9 @@ public static class CapitalEquipmentModule
         builder.Services.AddKeyedScoped<IRepository<CapitalEquipmentItem>, CapitalEquipmentRepository<CapitalEquipmentItem>>("capitalEquipments");
         builder.Services.AddKeyedScoped<IReadRepository<CapitalEquipmentItem>, CapitalEquipmentRepository<CapitalEquipmentItem>>("capitalEquipments");
         
-        builder.Services.AddKeyedScoped<IRepository<budget_request_app.WebApi.CapitalEquipment.Domain.PastFunding>, CapitalEquipmentRepository<budget_request_app.WebApi.CapitalEquipment.Domain.PastFunding>>("capitalEquipmentsPastFundings");
-        builder.Services.AddKeyedScoped<IReadRepository<budget_request_app.WebApi.CapitalEquipment.Domain.PastFunding>, CapitalEquipmentRepository<budget_request_app.WebApi.CapitalEquipment.Domain.PastFunding>>("capitalEquipmentsPastFundings");
-        
+        // builder.Services.AddKeyedScoped<IRepository<budget_request_app.WebApi.CapitalEquipment.Domain.PastFunding>, CapitalEquipmentRepository<budget_request_app.WebApi.CapitalEquipment.Domain.PastFunding>>("capitalEquipmentsPastFundings");
+        // builder.Services.AddKeyedScoped<IReadRepository<budget_request_app.WebApi.CapitalEquipment.Domain.PastFunding>, CapitalEquipmentRepository<budget_request_app.WebApi.CapitalEquipment.Domain.PastFunding>>("capitalEquipmentsPastFundings");
+        //
         builder.Services.AddKeyedScoped<IRepository<FundingItem>, CapitalEquipmentRepository<FundingItem>>("capitalEquipmentsFundingItems");
         builder.Services.AddKeyedScoped<IReadRepository<FundingItem>, CapitalEquipmentRepository<FundingItem>>("capitalEquipmentsFundingItems");
         

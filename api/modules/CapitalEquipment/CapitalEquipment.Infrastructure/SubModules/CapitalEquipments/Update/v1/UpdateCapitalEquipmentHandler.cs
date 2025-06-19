@@ -21,8 +21,9 @@ public sealed class UpdateCapitalEquipmentHandler(
     IJobService hangfireService,
     ILogger<UpdateCapitalEquipmentHandler> logger,
     [FromKeyedServices("capitalEquipments")] IRepository<CapitalEquipmentItem> repository,
-    [FromKeyedServices("capitalEquipmentsFundingItems")] IRepository<FundingItem> repositoryFundingItem,
-    [FromKeyedServices("capitalEquipmentsPastFundings")] IRepository<PastFunding> repositoryPastFunding)
+    [FromKeyedServices("capitalEquipmentsFundingItems")] IRepository<FundingItem> repositoryFundingItem
+    //[FromKeyedServices("capitalEquipmentsPastFundings")] IRepository<PastFunding> repositoryPastFunding
+    )
     : IRequestHandler<UpdateCapitalEquipmentCommand, UpdateCapitalEquipmentResponse>
 {
     public async Task<UpdateCapitalEquipmentResponse> Handle(UpdateCapitalEquipmentCommand request, CancellationToken cancellationToken)
@@ -74,7 +75,7 @@ public sealed class UpdateCapitalEquipmentHandler(
         
         await repositoryFundingItem.AddRangeAsync(fundingItems, cancellationToken);
         
-        capitalEquipment.PastFundings.Clear();
+        //capitalEquipment.PastFundings.Clear();
 
         if (request.ImageFile != null)
         {
@@ -147,18 +148,18 @@ public sealed class UpdateCapitalEquipmentHandler(
             request.ImageFile?.ImageFilePath ?? string.Empty
             );
         
-        updatedCapitalEquipment.PastFundings.Clear();
+        //updatedCapitalEquipment.PastFundings.Clear();
         
         await repository.UpdateAsync(updatedCapitalEquipment, cancellationToken);
 
-        var pastFundingChildren = request.Funding.PastFundings.Adapt<List<PastFunding>>();
-        
-        foreach (PastFunding pastFunding in pastFundingChildren)
-        {
-            pastFunding.CapitalEquipmentId = request.Id;
-        }
+        // var pastFundingChildren = request.Funding.PastFundings.Adapt<List<PastFunding>>();
+        //
+        // foreach (PastFunding pastFunding in pastFundingChildren)
+        // {
+        //     pastFunding.CapitalEquipmentId = request.Id;
+        // }
 
-        await repositoryPastFunding.AddRangeAsync(pastFundingChildren, cancellationToken);
+        //await repositoryPastFunding.AddRangeAsync(pastFundingChildren, cancellationToken);
         
         logger.LogInformation("CapitalEquipment with id : {CapitalEquipmentId} updated.", updatedCapitalEquipment.Id);
         

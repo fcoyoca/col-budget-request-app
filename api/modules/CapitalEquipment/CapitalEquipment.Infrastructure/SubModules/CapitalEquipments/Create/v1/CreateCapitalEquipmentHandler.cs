@@ -159,7 +159,7 @@ public sealed class CreateCapitalEquipmentHandler(
             approvalOversightInfo.PurchasingBuyerReview,
             approvalOversightInfo.AdditionalNotes ?? string.Empty,
             fundingItems,
-            request.Funding.PastFundings.Adapt<List<CapitalEquipment.Domain.PastFunding>>(),
+            //request.Funding.PastFundings.Adapt<List<CapitalEquipment.Domain.PastFunding>>(),
             request.FileIds ?? string.Empty,
             request.ImageFile?.ImageFilePath ?? string.Empty
             );
