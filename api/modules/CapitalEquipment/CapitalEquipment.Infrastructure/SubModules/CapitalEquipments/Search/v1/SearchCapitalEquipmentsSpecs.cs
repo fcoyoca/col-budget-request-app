@@ -14,6 +14,6 @@ public class SearchCapitalEquipmentSpecs : EntitiesByPaginationFilterSpec<Capita
             .ThenInclude(x => x.YearEstimates)
             .Include(x => x.FundingItems)
             .ThenInclude(x => x.CurrentYearRequested)
-            .Include(x => x.PastFundings)
+            //.Include(x => x.PastFundings)
             .OrderBy(c => c.Id, !command.HasOrderBy());
 }
