@@ -19,6 +19,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: App Settings Variable Substitution
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: 'api/server/appsettings.json'
+        env:
+          DatabaseOptions.ConnectionString: ${{ secrets.DB_DEV_CONNECTIONSTRING }}
+          OriginOptions.OriginUrl: 'https://budget-dev.cityoflacrosse.org'
+
       # Set up .NET SDK
       - name: Setup .NET 9 SDK in user folder
         shell: powershell
