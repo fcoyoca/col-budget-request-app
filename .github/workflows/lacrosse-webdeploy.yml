@@ -76,7 +76,7 @@ jobs:
             }
 
             # --- Step 1.1: Stop Application Pool ---
-            $appPoolName = $iisWebsiteName # Change if app pool name differs
+            $appPoolName = BudgetRequestWebServicePool # Change if app pool name differs
             if ((Get-WebAppPoolState -Name $appPoolName).Value -eq "Started") {
                 Stop-WebAppPool -Name $appPoolName
                 Write-Host "Application pool '$appPoolName' stopped."
