@@ -147,19 +147,13 @@ public sealed class UpdateCapitalEquipmentHandler(
             request.FileIds,
             request.ImageFile?.ImageFilePath ?? string.Empty
             );
+
+        var pastFundingChildren = request.Funding.PastFundings.Adapt<List<PastFunding>>();
         
-        //updatedCapitalEquipment.PastFundings.Clear();
+        updatedCapitalEquipment.PastFundings = new List<PastFunding>();
+        updatedCapitalEquipment.PastFundings = pastFundingChildren;
         
         await repository.UpdateAsync(updatedCapitalEquipment, cancellationToken);
-
-        // var pastFundingChildren = request.Funding.PastFundings.Adapt<List<PastFunding>>();
-        //
-        // foreach (PastFunding pastFunding in pastFundingChildren)
-        // {
-        //     pastFunding.CapitalEquipmentId = request.Id;
-        // }
-
-        //await repositoryPastFunding.AddRangeAsync(pastFundingChildren, cancellationToken);
         
         logger.LogInformation("CapitalEquipment with id : {CapitalEquipmentId} updated.", updatedCapitalEquipment.Id);
         

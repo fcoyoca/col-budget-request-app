@@ -135,6 +135,7 @@ public class FundingYearItemCreateDTO
 
 public class PastFundingCreateDTO
 {
+    public Guid Id { get; set; }
     public string? Details { get; set; }
     public int? Year  { get; set; }
     public decimal? Amount { get; set; }
