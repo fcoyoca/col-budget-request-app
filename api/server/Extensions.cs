@@ -88,4 +88,23 @@ public static class Extensions
 
         return app;
     }
+    
+    public static IApplicationBuilder SetDefaultWebApiContent(this WebApplication app, IConfiguration configuration)
+    {
+        // Retrieve the WebApiBuildVersion from the configuration
+        var buildVersion = configuration["WebApiBuildVersion"] ?? "Version Not Set";
+
+        // Get the environment name (e.g., Development, Staging, Production)
+        var environmentName = app.Environment.EnvironmentName;
+
+        // Determine content based on the environment
+        var appVersion = environmentName.Contains("dev", StringComparison.InvariantCultureIgnoreCase)
+            ? $"Version: {DateTime.UtcNow:yyyy-MM-dd.Hmm}"  // Use current timestamp in dev environment
+            : $"Version: {buildVersion}";
+
+        // Map the root URL ("/") to return the app version information
+        app.MapGet("/", () => appVersion);
+
+        return app;
+    }
 }

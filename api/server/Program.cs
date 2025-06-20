@@ -13,6 +13,7 @@ try
 
     var app = builder.Build();
 
+    app.SetDefaultWebApiContent(app.Configuration);
     app.UseFshFramework();
     app.UseModules();
     await app.RunAsync();
