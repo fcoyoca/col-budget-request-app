@@ -100,7 +100,7 @@ public static class Extensions
         // Determine content based on the environment
         var appVersion = environmentName.Contains("dev", StringComparison.InvariantCultureIgnoreCase)
             ? $"Version: {DateTime.UtcNow:yyyy-MM-dd.Hmm}"  // Use current timestamp in dev environment
-            : $"Version: {buildVersion}";
+            : $"Version: {DateTime.UtcNow:yyyy-MM-dd.Hmm}.{buildVersion}";
 
         // Map the root URL ("/") to return the app version information
         app.MapGet("/", () => appVersion);
