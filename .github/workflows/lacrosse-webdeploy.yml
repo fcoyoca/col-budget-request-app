@@ -13,8 +13,11 @@ on:
 jobs:
   build-and-deploy:
     runs-on: LAX-FINAPP1-DEV-BACKEND
-
+    
     steps:
+      - name: Set Build Version
+        run: echo "BUILD_NUMBER=${{ github.run_number }}" >> $GITHUB_ENV
+        
       # Check out the repository
       - name: Checkout code
         uses: actions/checkout@v3
@@ -26,6 +29,7 @@ jobs:
           DatabaseOptions.ConnectionString: ${{ secrets.DB_DEV_CONNECTIONSTRING }}
           OriginOptions.OriginUrl: 'https://budget-api-dev.cityoflacrosse.org/'
           CorsOptions.AllowedOrigins: "[\"https://budget-dev.cityoflacrosse.org\", \"https://localhost:7100\", \"http://localhost:7100\" ]"
+          WebApiBuildVersion: '${{ github.run_number }}'
 
       # Set up .NET SDK
       - name: Setup .NET 9 SDK in user folder
