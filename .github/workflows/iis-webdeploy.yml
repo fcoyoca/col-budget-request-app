@@ -4,11 +4,11 @@ name: Deploy to IIS [Tritontek VM Staging Environment]
 on:
   push:
     branches:
-      - staging
+      - dev
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
-      - staging
+      - dev
 
 jobs:
   build-and-deploy:
