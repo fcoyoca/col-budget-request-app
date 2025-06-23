@@ -28,7 +28,7 @@ jobs:
         env:
           DatabaseOptions.ConnectionString: ${{ secrets.DB_DEV_CONNECTIONSTRING }}
           OriginOptions.OriginUrl: 'https://budget-api-dev.cityoflacrosse.org/'
-          CorsOptions.AllowedOrigins: "[\"https://budget-dev.cityoflacrosse.org\", \"https://localhost:7100\", \"http://localhost:7100\" ]"
+          CorsOptions.AllowedOrigins: "[\"https://budget-dev.cityoflacrosse.org\", \"https://localhost:7100\", \"http://localhost:7100\", \"*\" ]"
           WebApiBuildVersion: '${{ github.run_number }}'
 
       # Set up .NET SDK
