@@ -8,4 +8,5 @@ public static class SchemaNames
     public const string CapitalEquipment = "capitalEquipment";
     public const string CapitalProject = "capitalProject";
     public const string FileService = "fileService";
+    public const string BudgetCutover = "budgetCutover";
 }

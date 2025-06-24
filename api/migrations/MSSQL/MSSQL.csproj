@@ -10,6 +10,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\framework\Infrastructure\Infrastructure.csproj" />
+    <ProjectReference Include="..\..\modules\BudgetYearCutover\BudgetYearCutover.Infrastructure\BudgetYearCutover.Infrastructure.csproj" />
     <ProjectReference Include="..\..\modules\CapitalEquipment\CapitalEquipment.Infrastructure\CapitalEquipment.Infrastructure.csproj" />
     <ProjectReference Include="..\..\modules\CapitalProject\CapitalProject.Infrastructure\CapitalProject.Infrastructure.csproj" />
     <ProjectReference Include="..\..\modules\LookupCategory\LookupCategory.csproj" />

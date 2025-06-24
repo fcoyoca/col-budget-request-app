@@ -1,16 +1,15 @@
 ﻿using System.Reflection;
 using Asp.Versioning.Conventions;
-using budget_request_app.WebApi.LookupCategory;
-using budget_request_app.WebApi.LookupValue;
 using budget_request_app.WebApi.BudgetYear;
 using budget_request_app.WebApi.CapitalEquipment.Infrastructure;
 using budget_request_app.WebApi.CapitalProject.Infrastructure;
 using budget_request_app.WebApi.FileService;
+using budget_request_app.WebApi.LookupCategory;
+using budget_request_app.WebApi.LookupValue;
 using budget_request_app.WebApi.ProjectFundingSource;
+using BudgetYearCutover.Infrastructure;
 using Carter;
 using FluentValidation;
-using FSH.Framework.Core.Persistence;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace budget_request_app.WebApi.Host;
 
@@ -29,7 +28,8 @@ public static class Extensions
             typeof(CapitalProjectModule).Assembly,
             typeof(FileServiceModule).Assembly,
             typeof(BudgetYearModule).Assembly,
-            typeof(ProjectFundingSourceModule).Assembly
+            typeof(ProjectFundingSourceModule).Assembly,
+            typeof(BudgetYearCutoverModule).Assembly
         };
 
         //register validators
@@ -49,6 +49,7 @@ public static class Extensions
         builder.RegisterFileServiceServices();
         builder.RegisterBudgetYearServices();
         builder.RegisterProjectFundingSourceServices();
+        builder.RegisterBudgetYearCutoverServices();
 
         //add carter endpoint modules
         builder.Services.AddCarter(configurator: config =>
@@ -60,8 +61,9 @@ public static class Extensions
             config.WithModule<FileServiceModule.Endpoints>();
             config.WithModule<BudgetYearModule.Endpoints>();
             config.WithModule<ProjectFundingSourceModule.Endpoints>();
+            config.WithModule<BudgetYearCutoverModule.Endpoints>();
         });
-        
+
         return builder;
     }
 
@@ -77,6 +79,7 @@ public static class Extensions
         app.UseFileServiceModule();
         app.UseBudgetYearModule();
         app.UseProjectFundingSourceModule();
+        app.UseBudgetYearCutoverModule();
 
         //register api versions
         var versions = app.NewApiVersionSet()

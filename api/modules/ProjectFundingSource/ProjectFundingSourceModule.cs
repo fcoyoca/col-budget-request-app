@@ -18,7 +18,6 @@ using Microsoft.Extensions.DependencyInjection;
 namespace budget_request_app.WebApi.ProjectFundingSource;
 public static class ProjectFundingSourceModule
 {
-
     public class Endpoints : CarterModule
     {
         public override void AddRoutes(IEndpointRouteBuilder app)
