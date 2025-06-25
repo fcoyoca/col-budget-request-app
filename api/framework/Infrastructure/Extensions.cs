@@ -80,10 +80,15 @@ public static class Extensions
 
         var relativePath = config["FileStorage:FileProvider"];
         var requestPath = config["FileStorage:RequestPath"];
+        var requestPathReportCovers = config["FileStorage:RequestPathReportCovers"];
+        var fileProviderReportCovers = config["FileStorage:FileProviderReportCovers"];
+        
 
         // Get the system drive or root of the app
         var rootDrive = Path.GetPathRoot(AppContext.BaseDirectory); // e.g., "D:\", "C:\"
         var fullPath = Path.Combine(rootDrive, relativePath);
+        
+        var fileProviderReportCoversFullPath = Path.Combine(rootDrive, fileProviderReportCovers);
 
         app.MapDefaultEndpoints();
         app.UseRateLimit();
@@ -107,11 +112,23 @@ public static class Extensions
         {
             Directory.CreateDirectory(fullPath);
         }
+        
+        if (!Directory.Exists(fileProviderReportCoversFullPath))
+        {
+            Directory.CreateDirectory(fileProviderReportCoversFullPath);
+        }
 
         app.UseStaticFiles(new StaticFileOptions
         {
             FileProvider = new PhysicalFileProvider(fullPath),
             RequestPath = new PathString(requestPath)
+        });
+        
+        // Report Covers Path
+        app.UseStaticFiles(new StaticFileOptions
+        {
+            FileProvider = new PhysicalFileProvider(fileProviderReportCoversFullPath),
+            RequestPath = new PathString(requestPathReportCovers)
         });
 
         app.UseAuthentication();

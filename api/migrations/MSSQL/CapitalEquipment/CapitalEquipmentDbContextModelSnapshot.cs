@@ -340,6 +340,61 @@ namespace budget_request_app.WebApi.Migrations.MSSQL.CapitalEquipment
                     b.ToTable("FundingYearItem", "capitalEquipment");
                 });
 
+            modelBuilder.Entity("budget_request_app.WebApi.CapitalEquipment.Domain.PastFunding", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal?>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid?>("CapitalEquipmentItemId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("Created")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("Deleted")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid?>("DeletedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Details")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("FundingSource")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("FundingSubSource")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("LastModified")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid?>("LastModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Request")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SOF")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Year")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CapitalEquipmentItemId");
+
+                    b.ToTable("PastFunding", "capitalEquipment");
+                });
+
             modelBuilder.Entity("budget_request_app.WebApi.CapitalEquipment.Domain.FundingItem", b =>
                 {
                     b.HasOne("budget_request_app.WebApi.CapitalEquipment.Domain.CapitalEquipmentItem", "CapitalEquipment")
@@ -364,9 +419,18 @@ namespace budget_request_app.WebApi.Migrations.MSSQL.CapitalEquipment
                         .HasForeignKey("FundingItemId");
                 });
 
+            modelBuilder.Entity("budget_request_app.WebApi.CapitalEquipment.Domain.PastFunding", b =>
+                {
+                    b.HasOne("budget_request_app.WebApi.CapitalEquipment.Domain.CapitalEquipmentItem", null)
+                        .WithMany("PastFundings")
+                        .HasForeignKey("CapitalEquipmentItemId");
+                });
+
             modelBuilder.Entity("budget_request_app.WebApi.CapitalEquipment.Domain.CapitalEquipmentItem", b =>
                 {
                     b.Navigation("FundingItems");
+
+                    b.Navigation("PastFundings");
                 });
 
             modelBuilder.Entity("budget_request_app.WebApi.CapitalEquipment.Domain.FundingItem", b =>
