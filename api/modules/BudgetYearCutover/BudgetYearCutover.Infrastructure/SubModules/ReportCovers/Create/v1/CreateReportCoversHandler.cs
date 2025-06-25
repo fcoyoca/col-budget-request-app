@@ -52,7 +52,7 @@ public sealed class CreateReportCoversHandler(
                     throw new("Invalid base64 file data.");
                 }
 
-                string relativePath = $"{configuration.GetValue<string>("FileStorage:FileProvider")}\\{DateTime.Now.Year}";
+                string relativePath = $"{configuration.GetValue<string>("FileStorage:FileProviderReportCovers")}";
                 var rootDrive = Path.GetPathRoot(AppContext.BaseDirectory); // e.g., "D:\", "C:\"
                 var fileProviderFullPath = Path.Combine(rootDrive, relativePath);
 
@@ -63,7 +63,7 @@ public sealed class CreateReportCoversHandler(
                 }
 
                 string folderName = fileProviderFullPath;
-                string requestPath = $"{configuration.GetValue<string>("FileStorage:RequestPath")}/{DateTime.Now.Year}/{report.ReportCoverName}.{report.FileExtension}";
+                string requestPath = $"{configuration.GetValue<string>("FileStorage:RequestPathReportCovers")}/{report.ReportCoverName}{report.FileExtension}";
 
                 var safeFileName = $"{report.ReportCoverName}.{report.FileExtension}";
                 var filePath = Path.Combine(fileProviderFullPath, safeFileName);
@@ -101,7 +101,7 @@ public sealed class CreateReportCoversHandler(
                     throw new("Invalid base64 file data.");
                 }
 
-                string relativePath = $"{configuration.GetValue<string>("FileStorage:FileProvider")}\\{DateTime.Now.Year}";
+                string relativePath = $"{configuration.GetValue<string>("FileStorage:FileProviderReportCovers")}";
                 var rootDrive = Path.GetPathRoot(AppContext.BaseDirectory);
                 var fileProviderFullPath = Path.Combine(rootDrive, relativePath);
 
@@ -113,7 +113,7 @@ public sealed class CreateReportCoversHandler(
 
                 var safeFileName = $"{report.ReportCoverName}.{report.FileExtension}";
                 var filePath = Path.Combine(fileProviderFullPath, safeFileName);
-                string requestPath = $"{configuration.GetValue<string>("FileStorage:RequestPath")}/{DateTime.Now.Year}/{report.ReportCoverName}.{report.FileExtension}";
+                string requestPath = $"{configuration.GetValue<string>("FileStorage:RequestPathReportCovers")}/{report.ReportCoverName}{report.FileExtension}";
 
                 // Overwrite the file
                 await System.IO.File.WriteAllBytesAsync(filePath, fileBytes, cancellationToken: cancellationToken);
