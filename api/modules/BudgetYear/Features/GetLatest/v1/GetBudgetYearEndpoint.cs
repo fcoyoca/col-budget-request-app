@@ -19,7 +19,8 @@ public static class GetBudgetYearEndpoint
                         .WithSummary("gets latest BudgetYear")
                         .WithDescription("gets latest BudgetYear")
                         .Produces<GetBudgetYearResponse>()
-                        .RequirePermission("Permissions.BudgetYears.View")
+                        //.RequirePermission("Permissions.BudgetYears.View")
+                        .AllowAnonymous()
                         .MapToApiVersion(1);
     }
 }

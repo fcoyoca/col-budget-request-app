@@ -18,7 +18,8 @@ public static class GetLookupCategoryEndpoint
                         .WithSummary("gets LookupCategory item by id")
                         .WithDescription("gets LookupCategory item by id")
                         .Produces<GetLookupCategoryResponse>()
-                        .RequirePermission("Permissions.LookupCategories.View")
+                        //.RequirePermission("Permissions.LookupCategories.View")
+                        .AllowAnonymous()
                         .MapToApiVersion(1);
     }
 }

@@ -19,7 +19,8 @@ public static class CreateBudgetYearEndpoint
                 .WithSummary("Creates a BudgetYear item")
                 .WithDescription("Creates a BudgetYear item")
                 .Produces<CreateBudgetYearResponse>(StatusCodes.Status201Created)
-                .RequirePermission("Permissions.BudgetYears.Create")
+                //.RequirePermission("Permissions.BudgetYears.Create")
+                .AllowAnonymous()
                 .MapToApiVersion(new ApiVersion(1, 0));
 
     }
