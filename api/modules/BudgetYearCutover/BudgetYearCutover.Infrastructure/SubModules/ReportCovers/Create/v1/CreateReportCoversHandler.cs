@@ -63,9 +63,9 @@ public sealed class CreateReportCoversHandler(
                 }
 
                 string folderName = fileProviderFullPath;
-                string requestPath = $"{configuration.GetValue<string>("FileStorage:RequestPathReportCovers")}/{report.ReportCoverName}{report.FileExtension}";
+                string requestPath = $"{configuration.GetValue<string>("FileStorage:RequestPathReportCovers")}/{report.ReportCoverName}";
 
-                var safeFileName = $"{report.ReportCoverName}.{report.FileExtension}";
+                var safeFileName = $"{report.ReportCoverName}";
                 var filePath = Path.Combine(fileProviderFullPath, safeFileName);
                 await System.IO.File.WriteAllBytesAsync(filePath, fileBytes, cancellationToken: cancellationToken);
 
@@ -111,9 +111,9 @@ public sealed class CreateReportCoversHandler(
                     Directory.CreateDirectory(fileProviderFullPath);
                 }
 
-                var safeFileName = $"{report.ReportCoverName}.{report.FileExtension}";
+                var safeFileName = $"{report.ReportCoverName}";
                 var filePath = Path.Combine(fileProviderFullPath, safeFileName);
-                string requestPath = $"{configuration.GetValue<string>("FileStorage:RequestPathReportCovers")}/{report.ReportCoverName}{report.FileExtension}";
+                string requestPath = $"{configuration.GetValue<string>("FileStorage:RequestPathReportCovers")}/{report.ReportCoverName}";
 
                 // Overwrite the file
                 await System.IO.File.WriteAllBytesAsync(filePath, fileBytes, cancellationToken: cancellationToken);
