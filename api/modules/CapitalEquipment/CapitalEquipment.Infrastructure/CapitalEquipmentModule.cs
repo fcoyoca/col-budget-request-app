@@ -43,6 +43,9 @@ public static class CapitalEquipmentModule
         builder.Services.AddKeyedScoped<IRepository<FundingItem>, CapitalEquipmentRepository<FundingItem>>("capitalEquipmentsFundingItems");
         builder.Services.AddKeyedScoped<IReadRepository<FundingItem>, CapitalEquipmentRepository<FundingItem>>("capitalEquipmentsFundingItems");
         
+        builder.Services.AddKeyedScoped<IRepository<FundingYearItem>, CapitalEquipmentRepository<FundingYearItem>>("capitalEquipmentsFundingYearItems");
+        builder.Services.AddKeyedScoped<IReadRepository<FundingYearItem>, CapitalEquipmentRepository<FundingYearItem>>("capitalEquipmentsFundingYearItems");
+        
         return builder;
     }
     public static WebApplication UseCapitalEquipmentModule(this WebApplication app)
