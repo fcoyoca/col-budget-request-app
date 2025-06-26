@@ -22,6 +22,7 @@ public static class UpdateLookupCategoryEndpoint
             .WithDescription("Updated a LookupCategory item")
             .Produces<UpdateLookupCategoryResponse>(StatusCodes.Status200OK)
             //.RequirePermission("Permissions.LookupCategorys.Update")
+            .AllowAnonymous()
             .MapToApiVersion(new ApiVersion(1, 0));
 
     }

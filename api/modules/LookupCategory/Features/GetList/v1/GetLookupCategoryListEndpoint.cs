@@ -22,6 +22,7 @@ public static class GetLookupCategoryListEndpoint
         .WithDescription("Gets a list of LookupCategory items with paging support")
         .Produces<PagedList<LookupCategoryDto>>()
         //.RequirePermission("Permissions.LookupCategories.View")
+        .AllowAnonymous()
         .MapToApiVersion(1);
     }
 }

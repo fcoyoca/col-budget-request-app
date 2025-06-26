@@ -21,6 +21,7 @@ public static class DeleteLookupCategoryEndpoint
             .WithDescription("Deleted a LookupCategory item")
             .Produces(StatusCodes.Status204NoContent)
             //.RequirePermission("Permissions.LookupCategories.Delete")
+            .AllowAnonymous()
             .MapToApiVersion(new ApiVersion(1, 0));
 
     }

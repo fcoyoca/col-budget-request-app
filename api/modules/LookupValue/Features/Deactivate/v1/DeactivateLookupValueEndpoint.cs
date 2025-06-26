@@ -22,6 +22,7 @@ public static class DeactivateLookupValueEndpoint
             .WithDescription("Activated a LookupValue item")
             .Produces<DeactivateLookupValueResponse>(StatusCodes.Status200OK)
             //.RequirePermission("Permissions.LookupCategories.Update")
+            .AllowAnonymous()
             .MapToApiVersion(new ApiVersion(1, 0));
 
     }

@@ -20,6 +20,7 @@ public static class GetBudgetYearEndpoint
                         .WithDescription("gets latest BudgetYear")
                         .Produces<GetBudgetYearResponse>()
                         //.RequirePermission("Permissions.BudgetYears.View")
+                        .AllowAnonymous()
                         .MapToApiVersion(1);
     }
 }

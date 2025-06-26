@@ -31,6 +31,7 @@ public static class LookupValueModule
             LookupValueGroup.MapLookupValueItemActivationEndpoint();
             LookupValueGroup.MapLookupValueItemDeactivationEndpoint();
             LookupValueGroup.MapLookupValueItemDeletionEndpoint();
+            LookupValueGroup.AllowAnonymous();
         }
     }
     public static WebApplicationBuilder RegisterLookupValueServices(this WebApplicationBuilder builder)

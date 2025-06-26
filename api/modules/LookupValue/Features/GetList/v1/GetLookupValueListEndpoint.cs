@@ -22,6 +22,7 @@ public static class GetLookupValueListEndpoint
         .WithDescription("Gets a list of LookupValue items with paging support")
         .Produces<PagedList<LookupValueDto>>()
         //.RequirePermission("Permissions.LookupCategories.View")
+        .AllowAnonymous()
         .MapToApiVersion(1);
     }
 }
