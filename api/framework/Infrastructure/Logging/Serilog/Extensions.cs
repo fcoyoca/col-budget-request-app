@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Options;
 using Serilog;
 using Serilog.Events;
 using Serilog.Filters;
+using Serilog.Formatting.Json;
 
 namespace FSH.Framework.Infrastructure.Logging.Serilog;
 
@@ -42,6 +44,16 @@ public static class Extensions
                     //ignore
                 }
             });
+
+            // Add file sink with 20-day retention
+            logger.WriteTo.File(
+                path: "Logs/logs.json",
+                formatter: new JsonFormatter(), // Updated to use the correct namespace.
+                rollingInterval: RollingInterval.Day,
+                restrictedToMinimumLevel: LogEventLevel.Information,
+                retainedFileCountLimit: 20 // Keep only 20 days of logs
+            );
+
             logger.ReadFrom.Configuration(context.Configuration);
             logger.Enrich.FromLogContext();
             logger.Enrich.WithCorrelationId();
