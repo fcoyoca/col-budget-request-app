@@ -34,6 +34,7 @@ jobs:
           files: 'api/server/appsettings.Development.json'
         env:
           DatabaseOptions.ConnectionString: ${{ secrets.CONNECTION_STRING }}
+          OriginOptions.OriginUrl: 'https://webapi.jollyflower-37ad60e7.southeastasia.azurecontainerapps.io/'
 
       - name: Install azd
         uses: Azure/setup-azd@v2
