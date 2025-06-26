@@ -6,5 +6,8 @@
   <ItemGroup>
     <ProjectReference Include="..\..\framework\Core\Core.csproj" />
     <ProjectReference Include="..\..\framework\Infrastructure\Infrastructure.csproj" />
+    <ProjectReference Include="..\CapitalEquipment\CapitalEquipment.Domain\CapitalEquipment.Domain.csproj" />
+    <ProjectReference Include="..\LookupCategory\LookupCategory.csproj" />
+    <ProjectReference Include="..\LookupValue\LookupValue.csproj" />
   </ItemGroup>
 </Project>
