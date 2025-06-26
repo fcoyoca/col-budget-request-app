@@ -24,6 +24,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
+using static Google.Protobuf.Reflection.UninterpretedOption.Types;
 
 namespace FSH.Framework.Infrastructure.Identity.Users.Services;
 
@@ -138,7 +139,8 @@ internal sealed partial class UserService(
 
     public async Task<FshUser> CreateOrUpdateFromPrincipalAsync(ClaimsPrincipal principal)
     {
-        string? email = principal.FindFirstValue(ClaimTypes.Upn);
+        var fullName = principal.Claims.FirstOrDefault(p => p.Type == "name").Value;
+        string? email = principal.FindFirstValue(ClaimTypes.Email) ?? principal.FindFirstValue(ClaimTypes.Name);
         string? username = principal.GetDisplayName();
         if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(username))
         {
@@ -171,8 +173,8 @@ internal sealed partial class UserService(
             user = new FshUser
             {
                 ObjectId = principal.GetObjectId(),
-                FirstName = principal.FindFirstValue(ClaimTypes.GivenName),
-                LastName = principal.FindFirstValue(ClaimTypes.Surname),
+                FirstName = principal.FindFirstValue(ClaimTypes.GivenName) ?? SplitFullName(fullName).FirstName,
+                LastName = principal.FindFirstValue(ClaimTypes.Surname) ?? SplitFullName(fullName).LastName,
                 Email = email,
                 NormalizedEmail = email.ToUpperInvariant(),
                 UserName = username,
@@ -190,6 +192,27 @@ internal sealed partial class UserService(
         }
 
         return user;
+    }
+
+    public static (string FirstName, string LastName) SplitFullName(string fullName)
+    {
+        if (string.IsNullOrWhiteSpace(fullName))
+        {
+            return new() { FirstName = "", LastName = "" };
+        }
+
+        var parts = fullName.Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+        if (parts.Length == 1)
+        {
+            return new () { FirstName = parts[0], LastName = "" };
+        }
+
+        return new ()
+        {
+            FirstName = string.Join(" ", parts.Take(parts.Length - 1)),
+            LastName = parts[^1]
+        };
     }
 
     public async Task<RegisterUserResponse> RegisterAsync(RegisterUserCommand request, string origin, CancellationToken cancellationToken)
