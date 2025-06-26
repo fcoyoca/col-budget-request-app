@@ -19,7 +19,7 @@ public static class CreateLookupCategoryEndpoint
                 .WithSummary("Creates a LookupCategory item")
                 .WithDescription("Creates a LookupCategory item")
                 .Produces<CreateLookupCategoryResponse>(StatusCodes.Status201Created)
-                .RequirePermission("Permissions.LookupCategories.Create")
+                //.RequirePermission("Permissions.LookupCategories.Create")
                 .MapToApiVersion(new ApiVersion(1, 0));
 
     }

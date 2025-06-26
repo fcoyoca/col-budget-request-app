@@ -18,7 +18,7 @@ public static class GetLookupValueEndpoint
                         .WithSummary("gets LookupValue item by id")
                         .WithDescription("gets LookupValue item by id")
                         .Produces<GetLookupValueResponse>()
-                        .RequirePermission("Permissions.LookupCategories.View")
+                        //.RequirePermission("Permissions.LookupCategories.View")
                         .MapToApiVersion(1);
     }
 }

@@ -19,7 +19,7 @@ public static class CreateLookupValueEndpoint
                 .WithSummary("Creates a LookupValue item")
                 .WithDescription("Creates a LookupValue item")
                 .Produces<CreateLookupValueResponse>(StatusCodes.Status201Created)
-                .RequirePermission("Permissions.LookupCategories.Create")
+                //.RequirePermission("Permissions.LookupCategories.Create")
                 .MapToApiVersion(new ApiVersion(1, 0));
 
     }
