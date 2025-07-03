@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 
+
 namespace budget_request_app.WebApi.BudgetYear;
 
 public static class BudgetYearModule
@@ -31,6 +32,8 @@ public static class BudgetYearModule
         builder.Services.AddScoped<IDbInitializer, BudgetYearDbInitializer>();
         builder.Services.AddKeyedScoped<IRepository<BudgetYearItem>, BudgetYearRepository<BudgetYearItem>>("budgetYears");
         builder.Services.AddKeyedScoped<IReadRepository<BudgetYearItem>, BudgetYearRepository<BudgetYearItem>>("budgetYears");
+        builder.Services.AddKeyedScoped<IRepository<CapitalEquipment.Domain.PastFunding>, BudgetYearRepository<CapitalEquipment.Domain.PastFunding>>("capitalEquipmentsPastFunding");
+        builder.Services.AddKeyedScoped<IRepository<CapitalProject.Domain.PastFunding>, BudgetYearRepository<CapitalProject.Domain.PastFunding>>("capitalProjectsPastFunding");
         return builder;
     }
     public static WebApplication UseBudgetYearModule(this WebApplication app)
