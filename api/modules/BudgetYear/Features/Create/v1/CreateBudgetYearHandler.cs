@@ -45,11 +45,11 @@ public sealed class CreateBudgetYearHandler(
 
             await UpdateBudgetYear();
 
-            return new CreateBudgetYearResponse(Guid.NewGuid(), "Budget Year Successfully Forwarded");
+            return new CreateBudgetYearResponse(Guid.NewGuid(), "Success");
         }
-        catch(Exception ex) 
+        catch (Exception ex)
         {
-            logger.LogError(ex, "BudgetYear Error: {Message}", ex.Message);
+            logger.LogError(ex, "Cutover Error: {Message}", ex.Message);
             return new CreateBudgetYearResponse(null, "BudgetYear Error :" + ex.Message);
         }
     }
@@ -72,75 +72,92 @@ public sealed class CreateBudgetYearHandler(
 
     private async Task ForwardEquipmentFundingYears()
     {
-        var equipments = await capitalEquipmentRepository.ListAsync();
-
-        foreach (var equipment in equipments)
+        try
         {
-            foreach (var funding in equipment.FundingItems ?? Enumerable.Empty<FundingItem>())
+            var equipments = await capitalEquipmentRepository.ListAsync();
+
+            foreach (var equipment in equipments)
             {
-                var sortedEstimates = funding.YearEstimates?
-                    .Where(y => y.Year != null)
-                    .OrderBy(y => y.Year)
-                    .ToList() ?? new List<FundingYearItem>();
-
-                var sortedCurrentRequested = funding.YearEstimates?.Where(y => y.Year != null).OrderBy(y => y.Year).ToList() ?? new List<FundingYearItem>();
-
-                var firstEstimate = sortedCurrentRequested.FirstOrDefault();
-                if (firstEstimate != null)
+                foreach (var funding in equipment.FundingItems ?? Enumerable.Empty<FundingItem>())
                 {
-                    funding.CurrentYearRequested.Year = firstEstimate.Year;
-                    funding.CurrentYearRequested.Value = firstEstimate.Value;
-                }
+                    var sortedEstimates = funding.YearEstimates?
+                        .Where(y => y.Year != null)
+                        .OrderBy(y => y.Year)
+                        .ToList() ?? new List<FundingYearItem>();
 
-                while (sortedEstimates.Count < 5)
-                {
-                    var newYear = (sortedEstimates.LastOrDefault()?.Year ?? DateTime.Now.Year) + 1;
-                    var newItem = new FundingYearItem
+                    var sortedCurrentRequested = funding.YearEstimates?.Where(y => y.Year != null).OrderBy(y => y.Year).ToList() ?? new List<FundingYearItem>();
+
+                    var firstEstimate = sortedCurrentRequested.FirstOrDefault();
+                    if (firstEstimate != null)
                     {
-                        Year = newYear,
-                        Value = 0.00m
-                    };
-                    funding.YearEstimates?.Add(newItem);
-                    sortedEstimates.Add(newItem);
-                }
-
-                for (int i = 0; i < 5; i++)
-                {
-                    if (i < 4)
-                    {
-                        // Shift next value forward
-                        sortedEstimates[i].Year = (sortedEstimates[i].Year ?? DateTime.Now.Year) + 1;
-                        sortedEstimates[i].Value = sortedEstimates[i + 1].Value;
+                        funding.CurrentYearRequested.Year = firstEstimate.Year;
+                        funding.CurrentYearRequested.Value = firstEstimate.Value;
                     }
-                    else
+
+                    while (sortedEstimates.Count < 5)
                     {
-                        // Last slot gets zero 
-                        sortedEstimates[i].Year = (sortedEstimates[i].Year ?? DateTime.Now.Year) + 1;
-                        sortedEstimates[i].Value = 0.00m;
+                        var newYear = (sortedEstimates.LastOrDefault()?.Year ?? DateTime.Now.Year) + 1;
+                        var newItem = new FundingYearItem
+                        {
+                            Year = newYear,
+                            Value = 0.00m
+                        };
+                        funding.YearEstimates?.Add(newItem);
+                        sortedEstimates.Add(newItem);
+                    }
+
+                    for (int i = 0; i < 5; i++)
+                    {
+                        if (i < 4)
+                        {
+                            // Shift next value forward
+                            sortedEstimates[i].Year = (sortedEstimates[i].Year ?? DateTime.Now.Year) + 1;
+                            sortedEstimates[i].Value = sortedEstimates[i + 1].Value;
+                        }
+                        else
+                        {
+                            // Last slot gets zero 
+                            sortedEstimates[i].Year = (sortedEstimates[i].Year ?? DateTime.Now.Year) + 1;
+                            sortedEstimates[i].Value = 0.00m;
+                        }
                     }
                 }
             }
+
+            logger.LogInformation("Successfully Forwarded Equipment Fundings");
+            await capitalEquipmentRepository.UpdateRangeAsync(equipments);
         }
-        await capitalEquipmentRepository.UpdateRangeAsync(equipments);      
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Fowarding Equipment Error: {Message}", ex.Message);
+        }
     }
 
     private async Task ForwardProjectFundingYears()
     {
-        var spec = new SearchCapitalProjectsSpec();
-        var projects = await capitalProjectRepository.ListAsync(spec);
-
-        foreach (var project in projects)
+        try
         {
-            ProcessFundingList(project.BorrowingFundings);
-            ProcessFundingList(project.OperatingFundings);
-            ProcessFundingList(project.GrantFundings);
-            ProcessFundingList(project.DonationFundings);
-            ProcessFundingList(project.SpecialFundings);
-            ProcessFundingList(project.OtherFundings);
-            ProcessFundingList(project.SpendingBudgets);
-        }
+            var spec = new SearchCapitalProjectsSpec();
+            var projects = await capitalProjectRepository.ListAsync(spec);
 
-        await capitalProjectRepository.UpdateRangeAsync(projects);
+            foreach (var project in projects)
+            {
+                ProcessFundingList(project.BorrowingFundings);
+                ProcessFundingList(project.OperatingFundings);
+                ProcessFundingList(project.GrantFundings);
+                ProcessFundingList(project.DonationFundings);
+                ProcessFundingList(project.SpecialFundings);
+                ProcessFundingList(project.OtherFundings);
+                ProcessFundingList(project.SpendingBudgets);
+            }
+
+            logger.LogInformation("Successfully Forwarded Project Fundings");
+            await capitalProjectRepository.UpdateRangeAsync(projects);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Fowarding Project Error: {Message}", ex.Message);
+        }
     }
 
     private void ProcessFundingList(IEnumerable<dynamic>? fundings)
@@ -188,293 +205,317 @@ public sealed class CreateBudgetYearHandler(
 
     private async Task<CreateBudgetYearResponse> GetResponseFromInsert(int year)
     {
-        var item = BudgetYearItem.Create(year);
-        await repository.AddAsync(item).ConfigureAwait(false);
-        await repository.SaveChangesAsync().ConfigureAwait(false);
-        logger.LogInformation("BudgetYear item created {BudgetYearItemId}", item.Id);
-        return new CreateBudgetYearResponse(item.Id, "Budget Year Successfully Forwarded");
+        try
+        {
+            var item = BudgetYearItem.Create(year);
+            await repository.AddAsync(item).ConfigureAwait(false);
+            await repository.SaveChangesAsync().ConfigureAwait(false);
+            logger.LogInformation("BudgetYear item created {BudgetYearItemId}", item.Id);
+            return new CreateBudgetYearResponse(item.Id, "Budget Year Successfully Forwarded");
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "BudgetYear Error: {Message}", ex.Message);
+            return new CreateBudgetYearResponse(null, "BudgetYear Error :" + ex.Message);
+        }
     }
 
     private async Task CheckEquipmentRemainingFunding()
     {
-        List<Guid> hasFutureFundingGuids = new List<Guid>();
-        List<Guid> hasNoFutureFundingGuids = new List<Guid>();
-        List<Guid> hasPastFundingGuids = new List<Guid>();
-        List<Guid> hasNoPastFundingGuids = new List<Guid>();
-
-        var equipments = await capitalEquipmentRepository.ListAsync();
-        var equipmentFundings = await equipmentFundingRepository.ListAsync();
-        var equipmentYearItems = await equipmentYearItemRepository.ListAsync();
-        var category = (await repositoryCategory.ListAsync()).FirstOrDefault(x => x.Name == "request_status");
-        var values = (await repositoryValue.ListAsync()).Where(x => x.LookupCategoryId == category.Id);
-
-        foreach (var equipment in equipments)
+        try
         {
-            var fundings = equipment.FundingItems.Select(x => new FundingItemSummation()
+            List<Guid> hasFutureFundingGuids = new List<Guid>();
+            List<Guid> hasNoFutureFundingGuids = new List<Guid>();
+            List<Guid> hasPastFundingGuids = new List<Guid>();
+            List<Guid> hasNoPastFundingGuids = new List<Guid>();
+
+            var equipments = await capitalEquipmentRepository.ListAsync();
+            var equipmentFundings = await equipmentFundingRepository.ListAsync();
+            var equipmentYearItems = await equipmentYearItemRepository.ListAsync();
+            var category = (await repositoryCategory.ListAsync()).FirstOrDefault(x => x.Name == "request_status");
+            var values = (await repositoryValue.ListAsync()).Where(x => x.LookupCategoryId == category.Id);
+
+            foreach (var equipment in equipments)
             {
-                Type = x.FundingType,
-                CurrentYear = x.CurrentYearRequested.Value,
-                FutureYears = x.YearEstimates
-                    .Where(f => f.Year > x.CurrentYearRequested.Year)
-                    .Select(f => f.Value.GetValueOrDefault()).Sum()
-            });
-
-            var futureFundings = fundings.Sum(x => x.FutureYears);
-            var currentFundings = fundings.Sum(x => x.CurrentYear);
-
-            if (futureFundings > 0)
-            {
-                hasFutureFundingGuids.Add(equipment.Id);
-            }
-            else
-            {
-                hasNoFutureFundingGuids.Add(equipment.Id);
-            }
-
-            if (currentFundings > 0)
-            {
-                hasPastFundingGuids.Add(equipment.Id);
-            }
-            else
-            {
-                hasNoPastFundingGuids.Add(equipment.Id);
-            }
-
-        }
-
-        var requiresDepartmentReviewStatus = values
-            .FirstOrDefault(x => x.Name == "Requires Department Review")?.Id;
-
-        var archivedStatus = values.FirstOrDefault(x => x.Name == "Archived")?.Id;
-        var futureFundingEquipments = equipments.Where(x => hasFutureFundingGuids.Contains(x.Id));
-        foreach (var equipment in futureFundingEquipments)
-        {
-            equipment.RequestStatusId = requiresDepartmentReviewStatus.ToString();
-        }
-
-        var noFutureFundingEquipments = equipments.Where(x => hasNoFutureFundingGuids.Contains(x.Id));
-        foreach (var equipment in noFutureFundingEquipments)
-        {
-            equipment.RequestStatusId = archivedStatus.ToString();
-        }
-
-        var updatedEquipments = futureFundingEquipments.Concat(noFutureFundingEquipments);
-        await capitalEquipmentRepository.UpdateRangeAsync(updatedEquipments);
-        
-        //---PastFunding Insert
-        var pastFundingEquipments = equipments.Where(x => hasPastFundingGuids.Contains(x.Id));
-
-        foreach (var equipment in pastFundingEquipments)
-        {
-            if (equipment.PastFundings == null)
-                equipment.PastFundings = new List<CapitalEquipment.Domain.PastFunding>();
-
-            equipment.PastFundings.Clear();
-
-            foreach (var ef in equipment.FundingItems ?? Enumerable.Empty<FundingItem>())
-            {
-                if (ef.CurrentYearRequested?.Year != null && ef.CurrentYearRequested.Value > 0)
+                var fundings = equipment.FundingItems.Select(x => new FundingItemSummation()
                 {
-                    var pastFunding = new PastFundingCreateDTO()
-                    {
-                        Details = "",
-                        Year = ef.CurrentYearRequested.Year,
-                        Amount = ef.CurrentYearRequested.Value,
-                        Request = equipment.RequestId.ToString(),
-                        SOF = ef.FundingType,
-                        FundingSource = ef.FundingSource,
-                        FundingSubSource = ef.FundingSource,
-                    };
-                    equipment.PastFundings.Add(pastFunding.Adapt<CapitalEquipment.Domain.PastFunding>());
-                }
-            }
-     
-        }
-        await capitalEquipmentRepository.UpdateRangeAsync(pastFundingEquipments);
+                    Type = x.FundingType,
+                    CurrentYear = x.CurrentYearRequested.Value,
+                    FutureYears = x.YearEstimates
+                        .Where(f => f.Year > x.CurrentYearRequested.Year)
+                        .Select(f => f.Value.GetValueOrDefault()).Sum()
+                });
 
+                var futureFundings = fundings.Sum(x => x.FutureYears);
+                var currentFundings = fundings.Sum(x => x.CurrentYear);
+
+                if (futureFundings > 0)
+                {
+                    hasFutureFundingGuids.Add(equipment.Id);
+                }
+                else
+                {
+                    hasNoFutureFundingGuids.Add(equipment.Id);
+                }
+
+                if (currentFundings > 0)
+                {
+                    hasPastFundingGuids.Add(equipment.Id);
+                }
+                else
+                {
+                    hasNoPastFundingGuids.Add(equipment.Id);
+                }
+
+            }
+
+            var requiresDepartmentReviewStatus = values
+                .FirstOrDefault(x => x.Name == "Requires Department Review")?.Id;
+
+            var archivedStatus = values.FirstOrDefault(x => x.Name == "Archived")?.Id;
+            var futureFundingEquipments = equipments.Where(x => hasFutureFundingGuids.Contains(x.Id));
+            foreach (var equipment in futureFundingEquipments)
+            {
+                equipment.RequestStatusId = requiresDepartmentReviewStatus.ToString();
+            }
+
+            var noFutureFundingEquipments = equipments.Where(x => hasNoFutureFundingGuids.Contains(x.Id));
+            foreach (var equipment in noFutureFundingEquipments)
+            {
+                equipment.RequestStatusId = archivedStatus.ToString();
+            }
+
+            var updatedEquipments = futureFundingEquipments.Concat(noFutureFundingEquipments);
+            await capitalEquipmentRepository.UpdateRangeAsync(updatedEquipments);
+
+            //---PastFunding Insert
+            var pastFundingEquipments = equipments.Where(x => hasPastFundingGuids.Contains(x.Id));
+
+            foreach (var equipment in pastFundingEquipments)
+            {
+                if (equipment.PastFundings == null)
+                    equipment.PastFundings = new List<CapitalEquipment.Domain.PastFunding>();
+
+                equipment.PastFundings.Clear();
+
+                foreach (var ef in equipment.FundingItems ?? Enumerable.Empty<FundingItem>())
+                {
+                    if (ef.CurrentYearRequested?.Year != null && ef.CurrentYearRequested.Value > 0)
+                    {
+                        var pastFunding = new PastFundingCreateDTO()
+                        {
+                            Details = "",
+                            Year = ef.CurrentYearRequested.Year,
+                            Amount = ef.CurrentYearRequested.Value,
+                            Request = equipment.RequestId.ToString(),
+                            SOF = ef.FundingType,
+                            FundingSource = ef.FundingSource,
+                            FundingSubSource = ef.FundingSource,
+                        };
+                        equipment.PastFundings.Add(pastFunding.Adapt<CapitalEquipment.Domain.PastFunding>());
+                    }
+                }
+
+            }
+
+            logger.LogInformation("Successfully Updated Equipment Statuses");
+            await capitalEquipmentRepository.UpdateRangeAsync(pastFundingEquipments);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Updating Equipment Statuses Error: {Message}", ex.Message);
+        }
     }
 
     private async Task CheckProjectRemainingFunding()
     {
-        List<Guid> hasFutureFundingGuids = new List<Guid>();
-        List<Guid> hasNoFutureFundingGuids = new List<Guid>();
-        List<Guid> hasPastFundingGuids = new List<Guid>();
-        List<Guid> hasNoPastFundingGuids = new List<Guid>();
-        List<Guid> hasPastSpendingFundingGuids = new List<Guid>();
-        List<Guid> hasNoPastSpendingFundingGuids = new List<Guid>();
-
-        var spec = new SearchCapitalProjectsSpec();
-        var projects = await capitalProjectRepository.ListAsync(spec);
-        var category = (await repositoryCategory.ListAsync()).FirstOrDefault(x => x.Name == "request_status_project");
-        var values = (await repositoryValue.ListAsync()).Where(x => x.LookupCategoryId == category.Id);
-
-        foreach (var project in projects)
+        try
         {
+            List<Guid> hasFutureFundingGuids = new List<Guid>();
+            List<Guid> hasNoFutureFundingGuids = new List<Guid>();
+            List<Guid> hasPastFundingGuids = new List<Guid>();
+            List<Guid> hasNoPastFundingGuids = new List<Guid>();
+            List<Guid> hasPastSpendingFundingGuids = new List<Guid>();
+            List<Guid> hasNoPastSpendingFundingGuids = new List<Guid>();
 
-            var borrowingFundings = project.BorrowingFundings?.Select(x => new FundingItemSummation()
+            var spec = new SearchCapitalProjectsSpec();
+            var projects = await capitalProjectRepository.ListAsync(spec);
+            var category = (await repositoryCategory.ListAsync()).FirstOrDefault(x => x.Name == "request_status_project");
+            var values = (await repositoryValue.ListAsync()).Where(x => x.LookupCategoryId == category.Id);
+
+            foreach (var project in projects)
             {
-                CurrentYear = x.YearRequested?.Value!.Value,
-                FutureYears = x.YearEstimates?
-                    .Where(f => f.Year > Int32.Parse(project.BudgetId))
-                    .Select(f => f.Value).Sum()
-            });
 
-            var operatingFundings = project.OperatingFundings?.Select(x => new FundingItemSummation()
-            {
-                CurrentYear = x.YearRequested?.Value!.Value,
-                FutureYears = x.YearEstimates?
-                    .Where(f => f.Year > Int32.Parse(project.BudgetId))
-                    .Select(f => f.Value).Sum()
-            });
-
-            var grantFundings = project.GrantFundings?.Select(x => new FundingItemSummation()
-            {
-                CurrentYear = x.YearRequested?.Value!.Value,
-                FutureYears = x.YearEstimates?
-                    .Where(f => f.Year > Int32.Parse(project.BudgetId))
-                    .Select(f => f.Value).Sum()
-            });
-
-            var donationFundings = project.DonationFundings?.Select(x => new FundingItemSummation()
-            {
-                CurrentYear = x.YearRequested?.Value!.Value,
-                FutureYears = x.YearEstimates?
-                    .Where(f => f.Year > Int32.Parse(project.BudgetId))
-                    .Select(f => f.Value).Sum()
-            });
-
-            var specialFundings = project.SpecialFundings?.Select(x => new FundingItemSummation()
-            {
-                CurrentYear = x.YearRequested?.Value!.Value,
-                FutureYears = x.YearEstimates?
-                    .Where(f => f.Year > Int32.Parse(project.BudgetId))
-                    .Select(f => f.Value).Sum()
-            });
-
-            var otherFundings = project.OtherFundings?.Select(x => new FundingItemSummation()
-            {
-                CurrentYear = x.YearRequested?.Value!.Value,
-                FutureYears = x.YearEstimates?
-                    .Where(f => f.Year > Int32.Parse(project.BudgetId))
-                    .Select(f => f.Value).Sum()
-            });
-
-            var spendingFundings = project.SpendingBudgets?.Select(x => new FundingItemSummation()
-            {
-                CurrentYear = x.YearRequested?.Value!.Value,
-                FutureYears = x.YearEstimates?
-                   .Where(f => f.Year > Int32.Parse(project.BudgetId))
-                   .Select(f => f.Value).Sum()
-            });
-
-            var fundings = new List<FundingItemSummation>()
-                .Concat(borrowingFundings ?? new List<FundingItemSummation>())
-                .Concat(operatingFundings ?? new List<FundingItemSummation>())
-                .Concat(grantFundings ?? new List<FundingItemSummation>())
-                .Concat(donationFundings ?? new List<FundingItemSummation>())
-                .Concat(otherFundings ?? new List<FundingItemSummation>())
-                .Concat(specialFundings ?? new List<FundingItemSummation>())
-                .Concat(spendingFundings ?? new List<FundingItemSummation>());
-
-            var futureFundings = fundings.Sum(x => x.FutureYears);
-            var currentFundings = fundings.Sum(x => x.CurrentYear);
-            var currentSpendingFundings = spendingFundings.Sum(x => x.CurrentYear);
-
-            if (futureFundings > 0)
-            {
-                hasFutureFundingGuids.Add(project.Id);
-            }
-            else
-            {
-                hasNoFutureFundingGuids.Add(project.Id);
-            }
-
-            if (currentFundings > 0)
-            {
-                hasPastFundingGuids.Add(project.Id);
-            }
-            else
-            {
-                hasNoPastFundingGuids.Add(project.Id);
-            }
-
-            if (currentSpendingFundings > 0)
-            {
-                hasPastSpendingFundingGuids.Add(project.Id);
-            }
-            else
-            {
-                hasNoPastSpendingFundingGuids.Add(project.Id);
-            }
-        }
-
-        var requiresDepartmentReviewStatus = values
-             .FirstOrDefault(x => x.Name == "Requires Department Review")?.Id;
-
-        var archivedStatus = values.FirstOrDefault(x => x.Name == "Archived")?.Id;
-
-        var futureFundingProjects = projects.Where(x => hasFutureFundingGuids.Contains(x.Id));
-        foreach (var project in futureFundingProjects)
-        {
-            project.GeneralInformation.RequestStatusId = requiresDepartmentReviewStatus.ToString();
-        }
-
-        var noFutureFundingProjects = projects.Where(x => hasNoFutureFundingGuids.Contains(x.Id));
-        foreach (var project in noFutureFundingProjects)
-        {
-            project.GeneralInformation.RequestStatusId = archivedStatus.ToString();
-        }
-
-        var updatedProjects = futureFundingProjects.Concat(noFutureFundingProjects);
-
-        await capitalProjectRepository.UpdateRangeAsync(updatedProjects);
-
-
-        //---PastFunding Insert
-        var pastFundingProjects = projects.Where(x => hasPastFundingGuids.Contains(x.Id));
-        foreach (var project in pastFundingProjects)
-        {
-            project.PastFundings ??= new List<CapitalProject.Domain.PastFunding>();
-            project.PastFundings.Clear();
-
-            AddPastFundings(project, project.BorrowingFundings, "Borrowing", useDescription: false);
-            AddPastFundings(project, project.OperatingFundings, "Operating", useDescription: false);
-            AddPastFundings(project, project.GrantFundings, "Grant", useDescription: true);
-            AddPastFundings(project, project.DonationFundings, "Outside", useDescription: false);
-            AddPastFundings(project, project.SpecialFundings, "Special", useDescription: false);
-            AddPastFundings(project, project.OtherFundings, "Other", useDescription: true);
-        }
-
-        await capitalProjectRepository.UpdateRangeAsync(pastFundingProjects);
-
-        var pastSpendingFundingProjects = projects.Where(x => hasPastSpendingFundingGuids.Contains(x.Id));
-        foreach (var spending in pastSpendingFundingProjects)
-        {
-            if (spending.PastSpendings == null)
-                spending.PastSpendings = new List<CapitalProject.Domain.PastSpending>();
-
-            spending.PastSpendings.Clear();
-
-            foreach (var sb in spending.SpendingBudgets ?? Enumerable.Empty<SpendingBudget>())
-            {
-                if (sb.YearRequested?.Year != null && sb.YearRequested.Value > 0)
+                var borrowingFundings = project.BorrowingFundings?.Select(x => new FundingItemSummation()
                 {
-                    var pastSpending = new PastSpendingDTO()
-                    {
-                        ExpenditureCategoryId = sb.ExpenditureCategoryId,
-                        Details = "",
-                        Year = sb.YearRequested.Year,
-                        Amount = sb.YearRequested.Value,
-                        CIPItemNumber = spending?.RequestId.ToString(),
-                        SpendingPurposeId = sb.SpendingPurposeId,
-                    };
-                    spending.PastSpendings.Add(pastSpending.Adapt<CapitalProject.Domain.PastSpending>());
+                    CurrentYear = x.YearRequested?.Value!.Value,
+                    FutureYears = x.YearEstimates?
+                        .Where(f => f.Year > Int32.Parse(project.BudgetId))
+                        .Select(f => f.Value).Sum()
+                });
+
+                var operatingFundings = project.OperatingFundings?.Select(x => new FundingItemSummation()
+                {
+                    CurrentYear = x.YearRequested?.Value!.Value,
+                    FutureYears = x.YearEstimates?
+                        .Where(f => f.Year > Int32.Parse(project.BudgetId))
+                        .Select(f => f.Value).Sum()
+                });
+
+                var grantFundings = project.GrantFundings?.Select(x => new FundingItemSummation()
+                {
+                    CurrentYear = x.YearRequested?.Value!.Value,
+                    FutureYears = x.YearEstimates?
+                        .Where(f => f.Year > Int32.Parse(project.BudgetId))
+                        .Select(f => f.Value).Sum()
+                });
+
+                var donationFundings = project.DonationFundings?.Select(x => new FundingItemSummation()
+                {
+                    CurrentYear = x.YearRequested?.Value!.Value,
+                    FutureYears = x.YearEstimates?
+                        .Where(f => f.Year > Int32.Parse(project.BudgetId))
+                        .Select(f => f.Value).Sum()
+                });
+
+                var specialFundings = project.SpecialFundings?.Select(x => new FundingItemSummation()
+                {
+                    CurrentYear = x.YearRequested?.Value!.Value,
+                    FutureYears = x.YearEstimates?
+                        .Where(f => f.Year > Int32.Parse(project.BudgetId))
+                        .Select(f => f.Value).Sum()
+                });
+
+                var otherFundings = project.OtherFundings?.Select(x => new FundingItemSummation()
+                {
+                    CurrentYear = x.YearRequested?.Value!.Value,
+                    FutureYears = x.YearEstimates?
+                        .Where(f => f.Year > Int32.Parse(project.BudgetId))
+                        .Select(f => f.Value).Sum()
+                });
+
+                var spendingFundings = project.SpendingBudgets?.Select(x => new FundingItemSummation()
+                {
+                    CurrentYear = x.YearRequested?.Value!.Value,
+                    FutureYears = x.YearEstimates?
+                       .Where(f => f.Year > Int32.Parse(project.BudgetId))
+                       .Select(f => f.Value).Sum()
+                });
+
+                var fundings = new List<FundingItemSummation>()
+                    .Concat(borrowingFundings ?? new List<FundingItemSummation>())
+                    .Concat(operatingFundings ?? new List<FundingItemSummation>())
+                    .Concat(grantFundings ?? new List<FundingItemSummation>())
+                    .Concat(donationFundings ?? new List<FundingItemSummation>())
+                    .Concat(otherFundings ?? new List<FundingItemSummation>())
+                    .Concat(specialFundings ?? new List<FundingItemSummation>())
+                    .Concat(spendingFundings ?? new List<FundingItemSummation>());
+
+                var futureFundings = fundings.Sum(x => x.FutureYears);
+                var currentFundings = fundings.Sum(x => x.CurrentYear);
+                var currentSpendingFundings = spendingFundings.Sum(x => x.CurrentYear);
+
+                if (futureFundings > 0)
+                {
+                    hasFutureFundingGuids.Add(project.Id);
+                }
+                else
+                {
+                    hasNoFutureFundingGuids.Add(project.Id);
+                }
+
+                if (currentFundings > 0)
+                {
+                    hasPastFundingGuids.Add(project.Id);
+                }
+                else
+                {
+                    hasNoPastFundingGuids.Add(project.Id);
+                }
+
+                if (currentSpendingFundings > 0)
+                {
+                    hasPastSpendingFundingGuids.Add(project.Id);
+                }
+                else
+                {
+                    hasNoPastSpendingFundingGuids.Add(project.Id);
                 }
             }
-        }
 
-        await capitalProjectRepository.UpdateRangeAsync(pastSpendingFundingProjects);
-     }
+            var requiresDepartmentReviewStatus = values
+                 .FirstOrDefault(x => x.Name == "Requires Department Review")?.Id;
+
+            var archivedStatus = values.FirstOrDefault(x => x.Name == "Archived")?.Id;
+
+            var futureFundingProjects = projects.Where(x => hasFutureFundingGuids.Contains(x.Id));
+            foreach (var project in futureFundingProjects)
+            {
+                project.GeneralInformation.RequestStatusId = requiresDepartmentReviewStatus.ToString();
+            }
+
+            var noFutureFundingProjects = projects.Where(x => hasNoFutureFundingGuids.Contains(x.Id));
+            foreach (var project in noFutureFundingProjects)
+            {
+                project.GeneralInformation.RequestStatusId = archivedStatus.ToString();
+            }
+
+            var updatedProjects = futureFundingProjects.Concat(noFutureFundingProjects);
+
+            await capitalProjectRepository.UpdateRangeAsync(updatedProjects);
+
+
+            //---PastFunding Insert
+            var pastFundingProjects = projects.Where(x => hasPastFundingGuids.Contains(x.Id));
+            foreach (var project in pastFundingProjects)
+            {
+                project.PastFundings ??= new List<CapitalProject.Domain.PastFunding>();
+                project.PastFundings.Clear();
+
+                AddPastFundings(project, project.BorrowingFundings, "Borrowing", useDescription: false);
+                AddPastFundings(project, project.OperatingFundings, "Operating", useDescription: false);
+                AddPastFundings(project, project.GrantFundings, "Grant", useDescription: true);
+                AddPastFundings(project, project.DonationFundings, "Outside", useDescription: false);
+                AddPastFundings(project, project.SpecialFundings, "Special", useDescription: false);
+                AddPastFundings(project, project.OtherFundings, "Other", useDescription: true);
+            }
+
+            await capitalProjectRepository.UpdateRangeAsync(pastFundingProjects);
+
+            var pastSpendingFundingProjects = projects.Where(x => hasPastSpendingFundingGuids.Contains(x.Id));
+            foreach (var spending in pastSpendingFundingProjects)
+            {
+                if (spending.PastSpendings == null)
+                    spending.PastSpendings = new List<CapitalProject.Domain.PastSpending>();
+
+                spending.PastSpendings.Clear();
+
+                foreach (var sb in spending.SpendingBudgets ?? Enumerable.Empty<SpendingBudget>())
+                {
+                    if (sb.YearRequested?.Year != null && sb.YearRequested.Value > 0)
+                    {
+                        var pastSpending = new PastSpendingDTO()
+                        {
+                            ExpenditureCategoryId = sb.ExpenditureCategoryId,
+                            Details = "",
+                            Year = sb.YearRequested.Year,
+                            Amount = sb.YearRequested.Value,
+                            CIPItemNumber = spending?.RequestId.ToString(),
+                            SpendingPurposeId = sb.SpendingPurposeId,
+                        };
+                        spending.PastSpendings.Add(pastSpending.Adapt<CapitalProject.Domain.PastSpending>());
+                    }
+                }
+            }
+
+            logger.LogInformation("Successfully Updated Project Statuses");
+            await capitalProjectRepository.UpdateRangeAsync(pastSpendingFundingProjects);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Updating Project Statuses Error: {Message}", ex.Message);
+        }
+    }
     private void AddPastFundings<TFunding>(CapitalProjectItem project, IEnumerable<TFunding>? fundings, string source, bool useDescription)
     {
         foreach (var funding in fundings ?? Enumerable.Empty<TFunding>())
