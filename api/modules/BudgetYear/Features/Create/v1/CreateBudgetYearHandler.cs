@@ -483,9 +483,7 @@ public sealed class CreateBudgetYearHandler(
             var pastSpendingFundingProjects = projects.Where(x => hasPastSpendingFundingGuids.Contains(x.Id));
             foreach (var spending in pastSpendingFundingProjects)
             {
-                if (spending.PastSpendings == null)
-                    spending.PastSpendings = new List<CapitalProject.Domain.PastSpending>();
-
+                spending.PastSpendings ??= new List<CapitalProject.Domain.PastSpending>();
                 spending.PastSpendings.Clear();
 
                 foreach (var sb in spending.SpendingBudgets ?? Enumerable.Empty<SpendingBudget>())
