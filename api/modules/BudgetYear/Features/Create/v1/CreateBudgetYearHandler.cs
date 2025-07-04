@@ -293,9 +293,7 @@ public sealed class CreateBudgetYearHandler(
 
             foreach (var equipment in pastFundingEquipments)
             {
-                if (equipment.PastFundings == null)
-                    equipment.PastFundings = new List<CapitalEquipment.Domain.PastFunding>();
-
+                equipment.PastFundings ??= new List<CapitalEquipment.Domain.PastFunding>();
                 equipment.PastFundings.Clear();
 
                 foreach (var ef in equipment.FundingItems ?? Enumerable.Empty<FundingItem>())
