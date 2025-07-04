@@ -75,9 +75,15 @@ public sealed class CreateBudgetYearHandler(
         try
         {
             var equipments = await capitalEquipmentRepository.ListAsync();
+            var allYears = await repository.ListAsync();
+            int yearValue = DateTime.Now.Year;
+            yearValue = allYears.Select(x => x.BudgetYear).Max();
+
 
             foreach (var equipment in equipments)
             {
+                equipment.BudgetId = (yearValue + 1).ToString();
+
                 foreach (var funding in equipment.FundingItems ?? Enumerable.Empty<FundingItem>())
                 {
                     var sortedEstimates = funding.YearEstimates?
@@ -140,8 +146,13 @@ public sealed class CreateBudgetYearHandler(
             var spec = new SearchCapitalProjectsSpec();
             var projects = await capitalProjectRepository.ListAsync(spec);
 
+            var allYears = await repository.ListAsync();
+            int yearValue = DateTime.Now.Year;
+            yearValue = allYears.Select(x => x.BudgetYear).Max();
+
             foreach (var project in projects)
             {
+                project.BudgetId = (yearValue + 1).ToString();
                 ProcessFundingList(project.BorrowingFundings);
                 ProcessFundingList(project.OperatingFundings);
                 ProcessFundingList(project.GrantFundings);
