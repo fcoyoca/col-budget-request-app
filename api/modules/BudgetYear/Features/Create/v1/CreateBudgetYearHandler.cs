@@ -286,6 +286,7 @@ public sealed class CreateBudgetYearHandler(
             }
 
             var updatedEquipments = futureFundingEquipments.Concat(noFutureFundingEquipments);
+            logger.LogInformation("Successfully updated equipment statuses.");
             await capitalEquipmentRepository.UpdateRangeAsync(updatedEquipments);
 
             //---PastFunding Insert
@@ -316,7 +317,7 @@ public sealed class CreateBudgetYearHandler(
 
             }
 
-            logger.LogInformation("Successfully Updated Equipment Statuses");
+            logger.LogInformation("Successfully added equipment past funding records.");
             await capitalEquipmentRepository.UpdateRangeAsync(pastFundingEquipments);
         }
         catch (Exception ex)
@@ -459,7 +460,7 @@ public sealed class CreateBudgetYearHandler(
             }
 
             var updatedProjects = futureFundingProjects.Concat(noFutureFundingProjects);
-
+            logger.LogInformation("Successfully updated project statuses.");
             await capitalProjectRepository.UpdateRangeAsync(updatedProjects);
 
 
@@ -477,9 +478,10 @@ public sealed class CreateBudgetYearHandler(
                 AddPastFundings(project, project.SpecialFundings, "Special", useDescription: false);
                 AddPastFundings(project, project.OtherFundings, "Other", useDescription: true);
             }
-
+            logger.LogInformation("Successfully added project past funding records.");
             await capitalProjectRepository.UpdateRangeAsync(pastFundingProjects);
 
+            //---PastSpending Insert
             var pastSpendingFundingProjects = projects.Where(x => hasPastSpendingFundingGuids.Contains(x.Id));
             foreach (var spending in pastSpendingFundingProjects)
             {
@@ -504,7 +506,7 @@ public sealed class CreateBudgetYearHandler(
                 }
             }
 
-            logger.LogInformation("Successfully Updated Project Statuses");
+            logger.LogInformation("Successfully added past spending records.");
             await capitalProjectRepository.UpdateRangeAsync(pastSpendingFundingProjects);
         }
         catch (Exception ex)
