@@ -284,8 +284,6 @@ public sealed class CreateBudgetYearHandler(
             List<Guid> hasNoPastFundingGuids = new List<Guid>();
 
             var equipments = await capitalEquipmentRepository.ListAsync();
-            var equipmentFundings = await equipmentFundingRepository.ListAsync();
-            var equipmentYearItems = await equipmentYearItemRepository.ListAsync();
             var category = (await repositoryCategory.ListAsync()).FirstOrDefault(x => x.Name == "request_status");
             var values = (await repositoryValue.ListAsync()).Where(x => x.LookupCategoryId == category.Id);
 
@@ -348,7 +346,6 @@ public sealed class CreateBudgetYearHandler(
                         equipment.PastFundings.Add(pastFunding.Adapt<CapitalEquipment.Domain.PastFunding>());
                     }
                 }
-
             }
 
             logger.LogInformation("Successfully added equipment past funding records.");
@@ -362,14 +359,13 @@ public sealed class CreateBudgetYearHandler(
             foreach (var equipment in futureFundingEquipments)
             {
                 equipment.RequestStatusId = requiresDepartmentReviewStatus.ToString();
-
             }
 
             var noFutureFundingEquipments = equipments.Where(x => hasNoFutureFundingGuids.Contains(x.Id));
             foreach (var equipment in noFutureFundingEquipments)
             {
                 equipment.RequestStatusId = archivedStatus.ToString();
-                equipmentFundingRepository.DeleteRangeAsync(equipment.FundingItems);
+                equipment.FundingItems.Clear();
             }
 
             var updatedEquipments = futureFundingEquipments.Concat(noFutureFundingEquipments);
