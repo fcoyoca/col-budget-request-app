@@ -18,6 +18,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using MimeKit.IO;
 using FundingYearItem = budget_request_app.WebApi.CapitalEquipment.Domain.FundingYearItem;
 using FundingYearItemProject = budget_request_app.WebApi.CapitalProject.Domain.FundingYearItem;
 
@@ -291,9 +292,11 @@ public sealed class CreateBudgetYearHandler(
             var category = (await repositoryCategory.ListAsync()).FirstOrDefault(x => x.Name == "request_status");
             var values = (await repositoryValue.ListAsync()).Where(x => x.LookupCategoryId == category.Id);
 
-            foreach (var equipment in equipments)
+            var approvedStatus = values.FirstOrDefault(x => x.Name == "Approved by Finance")?.Id;
+            var filteredEquipments = equipments.Where(x => x.RequestStatusId == approvedStatus.ToString());
+            foreach (var equipment in filteredEquipments)
             {
-                var fundings = equipment.FundingItems.Select(x => new FundingItemSummation()
+                var fundings = equipment?.FundingItems?.Select(x => new FundingItemSummation()
                 {
                     Type = x.FundingType,
                     CurrentYear = x.CurrentYearRequested.Value,
@@ -302,8 +305,8 @@ public sealed class CreateBudgetYearHandler(
                         .Select(f => f.Value.GetValueOrDefault()).Sum()
                 });
 
-                var futureFundings = fundings.Sum(x => x.FutureYears);
-                var currentFundings = fundings.Sum(x => x.CurrentYear);
+                var futureFundings = fundings?.Sum(x => x.FutureYears);
+                var currentFundings = fundings?.Sum(x => x.CurrentYear);
 
                 if (futureFundings > 0)
                 {
@@ -326,8 +329,7 @@ public sealed class CreateBudgetYearHandler(
             }
 
             //---PastFunding Insert
-            var pastFundingEquipments = equipments.Where(x => hasPastFundingGuids.Contains(x.Id));
-
+            var pastFundingEquipments = filteredEquipments.Where(x => hasPastFundingGuids.Contains(x.Id));
             foreach (var equipment in pastFundingEquipments)
             {
                 equipment.PastFundings ??= new List<CapitalEquipment.Domain.PastFunding>();
@@ -359,13 +361,13 @@ public sealed class CreateBudgetYearHandler(
             var requiresDepartmentReviewStatus = values.FirstOrDefault(x => x.Name == "Requires Department Review")?.Id;
             var archivedStatus = values.FirstOrDefault(x => x.Name == "Archived")?.Id;
 
-            var futureFundingEquipments = equipments.Where(x => hasFutureFundingGuids.Contains(x.Id));
+            var futureFundingEquipments = filteredEquipments.Where(x => hasFutureFundingGuids.Contains(x.Id));
             foreach (var equipment in futureFundingEquipments)
             {
                 equipment.RequestStatusId = requiresDepartmentReviewStatus.ToString();
             }
 
-            var noFutureFundingEquipments = equipments.Where(x => hasNoFutureFundingGuids.Contains(x.Id));
+            var noFutureFundingEquipments = filteredEquipments.Where(x => hasNoFutureFundingGuids.Contains(x.Id));
             foreach (var equipment in noFutureFundingEquipments)
             {
                 equipment.RequestStatusId = archivedStatus.ToString();
@@ -400,7 +402,10 @@ public sealed class CreateBudgetYearHandler(
             var category = (await repositoryCategory.ListAsync()).FirstOrDefault(x => x.Name == "request_status_project");
             var values = (await repositoryValue.ListAsync()).Where(x => x.LookupCategoryId == category.Id);
 
-            foreach (var project in projects)
+            var approvedStatus = values.FirstOrDefault(x => x.Name == "Approved by Finance")?.Id;
+            var filteredProjects = projects.Where(x => x.GeneralInformation.RequestStatusId == approvedStatus.ToString());
+
+            foreach (var project in filteredProjects)
             {
 
                 var borrowingFundings = project.BorrowingFundings?.Select(x => new FundingItemSummation()
@@ -468,9 +473,9 @@ public sealed class CreateBudgetYearHandler(
                     .Concat(specialFundings ?? new List<FundingItemSummation>())
                     .Concat(spendingFundings ?? new List<FundingItemSummation>());
 
-                var futureFundings = fundings.Sum(x => x.FutureYears);
-                var currentFundings = fundings.Sum(x => x.CurrentYear);
-                var currentSpendingFundings = spendingFundings.Sum(x => x.CurrentYear);
+                var futureFundings = fundings?.Sum(x => x.FutureYears);
+                var currentFundings = fundings?.Sum(x => x.CurrentYear);
+                var currentSpendingFundings = spendingFundings?.Sum(x => x.CurrentYear);
 
                 if (futureFundings > 0)
                 {
@@ -501,7 +506,7 @@ public sealed class CreateBudgetYearHandler(
             }
 
             //---PastFunding Insert
-            var pastFundingProjects = projects.Where(x => hasPastFundingGuids.Contains(x.Id));
+            var pastFundingProjects = filteredProjects.Where(x => hasPastFundingGuids.Contains(x.Id));
             foreach (var project in pastFundingProjects)
             {
                 project.PastFundings ??= new List<CapitalProject.Domain.PastFunding>();
@@ -518,7 +523,7 @@ public sealed class CreateBudgetYearHandler(
             await capitalProjectRepository.UpdateRangeAsync(pastFundingProjects);
 
             //---PastSpending Insert
-            var pastSpendingFundingProjects = projects.Where(x => hasPastSpendingFundingGuids.Contains(x.Id));
+            var pastSpendingFundingProjects = filteredProjects.Where(x => hasPastSpendingFundingGuids.Contains(x.Id));
             foreach (var spending in pastSpendingFundingProjects)
             {
                 spending.PastSpendings ??= new List<CapitalProject.Domain.PastSpending>();
@@ -550,13 +555,13 @@ public sealed class CreateBudgetYearHandler(
             var requiresDepartmentReviewStatus = values.FirstOrDefault(x => x.Name == "Requires Department Review")?.Id;
             var archivedStatus = values.FirstOrDefault(x => x.Name == "Archived")?.Id;
 
-            var futureFundingProjects = projects.Where(x => hasFutureFundingGuids.Contains(x.Id));
+            var futureFundingProjects = filteredProjects.Where(x => hasFutureFundingGuids.Contains(x.Id));
             foreach (var project in futureFundingProjects)
             {
                 project.GeneralInformation.RequestStatusId = requiresDepartmentReviewStatus.ToString();
             }
 
-            var noFutureFundingProjects = projects.Where(x => hasNoFutureFundingGuids.Contains(x.Id));
+            var noFutureFundingProjects = filteredProjects.Where(x => hasNoFutureFundingGuids.Contains(x.Id));
             foreach (var project in noFutureFundingProjects)
             {
                 project.GeneralInformation.RequestStatusId = archivedStatus.ToString();
