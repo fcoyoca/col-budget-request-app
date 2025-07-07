@@ -323,28 +323,6 @@ public sealed class CreateBudgetYearHandler(
 
             }
 
-            var requiresDepartmentReviewStatus = values
-                .FirstOrDefault(x => x.Name == "Requires Department Review")?.Id;
-
-            var archivedStatus = values.FirstOrDefault(x => x.Name == "Archived")?.Id;
-            var futureFundingEquipments = equipments.Where(x => hasFutureFundingGuids.Contains(x.Id));
-            foreach (var equipment in futureFundingEquipments)
-            {
-                equipment.RequestStatusId = requiresDepartmentReviewStatus.ToString();
-
-            }
-
-            var noFutureFundingEquipments = equipments.Where(x => hasNoFutureFundingGuids.Contains(x.Id));
-            foreach (var equipment in noFutureFundingEquipments)
-            {
-                equipment.RequestStatusId = archivedStatus.ToString();
-                equipmentFundingRepository.DeleteRangeAsync(equipment.FundingItems);
-            }
-
-            var updatedEquipments = futureFundingEquipments.Concat(noFutureFundingEquipments);
-            logger.LogInformation("Successfully updated equipment statuses.");
-            await capitalEquipmentRepository.UpdateRangeAsync(updatedEquipments);
-
             //---PastFunding Insert
             var pastFundingEquipments = equipments.Where(x => hasPastFundingGuids.Contains(x.Id));
 
@@ -375,6 +353,29 @@ public sealed class CreateBudgetYearHandler(
 
             logger.LogInformation("Successfully added equipment past funding records.");
             await capitalEquipmentRepository.UpdateRangeAsync(pastFundingEquipments);
+
+            //---Update Statuses
+            var requiresDepartmentReviewStatus = values.FirstOrDefault(x => x.Name == "Requires Department Review")?.Id;
+            var archivedStatus = values.FirstOrDefault(x => x.Name == "Archived")?.Id;
+
+            var futureFundingEquipments = equipments.Where(x => hasFutureFundingGuids.Contains(x.Id));
+            foreach (var equipment in futureFundingEquipments)
+            {
+                equipment.RequestStatusId = requiresDepartmentReviewStatus.ToString();
+
+            }
+
+            var noFutureFundingEquipments = equipments.Where(x => hasNoFutureFundingGuids.Contains(x.Id));
+            foreach (var equipment in noFutureFundingEquipments)
+            {
+                equipment.RequestStatusId = archivedStatus.ToString();
+                equipmentFundingRepository.DeleteRangeAsync(equipment.FundingItems);
+            }
+
+            var updatedEquipments = futureFundingEquipments.Concat(noFutureFundingEquipments);
+            logger.LogInformation("Successfully updated equipment statuses.");
+            await capitalEquipmentRepository.UpdateRangeAsync(updatedEquipments);
+
         }
         catch (Exception ex)
         {
@@ -498,35 +499,6 @@ public sealed class CreateBudgetYearHandler(
                 }
             }
 
-            var requiresDepartmentReviewStatus = values
-                 .FirstOrDefault(x => x.Name == "Requires Department Review")?.Id;
-
-            var archivedStatus = values.FirstOrDefault(x => x.Name == "Archived")?.Id;
-
-            var futureFundingProjects = projects.Where(x => hasFutureFundingGuids.Contains(x.Id));
-            foreach (var project in futureFundingProjects)
-            {
-                project.GeneralInformation.RequestStatusId = requiresDepartmentReviewStatus.ToString();
-            }
-
-            var noFutureFundingProjects = projects.Where(x => hasNoFutureFundingGuids.Contains(x.Id));
-            foreach (var project in noFutureFundingProjects)
-            {
-                project.GeneralInformation.RequestStatusId = archivedStatus.ToString();
-                project.BorrowingFundings.Clear();
-                project.OperatingFundings.Clear();
-                project.GrantFundings.Clear();
-                project.DonationFundings.Clear();
-                project.SpecialFundings.Clear();
-                project.OtherFundings.Clear();
-                project.SpendingBudgets.Clear();
-            }
-
-            var updatedProjects = futureFundingProjects.Concat(noFutureFundingProjects);
-            logger.LogInformation("Successfully updated project statuses.");
-            await capitalProjectRepository.UpdateRangeAsync(updatedProjects);
-
-
             //---PastFunding Insert
             var pastFundingProjects = projects.Where(x => hasPastFundingGuids.Contains(x.Id));
             foreach (var project in pastFundingProjects)
@@ -571,6 +543,34 @@ public sealed class CreateBudgetYearHandler(
 
             logger.LogInformation("Successfully added past spending records.");
             await capitalProjectRepository.UpdateRangeAsync(pastSpendingFundingProjects);
+
+
+            //---Update Statuses
+            var requiresDepartmentReviewStatus = values.FirstOrDefault(x => x.Name == "Requires Department Review")?.Id;
+            var archivedStatus = values.FirstOrDefault(x => x.Name == "Archived")?.Id;
+
+            var futureFundingProjects = projects.Where(x => hasFutureFundingGuids.Contains(x.Id));
+            foreach (var project in futureFundingProjects)
+            {
+                project.GeneralInformation.RequestStatusId = requiresDepartmentReviewStatus.ToString();
+            }
+
+            var noFutureFundingProjects = projects.Where(x => hasNoFutureFundingGuids.Contains(x.Id));
+            foreach (var project in noFutureFundingProjects)
+            {
+                project.GeneralInformation.RequestStatusId = archivedStatus.ToString();
+                project.BorrowingFundings.Clear();
+                project.OperatingFundings.Clear();
+                project.GrantFundings.Clear();
+                project.DonationFundings.Clear();
+                project.SpecialFundings.Clear();
+                project.OtherFundings.Clear();
+                project.SpendingBudgets.Clear();
+            }
+
+            var updatedProjects = futureFundingProjects.Concat(noFutureFundingProjects);
+            logger.LogInformation("Successfully updated project statuses.");
+            await capitalProjectRepository.UpdateRangeAsync(updatedProjects);
         }
         catch (Exception ex)
         {
