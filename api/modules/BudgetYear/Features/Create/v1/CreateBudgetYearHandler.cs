@@ -174,6 +174,7 @@ public sealed class CreateBudgetYearHandler(
         catch (Exception ex)
         {
             logger.LogError(ex, "Fowarding Equipment Error: {Message}", ex.Message);
+            throw new($"Fowarding Equipment Error: {ex.Message}");
         }
     }
 
@@ -211,6 +212,7 @@ public sealed class CreateBudgetYearHandler(
         catch (Exception ex)
         {
             logger.LogError(ex, "Fowarding Project Error: {Message}", ex.Message);
+            throw new($"Fowarding Project Error: {ex.Message}");
         }
     }
 
@@ -284,6 +286,8 @@ public sealed class CreateBudgetYearHandler(
             List<Guid> hasNoPastFundingGuids = new List<Guid>();
 
             var equipments = await capitalEquipmentRepository.ListAsync();
+            var equipmentFundings = await equipmentFundingRepository.ListAsync();
+            var equipmentYearItems = await equipmentYearItemRepository.ListAsync();
             var category = (await repositoryCategory.ListAsync()).FirstOrDefault(x => x.Name == "request_status");
             var values = (await repositoryValue.ListAsync()).Where(x => x.LookupCategoryId == category.Id);
 
@@ -376,6 +380,7 @@ public sealed class CreateBudgetYearHandler(
         catch (Exception ex)
         {
             logger.LogError(ex, "Updating Equipment Statuses Error: {Message}", ex.Message);
+            throw new($"Updating Equipment Statuses Error: {ex.Message}");
         }
     }
 
@@ -571,6 +576,7 @@ public sealed class CreateBudgetYearHandler(
         catch (Exception ex)
         {
             logger.LogError(ex, "Updating Project Statuses Error: {Message}", ex.Message);
+            throw new($"Updating Project Statuses Error: {ex.Message}");
         }
     }
     private void AddPastFundings<TFunding>(CapitalProjectItem project, IEnumerable<TFunding>? fundings, string source, bool useDescription)
