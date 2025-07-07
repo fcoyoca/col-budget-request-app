@@ -25,7 +25,7 @@ using FundingYearItemProject = budget_request_app.WebApi.CapitalProject.Domain.F
 namespace budget_request_app.WebApi.BudgetYear.Features.Create.v1;
 public sealed class CreateBudgetYearHandler(
     ILogger<CreateBudgetYearHandler> logger,
-    //IConfiguration configuration,
+    IConfiguration configuration,
     [FromKeyedServices("budgetYears")] IRepository<BudgetYearItem> repository,
     [FromKeyedServices("lookupCategories")] IReadRepository<LookupCategoryItem> repositoryCategory,
     [FromKeyedServices("lookupValues")] IReadRepository<LookupValueItem> repositoryValue,
@@ -40,7 +40,7 @@ public sealed class CreateBudgetYearHandler(
     {
         try
         {
-            //await BackupDB();
+            await BackupDB();
 
             await CheckEquipmentRemainingFunding();
 
@@ -62,32 +62,42 @@ public sealed class CreateBudgetYearHandler(
         }
     }
 
-    //private async Task BackupDB()
-    //{
-    //    string connectionString = $"{configuration.GetValue<string>("DatabaseOptions:ConnectionString")}";
-    //    var backUpPath = @"C:\DBBackups\BudgetingNewDb_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".bak";
+    private async Task BackupDB()
+    {
+        var backUpPath = $"{configuration.GetValue<string>("FileStorage:BackUpPath")}";
+        var rootDrive = Path.GetPathRoot(AppContext.BaseDirectory); // e.g., "D:\", "C:\"
+        var combinedPath = Path.Combine(rootDrive, backUpPath);
 
-    //    var backupSql = $@"
-    //        BACKUP DATABASE [BudgetingNewDb] 
-    //        TO DISK = N'{backUpPath}' 
-    //        WITH FORMAT, INIT, SKIP, NOREWIND, NOUNLOAD, STATS = 10";
+        // Ensure directory exists
+        if (!Directory.Exists(combinedPath))
+        {
+            Directory.CreateDirectory(combinedPath);
+        }
 
-    //    try
-    //    {
-    //        using var connection = new SqlConnection(connectionString);
-    //        using var command = new SqlCommand(backupSql, connection);
+        string connectionString = $"{configuration.GetValue<string>("DatabaseOptions:ConnectionString")}";
+        var backUpPathFileName = @combinedPath + "/BudgetingNewDb_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".bak";
 
-    //        await connection.OpenAsync();
-    //        await command.ExecuteNonQueryAsync();
+        var backupSql = $@"
+            BACKUP DATABASE [BudgetingNewDb] 
+            TO DISK = N'{backUpPathFileName}' 
+            WITH FORMAT, INIT, SKIP, NOREWIND, NOUNLOAD, STATS = 10";
+
+        try
+        {
+            using var connection = new SqlConnection(connectionString);
+            using var command = new SqlCommand(backupSql, connection);
+
+            await connection.OpenAsync();
+            await command.ExecuteNonQueryAsync();
 
 
-    //        logger.LogInformation($"Backup completed to: {backUpPath}");
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        logger.LogError(ex, "Backup failed: {Message}", ex.Message);
-    //    }
-    //}
+            logger.LogInformation($"Backup completed to: {backUpPathFileName}");
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Backup failed: {Message}", ex.Message);
+        }
+    }
 
     private async Task<CreateBudgetYearResponse> UpdateBudgetYear()
     {
