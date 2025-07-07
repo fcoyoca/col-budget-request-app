@@ -13,9 +13,8 @@ public class SearchCapitalProjectsSpec : Specification<CapitalProjectItem>
 
         .Include(x => x.BorrowingFundings)
             .ThenInclude(x => x.YearEstimates)
-
         .Include(x => x.BorrowingFundings)
-        .ThenInclude(x => x.YearRequested)
+            .ThenInclude(x => x.YearRequested)
 
         .Include(x => x.OperatingFundings)
             .ThenInclude(x => x.YearEstimates)
@@ -40,13 +39,12 @@ public class SearchCapitalProjectsSpec : Specification<CapitalProjectItem>
         .Include(x => x.OtherFundings)
             .ThenInclude(x => x.YearEstimates)
         .Include(x => x.OtherFundings)
-        .ThenInclude(x => x.YearRequested)
+            .ThenInclude(x => x.YearRequested)
 
         .Include(x => x.SpendingBudgets)
-        .ThenInclude(x => x.YearEstimates)
-
+            .ThenInclude(x => x.YearEstimates)
         .Include(x => x.SpendingBudgets)
-        .ThenInclude(x => x.YearRequested)
+            .ThenInclude(x => x.YearRequested)
         .AsSplitQuery();
     //.Where(x => x.Id == Guid.Parse("26109f84-54f4-40f0-a319-3f9404ddd545"));
 }

@@ -1,4 +1,6 @@
-﻿using System.Threading;
+﻿using System;
+using System.Linq;
+using System.Threading;
 using budget_request_app.WebApi.BudgetYear.Domain;
 using budget_request_app.WebApi.CapitalEquipment.Domain;
 using budget_request_app.WebApi.CapitalProject.Domain;
@@ -10,24 +12,26 @@ using FSH.Framework.Core.Persistence;
 using FSH.Framework.Core.Storage;
 using Mapster;
 using MediatR;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using FundingYearItem = budget_request_app.WebApi.CapitalEquipment.Domain.FundingYearItem;
 using FundingYearItemProject = budget_request_app.WebApi.CapitalProject.Domain.FundingYearItem;
 
 namespace budget_request_app.WebApi.BudgetYear.Features.Create.v1;
 public sealed class CreateBudgetYearHandler(
     ILogger<CreateBudgetYearHandler> logger,
+    //IConfiguration configuration,
     [FromKeyedServices("budgetYears")] IRepository<BudgetYearItem> repository,
     [FromKeyedServices("lookupCategories")] IReadRepository<LookupCategoryItem> repositoryCategory,
     [FromKeyedServices("lookupValues")] IReadRepository<LookupValueItem> repositoryValue,
-    [FromKeyedServices("capitalEquipmentsFundingItems")] IReadRepository<FundingItem> equipmentFundingRepository,
+    [FromKeyedServices("capitalEquipmentsFundingItems")] IRepository<FundingItem> equipmentFundingRepository,
     [FromKeyedServices("capitalEquipmentsFundingYearItems")] IReadRepository<FundingYearItem> equipmentYearItemRepository,
     [FromKeyedServices("capitalEquipments")] IRepository<CapitalEquipmentItem> capitalEquipmentRepository,
-    [FromKeyedServices("capitalEquipmentsPastFunding")] IRepository<CapitalEquipment.Domain.PastFunding> capitalEquipmentPastFundingRepository,
-    [FromKeyedServices("capitalProjects")] IRepository<CapitalProjectItem> capitalProjectRepository,
-    [FromKeyedServices("capitalProjectsPastFunding")] IRepository<CapitalProject.Domain.PastFunding> capitalProjectPastFundingRepository
+    [FromKeyedServices("capitalProjects")] IRepository<CapitalProjectItem> capitalProjectRepository
     )
     : IRequestHandler<CreateBudgetYearCommand, CreateBudgetYearResponse>
 {
@@ -35,6 +39,8 @@ public sealed class CreateBudgetYearHandler(
     {
         try
         {
+            //await BackupDB();
+
             await CheckEquipmentRemainingFunding();
 
             await CheckProjectRemainingFunding();
@@ -43,9 +49,10 @@ public sealed class CreateBudgetYearHandler(
 
             await ForwardProjectFundingYears();
 
-            await UpdateBudgetYear();
+            var result = await UpdateBudgetYear();
 
-            return new CreateBudgetYearResponse(Guid.NewGuid(), "Success");
+            return new CreateBudgetYearResponse(result.Id, result.Message);
+
         }
         catch (Exception ex)
         {
@@ -53,6 +60,33 @@ public sealed class CreateBudgetYearHandler(
             return new CreateBudgetYearResponse(null, "BudgetYear Error :" + ex.Message);
         }
     }
+
+    //private async Task BackupDB()
+    //{
+    //    string connectionString = $"{configuration.GetValue<string>("DatabaseOptions:ConnectionString")}";
+    //    var backUpPath = @"C:\DBBackups\BudgetingNewDb_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".bak";
+
+    //    var backupSql = $@"
+    //        BACKUP DATABASE [BudgetingNewDb] 
+    //        TO DISK = N'{backUpPath}' 
+    //        WITH FORMAT, INIT, SKIP, NOREWIND, NOUNLOAD, STATS = 10";
+
+    //    try
+    //    {
+    //        using var connection = new SqlConnection(connectionString);
+    //        using var command = new SqlCommand(backupSql, connection);
+
+    //        await connection.OpenAsync();
+    //        await command.ExecuteNonQueryAsync();
+
+
+    //        logger.LogInformation($"Backup completed to: {backUpPath}");
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        logger.LogError(ex, "Backup failed: {Message}", ex.Message);
+    //    }
+    //}
 
     private async Task<CreateBudgetYearResponse> UpdateBudgetYear()
     {
@@ -79,8 +113,12 @@ public sealed class CreateBudgetYearHandler(
             int yearValue = DateTime.Now.Year;
             yearValue = allYears.Select(x => x.BudgetYear).Max();
 
+            var category = (await repositoryCategory.ListAsync()).FirstOrDefault(x => x.Name == "request_status");
+            var values = (await repositoryValue.ListAsync()).Where(x => x.LookupCategoryId == category.Id);
+            var archivedStatus = values.FirstOrDefault(x => x.Name == "Archived")?.Id;
+            var filteredEquipments = equipments.Where(x => x.RequestStatusId != archivedStatus.ToString());
 
-            foreach (var equipment in equipments)
+            foreach (var equipment in filteredEquipments)
             {
                 equipment.BudgetId = (yearValue + 1).ToString();
 
@@ -150,7 +188,12 @@ public sealed class CreateBudgetYearHandler(
             int yearValue = DateTime.Now.Year;
             yearValue = allYears.Select(x => x.BudgetYear).Max();
 
-            foreach (var project in projects)
+            var category = (await repositoryCategory.ListAsync()).FirstOrDefault(x => x.Name == "request_status_project");
+            var values = (await repositoryValue.ListAsync()).Where(x => x.LookupCategoryId == category.Id);
+            var archivedStatus = values.FirstOrDefault(x => x.Name == "Archived")?.Id;
+            var filteredProjects = projects.Where(x => x.GeneralInformation.RequestStatusId != archivedStatus.ToString());
+
+            foreach (var project in filteredProjects)
             {
                 project.BudgetId = (yearValue + 1).ToString();
                 ProcessFundingList(project.BorrowingFundings);
@@ -288,12 +331,14 @@ public sealed class CreateBudgetYearHandler(
             foreach (var equipment in futureFundingEquipments)
             {
                 equipment.RequestStatusId = requiresDepartmentReviewStatus.ToString();
+
             }
 
             var noFutureFundingEquipments = equipments.Where(x => hasNoFutureFundingGuids.Contains(x.Id));
             foreach (var equipment in noFutureFundingEquipments)
             {
                 equipment.RequestStatusId = archivedStatus.ToString();
+                equipmentFundingRepository.DeleteRangeAsync(equipment.FundingItems);
             }
 
             var updatedEquipments = futureFundingEquipments.Concat(noFutureFundingEquipments);
@@ -468,6 +513,13 @@ public sealed class CreateBudgetYearHandler(
             foreach (var project in noFutureFundingProjects)
             {
                 project.GeneralInformation.RequestStatusId = archivedStatus.ToString();
+                project.BorrowingFundings.Clear();
+                project.OperatingFundings.Clear();
+                project.GrantFundings.Clear();
+                project.DonationFundings.Clear();
+                project.SpecialFundings.Clear();
+                project.OtherFundings.Clear();
+                project.SpendingBudgets.Clear();
             }
 
             var updatedProjects = futureFundingProjects.Concat(noFutureFundingProjects);

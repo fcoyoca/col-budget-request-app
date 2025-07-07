@@ -1,10 +1,11 @@
-﻿using Carter;
-using FSH.Framework.Core.Persistence;
-using FSH.Framework.Infrastructure.Persistence;
-using budget_request_app.WebApi.BudgetYear.Domain;
+﻿using budget_request_app.WebApi.BudgetYear.Domain;
 using budget_request_app.WebApi.BudgetYear.Features.Create.v1;
 using budget_request_app.WebApi.BudgetYear.Features.Get.v1;
 using budget_request_app.WebApi.BudgetYear.Persistence;
+using budget_request_app.WebApi.CapitalProject.Domain;
+using Carter;
+using FSH.Framework.Core.Persistence;
+using FSH.Framework.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
@@ -32,8 +33,6 @@ public static class BudgetYearModule
         builder.Services.AddScoped<IDbInitializer, BudgetYearDbInitializer>();
         builder.Services.AddKeyedScoped<IRepository<BudgetYearItem>, BudgetYearRepository<BudgetYearItem>>("budgetYears");
         builder.Services.AddKeyedScoped<IReadRepository<BudgetYearItem>, BudgetYearRepository<BudgetYearItem>>("budgetYears");
-        builder.Services.AddKeyedScoped<IRepository<CapitalEquipment.Domain.PastFunding>, BudgetYearRepository<CapitalEquipment.Domain.PastFunding>>("capitalEquipmentsPastFunding");
-        builder.Services.AddKeyedScoped<IRepository<CapitalProject.Domain.PastFunding>, BudgetYearRepository<CapitalProject.Domain.PastFunding>>("capitalProjectsPastFunding");
         return builder;
     }
     public static WebApplication UseBudgetYearModule(this WebApplication app)
