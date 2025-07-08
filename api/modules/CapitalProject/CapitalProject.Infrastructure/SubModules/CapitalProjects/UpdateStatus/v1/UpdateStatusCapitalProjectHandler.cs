@@ -21,16 +21,16 @@ public sealed class UpdateStatusCapitalProjectHandler(
 
         var spec = new GetCapitalProjectGeneralInfoByIdsSpec(request.Ids);
         
-        var equipments = await repository.ListAsync(spec, cancellationToken);
+        var projects = await repository.ListAsync(spec, cancellationToken);
         
-        var targetEquipments = equipments.Where(x => request.Ids.Contains(x.Id)).ToList();
+        var targetProjects = projects.Where(x => request.Ids.Contains(x.Id)).ToList();
 
-        foreach (var equipment in targetEquipments)
+        foreach (var project in targetProjects)
         {
-            equipment.GeneralInformation.RequestStatusId = request.StatusId.ToString();
+            project.GeneralInformation.RequestStatusId = request.StatusId.ToString();
         }
         
-        await repository.UpdateRangeAsync(targetEquipments, cancellationToken);
+        await repository.UpdateRangeAsync(targetProjects, cancellationToken);
 
         return new UpdateStatusCapitalProjectResponse(request.Ids);
     }
