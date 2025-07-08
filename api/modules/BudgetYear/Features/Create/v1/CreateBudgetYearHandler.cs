@@ -180,7 +180,7 @@ public sealed class CreateBudgetYearHandler(
             }
 
             logger.LogInformation("Successfully Forwarded Equipment Fundings");
-            await capitalEquipmentRepository.UpdateRangeAsync(equipments);
+            await capitalEquipmentRepository.UpdateRangeAsync(filteredEquipments);
         }
         catch (Exception ex)
         {
@@ -218,7 +218,7 @@ public sealed class CreateBudgetYearHandler(
             }
 
             logger.LogInformation("Successfully Forwarded Project Fundings");
-            await capitalProjectRepository.UpdateRangeAsync(projects);
+            await capitalProjectRepository.UpdateRangeAsync(filteredProjects);
         }
         catch (Exception ex)
         {
