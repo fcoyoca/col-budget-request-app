@@ -109,7 +109,7 @@ public class CapitalEquipmentItem : AuditableEntity, IAggregateRoot
         bool? purchasingBuyerReview,
         string additionalNotes,
         List<FundingItem> fundingItems,
-        List<PastFunding> pastFundings,
+        //List<PastFunding> pastFundings,
         string fileIds,
         string imageId
         )
@@ -164,7 +164,7 @@ public class CapitalEquipmentItem : AuditableEntity, IAggregateRoot
         CapitalEquipment.PurchasingBuyerReview = purchasingBuyerReview;
         CapitalEquipment.AdditionalNotes = additionalNotes;
         CapitalEquipment.FundingItems = fundingItems;
-        CapitalEquipment.PastFundings = pastFundings;
+        //CapitalEquipment.PastFundings = pastFundings;
         CapitalEquipment.FileIds = fileIds;
         CapitalEquipment.ImageId = imageId;
         
