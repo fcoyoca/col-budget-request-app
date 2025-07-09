@@ -15,7 +15,7 @@ public sealed class EquipmentFundingSourceDbContext : FshDbContext
     {
     }
 
-    public DbSet<EquipmentFundingSourceItem> ProjectFundingSources { get; set; } = null!;
+    public DbSet<EquipmentFundingSourceItem> EquipmentFundingSources { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

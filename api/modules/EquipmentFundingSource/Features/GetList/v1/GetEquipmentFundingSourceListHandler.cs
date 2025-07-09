@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace budget_request_app.WebApi.EquipmentFundingSource.Features.GetList.v1;
 
 public sealed class GetEquipmentFundingSourceListHandler(
-    [FromKeyedServices("ProjectFundingSources")] IReadRepository<EquipmentFundingSourceItem> repository)
+    [FromKeyedServices("EquipmentFundingSources")] IReadRepository<EquipmentFundingSourceItem> repository)
     : IRequestHandler<GetEquipmentFundingSourceListRequest, PagedList<EquipmentFundingSourceDto>>
 {
     public async Task<PagedList<EquipmentFundingSourceDto>> Handle(GetEquipmentFundingSourceListRequest request, CancellationToken cancellationToken)
