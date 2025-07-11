@@ -3,6 +3,7 @@ using FSH.Framework.Core.Persistence;
 using FSH.Framework.Core.Storage;
 using MediatR;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -12,6 +13,7 @@ namespace BudgetYearCutover.Infrastructure.SubModules.ReportCovers.Create.v1;
 public sealed class CreateReportCoversHandler(
     IStorageService storageService,
     IConfiguration configuration,
+    IHttpContextAccessor httpContextAccessor,
     ILogger<CreateReportCoversHandler> logger,
     [FromKeyedServices("budgetYearCutover")] IRepository<CutoverReportCover> repository,
     IWebHostEnvironment _env
@@ -67,6 +69,10 @@ public sealed class CreateReportCoversHandler(
 
                 var safeFileName = $"{report.ReportCoverName}";
                 var filePath = Path.Combine(fileProviderFullPath, safeFileName);
+                var context = httpContextAccessor.HttpContext;
+                var originUrl = $"{context.Request.Scheme}://{context.Request.Host}";
+            
+
                 await System.IO.File.WriteAllBytesAsync(filePath, fileBytes, cancellationToken: cancellationToken);
 
                 var fileRecord = CutoverReportCover.Create(report.ReportCoverName, report.FileSize, report.ContentType, filePath, requestPath, "Uploaded", report.FileExtension);
@@ -75,7 +81,7 @@ public sealed class CreateReportCoversHandler(
 
                 response.ReportCovers!.Add(new CutoverReportResponse
                 {
-                    RequestPath = requestPath,
+                    RequestPath = $"{originUrl}{requestPath}",
                     ReportCoverName = report.ReportCoverName,
                     Status = "Uploaded"
                 });
@@ -114,7 +120,8 @@ public sealed class CreateReportCoversHandler(
                 var safeFileName = $"{report.ReportCoverName}";
                 var filePath = Path.Combine(fileProviderFullPath, safeFileName);
                 string requestPath = $"{configuration.GetValue<string>("FileStorage:RequestPathReportCovers")}/{report.ReportCoverName}";
-
+                var context = httpContextAccessor.HttpContext;
+                var originUrl = $"{context.Request.Scheme}://{context.Request.Host}";
                 // Overwrite the file
                 await System.IO.File.WriteAllBytesAsync(filePath, fileBytes, cancellationToken: cancellationToken);
 
@@ -130,7 +137,7 @@ public sealed class CreateReportCoversHandler(
 
                 response.ReportCovers!.Add(new CutoverReportResponse
                 {
-                    RequestPath = requestPath,
+                    RequestPath = $"{originUrl}{requestPath}",
                     ReportCoverName = report.ReportCoverName,
                     Status = "Updated"
                 });
