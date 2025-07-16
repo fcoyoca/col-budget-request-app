@@ -1,8 +1,10 @@
-﻿using Finbuckle.MultiTenant.Abstractions;
+﻿using budget_request_app.WebApi.LookupCategory.Domain;
+using budget_request_app.WebApi.LookupCategory.Persistence;
+using budget_request_app.WebApi.LookupValue.Domain;
+using Finbuckle.MultiTenant.Abstractions;
 using FSH.Framework.Core.Persistence;
 using FSH.Framework.Infrastructure.Persistence;
 using FSH.Framework.Infrastructure.Tenant;
-using budget_request_app.WebApi.LookupValue.Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -23,5 +25,6 @@ public sealed class LookupValueDbContext : FshDbContext
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(LookupValueDbContext).Assembly);
         modelBuilder.HasDefaultSchema(SchemaNames.Lookup);
         modelBuilder.Entity<LookupValueItem>().HasQueryFilter(p => p.Deleted == null);
+        modelBuilder.Entity<LookupValueItem>().HasData(LookupValueSeeder.GetSeedData());
     }
 }
