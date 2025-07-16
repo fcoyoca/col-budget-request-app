@@ -4245,7 +4245,7 @@ namespace budget_request_app.WebApi.Migrations.MSSQL.LookupValue
                             LastModified = new DateTimeOffset(new DateTime(2025, 5, 26, 6, 0, 26, 441, DateTimeKind.Unspecified).AddTicks(5680), new TimeSpan(0, 0, 0, 0, 0)),
                             LastModifiedBy = new Guid("638c53dc-5995-4552-b7ac-1edc48df9e74"),
                             LookupCategoryId = new Guid("2fbf3c72-e26f-4db8-a5de-180bc862d79e"),
-                            Name = "",
+                            Name = "General - Refuse and Recycling Operating Budget (Dept 886)",
                             TenantId = "root"
                         },
                         new
@@ -5169,7 +5169,7 @@ namespace budget_request_app.WebApi.Migrations.MSSQL.LookupValue
                             LastModified = new DateTimeOffset(new DateTime(2025, 5, 26, 7, 0, 58, 340, DateTimeKind.Unspecified).AddTicks(9264), new TimeSpan(0, 0, 0, 0, 0)),
                             LastModifiedBy = new Guid("638c53dc-5995-4552-b7ac-1edc48df9e74"),
                             LookupCategoryId = new Guid("96bfc5c5-5fcf-4631-9c17-ed3dfbe5fe06"),
-                            Name = "",
+                            Name = "Streetscaping - Boulevard Trees",
                             TenantId = "root"
                         },
                         new

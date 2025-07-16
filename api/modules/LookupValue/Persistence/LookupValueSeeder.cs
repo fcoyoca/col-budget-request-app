@@ -4194,7 +4194,7 @@ new LookupValueItemNew
 new LookupValueItemNew
 {
     Id = Guid.Parse("ac24f415-d398-4371-8be1-9c5f9ac3d9d9"),
-    Name = @"",
+    Name = @"General - Refuse and Recycling Operating Budget (Dept 886)",
     LookupCategoryId = Guid.Parse("2fbf3c72-e26f-4db8-a5de-180bc862d79e"),
     TenantId = @"root",
     Created = DateTimeOffset.Parse("2025-05-26T06:00:26.4415680+00:00"),
@@ -5118,7 +5118,7 @@ new LookupValueItemNew
 new LookupValueItemNew
 {
     Id = Guid.Parse("9a78b288-1880-44c9-af24-ba26abb1c339"),
-    Name = @"",
+    Name = @"Streetscaping - Boulevard Trees",
     LookupCategoryId = Guid.Parse("96bfc5c5-5fcf-4631-9c17-ed3dfbe5fe06"),
     TenantId = @"root",
     Created = DateTimeOffset.Parse("2025-05-26T07:00:58.3409264+00:00"),
