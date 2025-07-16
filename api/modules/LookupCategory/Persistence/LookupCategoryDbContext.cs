@@ -23,5 +23,7 @@ public sealed class LookupCategoryDbContext : FshDbContext
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(LookupCategoryDbContext).Assembly);
         modelBuilder.HasDefaultSchema(SchemaNames.Lookup);
         modelBuilder.Entity<LookupCategoryItem>().HasQueryFilter(p => p.Deleted == null);
+        modelBuilder.Entity<LookupCategoryItem>().HasData(LookupCategorySeeder.GetSeedData());
+
     }
 }

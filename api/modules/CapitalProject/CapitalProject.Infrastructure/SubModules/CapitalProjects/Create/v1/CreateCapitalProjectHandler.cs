@@ -147,6 +147,6 @@ public sealed class CreateCapitalProjectHandler(
         
         await repository.AddAsync(capitalProject, cancellationToken);
         logger.LogInformation("CapitalProject created {CapitalProjectId}", capitalProject.Id);
-        return new CreateCapitalProjectResponse(capitalProject.Id, "Kimper success!!");
+        return new CreateCapitalProjectResponse(capitalProject.Id, "Success!!");
     }
 }
