@@ -115,7 +115,7 @@ public class CapitalEquipmentItem : AuditableEntity, IAggregateRoot
         )
     {
         var CapitalEquipment = new CapitalEquipmentItem();
-
+        CapitalEquipment.ProjectNumber = projectNumber;
         CapitalEquipment.RequestNumber = requestNumber ?? 0;
         CapitalEquipment.BudgetId = budgetId;
         CapitalEquipment.RevisionTitle = revisionTitle;

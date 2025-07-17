@@ -37,7 +37,7 @@ public sealed class GetProjectNumberCapitalProjectHandler(
         
         var allEquipmentRequests = await repository.ListAsync();
 
-        int requestNumber = 0;
+        int requestNumber = 1;
         
         if (allEquipmentRequests.Any())
         {
@@ -53,7 +53,7 @@ public sealed class GetProjectNumberCapitalProjectHandler(
             }
         }
         
-        var projectNumber = ( maxBudgetYear % 100 ) + "-" + (requestNumber % 1000).ToString("D3");
+        var projectNumber = ( maxBudgetYear % 100 ) +  (requestNumber % 1000).ToString("D3");
 
         return new GetProjectNumberCapitalProjectResponse(projectNumber);
     }

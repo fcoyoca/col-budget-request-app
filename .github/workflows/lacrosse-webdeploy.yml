@@ -2,18 +2,18 @@ name: Deploy to IIS [City Of Lacrosse Staging Environment]
 
 # Run when commits are pushed to main
 on:
-  push:
-    branches:
-      - main
   pull_request:
-    types: [opened, synchronize, reopened, closed]
+    types:
+      - closed
     branches:
       - main
 
 jobs:
   build-and-deploy:
     runs-on: LAX-FINAPP1-DEV-BACKEND
-    
+
+    if: github.event.pull_request.merged == true
+
     steps:
       - name: Set Build Version
         run: echo "BUILD_NUMBER=${{ github.run_number }}" >> $GITHUB_ENV
@@ -21,6 +21,7 @@ jobs:
       # Check out the repository
       - name: Checkout code
         uses: actions/checkout@v3
+        
       - name: App Settings Variable Substitution
         uses: microsoft/variable-substitution@v1
         with:
@@ -28,8 +29,10 @@ jobs:
         env:
           DatabaseOptions.ConnectionString: ${{ secrets.DB_DEV_CONNECTIONSTRING }}
           OriginOptions.OriginUrl: 'https://budget-api-dev.cityoflacrosse.org/'
-          CorsOptions.AllowedOrigins: "[\"https://budget-dev.cityoflacrosse.org\", \"https://localhost:7100\", \"http://localhost:7100\", \"*\" ]"
-          WebApiBuildVersion: '${{ github.run_number }}'
+          CorsOptions.AllowedOrigins: "[\"https://budget-dev.cityoflacrosse.org\", \"https://localhost:7100\", \"http://localhost:7100\" ]"
+          # SecuritySettings.AzureAd.ClientId: ${{ secrets.CITY_AZURE_BACKEND_CLIENT_ID }}
+          # SecuritySettings.AzureAd.Scopes: '[ "api://${{ secrets.CITY_AZURE_BACKEND_CLIENT_ID }}/api_access" ]'
+          # SecuritySettings.AzureAd.Audience: '"api://${{ secrets.CITY_AZURE_BACKEND_CLIENT_ID }}"'
 
       # Set up .NET SDK
       - name: Setup .NET 9 SDK in user folder
