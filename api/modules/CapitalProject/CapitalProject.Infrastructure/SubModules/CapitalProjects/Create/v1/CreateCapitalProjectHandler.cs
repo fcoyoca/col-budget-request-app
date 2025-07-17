@@ -64,7 +64,7 @@ public sealed class CreateCapitalProjectHandler(
         var allProjectRequests = await repository.ListAsync();
 
         int requestId = 1;
-        int requestNumber = 0;
+        int requestNumber = 1;
 
         if (allProjectRequests.Any())
         {
@@ -83,7 +83,7 @@ public sealed class CreateCapitalProjectHandler(
             }
         }
         
-        var projectNumber = ( maxBudgetYear % 100 ) + "-" + (requestNumber % 1000).ToString("D3");
+       //var projectNumber = ( maxBudgetYear % 100 ) + "-" + (requestNumber % 1000).ToString("D3");
 
         if (request.ImageFile != null)
         {

@@ -67,9 +67,9 @@ public sealed class CreateCapitalEquipmentHandler(
         
         var allEquipmentRequests = await repository.ListAsync();
 
-        int requestId = 0;
+        int requestId = 1;
 
-        int requestNumber = 0;
+        int requestNumber = 1;
 
         if (allEquipmentRequests.Any())
         {
@@ -88,7 +88,7 @@ public sealed class CreateCapitalEquipmentHandler(
             }
         }
 
-        var projectNumber = ( maxBudgetYear % 100 ) + "-" + (requestNumber % 1000).ToString("D3");
+        //var projectNumber = ( maxBudgetYear % 100 ) + (requestNumber % 1000).ToString("D3");
 
         if (request.ImageFile != null)
         {

@@ -37,7 +37,7 @@ public sealed class GetProjectNumberCapitalProjectHandler(
         
         var allEquipmentRequests = await repository.ListAsync();
 
-        int requestNumber = 0;
+        int requestNumber = 1;
         
         if (allEquipmentRequests.Any())
         {
