@@ -28,6 +28,10 @@ jobs:
           fetch-depth: 0
           lfs: true
           clean: true
+          
+      - name: Set Build Version
+        run: echo "BUILD_NUMBER=${{ github.run_number }}" >> $GITHUB_ENV
+
       - name: App Settings Variable Substitution
         uses: microsoft/variable-substitution@v1
         with:
@@ -36,7 +40,8 @@ jobs:
           DatabaseOptions.ConnectionString: ${{ secrets.TTT_LAX_VM_DBCONNECTSTRING }}
           OriginOptions.OriginUrl: 'https://20.243.136.207:444'
           CorsOptions.AllowedOrigins: "[\"https://20.243.136.207:447\", \"http://48.210.64.131:446\", \"https://localhost:7100\", \"http://localhost:7100\" ]"
-
+          WebApiBuildVersion: '${{ github.run_number }}'
+      
       # Set up .NET SDK
       - name: Setup .NET 9 SDK in user folder
         shell: powershell
