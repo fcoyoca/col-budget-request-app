@@ -645,6 +645,18 @@ namespace budget_request_app.WebApi.Migrations.MSSQL.LookupCategory
                             ModuleId = 2,
                             Name = "pavement_rating",
                             TenantId = "root"
+                        },
+                        new
+                        {
+                            Id = new Guid("51851bec-b665-4cb8-ad0d-49f77f07c9f0"),
+                            Created = new DateTimeOffset(new DateTime(2025, 7, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedBy = new Guid("00000000-0000-0000-0000-000000000001"),
+                            Description = "Funding Source - Donations",
+                            LastModified = new DateTimeOffset(new DateTime(2025, 7, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            LastModifiedBy = new Guid("00000000-0000-0000-0000-000000000001"),
+                            ModuleId = 2,
+                            Name = "funding_source_donation_project",
+                            TenantId = "root"
                         });
                 });
 #pragma warning restore 612, 618
