@@ -1,6 +1,6 @@
-﻿using FSH.Framework.Core.Domain;
+﻿using budget_request_app.WebApi.CapitalEquipment.Domain.Events;
+using FSH.Framework.Core.Domain;
 using FSH.Framework.Core.Domain.Contracts;
-using budget_request_app.WebApi.CapitalEquipment.Domain.Events;
 
 namespace budget_request_app.WebApi.CapitalEquipment.Domain;
 public class CapitalEquipmentItem : AuditableEntity, IAggregateRoot
@@ -33,7 +33,7 @@ public class CapitalEquipmentItem : AuditableEntity, IAggregateRoot
     public string SustainabilityPriority { get; set; }
     public string CostToOperatePriority { get; set; }
     public string RevenueGenerationPriority { get; set; }
-    
+
     public string RequiredMandatedExplanation { get; set; }
     public string SafetyExplanation { get; set; }
     public string PaybackPeriodExplanation { get; set; }
@@ -58,6 +58,7 @@ public class CapitalEquipmentItem : AuditableEntity, IAggregateRoot
     public List<PastFunding> PastFundings { get; set; }
     public string FileIds { get; set; }
     public string ImageId { get; set; }
+    public bool IsDraft { get; set; }
 
     public static CapitalEquipmentItem Create(
         int? requestNumber,
@@ -111,7 +112,8 @@ public class CapitalEquipmentItem : AuditableEntity, IAggregateRoot
         List<FundingItem> fundingItems,
         //List<PastFunding> pastFundings,
         string fileIds,
-        string imageId
+        string imageId,
+        bool isDraft
         )
     {
         var CapitalEquipment = new CapitalEquipmentItem();
@@ -167,7 +169,8 @@ public class CapitalEquipmentItem : AuditableEntity, IAggregateRoot
         //CapitalEquipment.PastFundings = pastFundings;
         CapitalEquipment.FileIds = fileIds;
         CapitalEquipment.ImageId = imageId;
-        
+        CapitalEquipment.IsDraft = isDraft;
+
         CapitalEquipment.QueueDomainEvent(new CapitalEquipmentCreated() { CapitalEquipment = CapitalEquipment });
 
         return CapitalEquipment;
@@ -221,7 +224,8 @@ public class CapitalEquipmentItem : AuditableEntity, IAggregateRoot
         bool? purchasingBuyerReview,
         string additionalNotes,
         string fileIds,
-        string imageId
+        string imageId,
+        bool isDraft
         )
     {
         capitalEquipment.ProjectNumber = projectNumber;
@@ -271,6 +275,7 @@ public class CapitalEquipmentItem : AuditableEntity, IAggregateRoot
         capitalEquipment.AdditionalNotes = additionalNotes;
         capitalEquipment.FileIds = fileIds;
         capitalEquipment.ImageId = imageId;
+        capitalEquipment.IsDraft = isDraft;
 
         capitalEquipment.QueueDomainEvent(new CapitalEquipmentUpdated() { CapitalEquipment = capitalEquipment });
 

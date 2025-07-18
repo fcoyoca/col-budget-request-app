@@ -24,7 +24,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
-using static Google.Protobuf.Reflection.UninterpretedOption.Types;
 
 namespace FSH.Framework.Infrastructure.Identity.Users.Services;
 
@@ -74,6 +73,18 @@ internal sealed partial class UserService(
     {
         EnsureValidTenant();
         return await userManager.Users.FirstOrDefaultAsync(x => x.PhoneNumber == phoneNumber) is FshUser user && user.Id != exceptId;
+    }
+
+    public async Task<UserDetail> GetByObjectIdAsync(string objectId, CancellationToken cancellationToken)
+    {
+        var user = await userManager.Users
+            .AsNoTracking()
+            .Where(u => u.ObjectId == objectId)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        _ = user ?? throw new NotFoundException("user not found");
+
+        return user.Adapt<UserDetail>();
     }
 
     public async Task<UserDetail> GetAsync(string userId, CancellationToken cancellationToken)
@@ -205,10 +216,10 @@ internal sealed partial class UserService(
 
         if (parts.Length == 1)
         {
-            return new () { FirstName = parts[0], LastName = "" };
+            return new() { FirstName = parts[0], LastName = "" };
         }
 
-        return new ()
+        return new()
         {
             FirstName = string.Join(" ", parts.Take(parts.Length - 1)),
             LastName = parts[^1]

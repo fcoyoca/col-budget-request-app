@@ -1,6 +1,5 @@
 using budget_request_app.WebApi.CapitalEquipment.Domain;
 using budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Create.v1;
-using budget_request_app.WebApi.FileService.Domain;
 
 namespace budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Get.v1;
 public sealed record GetCapitalEquipmentResponse(
@@ -20,7 +19,14 @@ public sealed record GetCapitalEquipmentResponse(
     ApprovalOversightInfo ApprovalOversightInfo,
     FundingResponseDTO Funding,
     List<AttachmentDTO>? Attachments,
-    string? ImageFileUrl
+    string? ImageFileUrl,
+    bool isDraft,
+    DateTimeOffset Created,
+    Guid CreatedBy,
+    string CreatedByFullName,
+    DateTimeOffset LastModified,
+    Guid LastModifiedBy,
+    string LastModifiedByFullName
     );
 
 public class FundingResponseDTO
@@ -36,7 +42,7 @@ public class FundingResponseDTO
 
 public class FundingItemDTO
 {
-    public string FundingType  { get; set; }
+    public string FundingType { get; set; }
     public Guid? FundingSource { get; set; } = Guid.Empty;
     public string? FundingSourceValue { get; set; }
     public string? GrantingAgency { get; set; }
@@ -49,14 +55,14 @@ public class CapitalEquipmentPastFundingDTO
 {
     public Guid Id { get; set; }
     public string? Details { get; set; }
-    public int? Year  { get; set; }
+    public int? Year { get; set; }
     public decimal? Amount { get; set; }
     public string? Request { get; set; }
     public Guid? FundingSource { get; set; } = Guid.Empty;
     public string? FundingSourceValue { get; set; }
     public Guid? FundingSubSource { get; set; } = Guid.Empty;
     public string? FundingSubSourceValue { get; set; }
-    public string? SOF  { get; set; }
+    public string? SOF { get; set; }
 }
 
 public class AttachmentDTO
