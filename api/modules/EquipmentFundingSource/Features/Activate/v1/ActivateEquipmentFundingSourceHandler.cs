@@ -19,7 +19,7 @@ public sealed class ActivateEquipmentFundingSourceHandler(
         _ = EquipmentFundingSource ?? throw new EquipmentFundingSourceItemNotFoundException(request.Id.Value);
         EquipmentFundingSource.IsActive = true;
         await repository.UpdateAsync(EquipmentFundingSource, cancellationToken);
-        logger.LogInformation("EquipmentFundingSource item Activated {ProjectFundingSourceItemId}", EquipmentFundingSource.Id);
+        logger.LogInformation("EquipmentFundingSource item Activated {EquipmentFundingSourceItemId}", EquipmentFundingSource.Id);
         return new ActivateEquipmentFundingSourceResponse(EquipmentFundingSource.Id);
     }
 }

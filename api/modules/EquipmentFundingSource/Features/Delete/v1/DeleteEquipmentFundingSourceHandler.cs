@@ -17,6 +17,6 @@ public sealed class DeleteEquipmentFundingSourceHandler(
         var EquipmentFundingSourceItem = await repository.GetByIdAsync(request.Id, cancellationToken);
         _ = EquipmentFundingSourceItem ?? throw new EquipmentFundingSourceItemNotFoundException(request.Id);
         await repository.DeleteAsync(EquipmentFundingSourceItem, cancellationToken);
-        logger.LogInformation("EquipmentFundingSource with id : {ProjectFundingSourceId} deleted", EquipmentFundingSourceItem.Id);
+        logger.LogInformation("EquipmentFundingSource with id : {EquipmentFundingSourceId} deleted", EquipmentFundingSourceItem.Id);
     }
 }

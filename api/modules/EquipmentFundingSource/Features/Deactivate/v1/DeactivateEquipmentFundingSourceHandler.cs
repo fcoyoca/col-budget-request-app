@@ -19,7 +19,7 @@ public sealed class DeactivateEquipmentFundingSourceHandler(
         _ = EquipmentFundingSource ?? throw new EquipmentFundingSourceItemNotFoundException(request.Id);
         EquipmentFundingSource.IsActive = false;
         await repository.UpdateAsync(EquipmentFundingSource, cancellationToken);
-        logger.LogInformation("EquipmentFundingSource item Deactivate {ProjectFundingSourceItemId}", EquipmentFundingSource.Id);
+        logger.LogInformation("EquipmentFundingSource item Deactivate {EquipmentFundingSourceItemId}", EquipmentFundingSource.Id);
         return new DeactivateEquipmentFundingSourceResponse(EquipmentFundingSource.Id);
     }
 }
