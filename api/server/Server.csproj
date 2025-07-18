@@ -22,6 +22,7 @@
     <ProjectReference Include="..\migrations\PostgreSQL\PostgreSQL.csproj" />
     <ProjectReference Include="..\modules\BudgetYearCutover\BudgetYearCutover.Infrastructure\BudgetYearCutover.Infrastructure.csproj" />
     <ProjectReference Include="..\modules\BudgetYear\BudgetYear.csproj" />
+    <ProjectReference Include="..\modules\EquipmentDepartment\EquipmentDepartment.csproj" />
     <ProjectReference Include="..\modules\EquipmentFundingSource\EquipmentFundingSource.csproj" />
     <ProjectReference Include="..\modules\FileService\FileService.csproj" />
     <ProjectReference Include="..\modules\LookupCategory\LookupCategory.csproj" />

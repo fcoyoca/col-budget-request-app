@@ -30,9 +30,9 @@ jobs:
           DatabaseOptions.ConnectionString: ${{ secrets.DB_DEV_CONNECTIONSTRING }}
           OriginOptions.OriginUrl: 'https://budget-api-dev.cityoflacrosse.org/'
           CorsOptions.AllowedOrigins: "[\"https://budget-dev.cityoflacrosse.org\", \"https://localhost:7100\", \"http://localhost:7100\" ]"
-          # SecuritySettings.AzureAd.ClientId: ${{ secrets.CITY_AZURE_BACKEND_CLIENT_ID }}
-          # SecuritySettings.AzureAd.Scopes: '[ "api://${{ secrets.CITY_AZURE_BACKEND_CLIENT_ID }}/api_access" ]'
-          # SecuritySettings.AzureAd.Audience: '"api://${{ secrets.CITY_AZURE_BACKEND_CLIENT_ID }}"'
+          SecuritySettings.AzureAd.ClientId: ${{ secrets.CITY_AZURE_BACKEND_CLIENT_ID }}
+          SecuritySettings.AzureAd.Scopes: '[ "api://${{ secrets.CITY_AZURE_BACKEND_CLIENT_ID }}/api_access" ]'
+          SecuritySettings.AzureAd.Audience: '"api://${{ secrets.CITY_AZURE_BACKEND_CLIENT_ID }}"'
 
       # Set up .NET SDK
       - name: Setup .NET 9 SDK in user folder
