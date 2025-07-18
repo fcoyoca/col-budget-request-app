@@ -8,9 +8,11 @@ using budget_request_app.WebApi.FileService;
 using budget_request_app.WebApi.LookupCategory;
 using budget_request_app.WebApi.LookupValue;
 using budget_request_app.WebApi.ProjectFundingSource;
+using budget_request_app.WebApi.EquipmentDepartment;
 using BudgetYearCutover.Infrastructure;
 using Carter;
 using FluentValidation;
+
 
 namespace budget_request_app.WebApi.Host;
 
@@ -31,7 +33,8 @@ public static class Extensions
             typeof(BudgetYearModule).Assembly,
             typeof(ProjectFundingSourceModule).Assembly,
             typeof(EquipmentFundingSourceModule).Assembly,
-            typeof(BudgetYearCutoverModule).Assembly
+            typeof(BudgetYearCutoverModule).Assembly,
+            typeof(EquipmentDepartmentModule).Assembly,
         };
 
         //register validators
@@ -53,6 +56,7 @@ public static class Extensions
         builder.RegisterProjectFundingSourceServices();
         builder.RegisterEquipmentFundingSourceServices();
         builder.RegisterBudgetYearCutoverServices();
+        builder.RegisterEquipmentDepartmentServices();
 
         //add carter endpoint modules
         builder.Services.AddCarter(configurator: config =>
@@ -66,6 +70,7 @@ public static class Extensions
             config.WithModule<ProjectFundingSourceModule.Endpoints>();
             config.WithModule<EquipmentFundingSourceModule.Endpoints>();
             config.WithModule<BudgetYearCutoverModule.Endpoints>();
+            config.WithModule<EquipmentDepartmentModule.Endpoints>();
         });
 
         return builder;
@@ -85,6 +90,7 @@ public static class Extensions
         app.UseProjectFundingSourceModule();
         app.UseEquipmentFundingSourceModule();
         app.UseBudgetYearCutoverModule();
+        app.UseEquipmentDepartmentModule();
 
         //register api versions
         var versions = app.NewApiVersionSet()
