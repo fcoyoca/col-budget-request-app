@@ -22,9 +22,9 @@ public sealed class GetCapitalEquipmentHandler(
         ArgumentNullException.ThrowIfNull(request);
 
         var users = await userService.GetListAsync(cancellationToken);
-        var lookupValues = await lookupRepository.ListAsync();
-        var files = await fileRepository.ListAsync();
-        var capitalEquipmentItem = await repository.FirstOrDefaultAsync(new GetCapitalEquipmentByIdSpec(request.Id));
+        var lookupValues = await lookupRepository.ListAsync(cancellationToken);
+        var files = await fileRepository.ListAsync(cancellationToken);
+        var capitalEquipmentItem = await repository.FirstOrDefaultAsync(new GetCapitalEquipmentByIdSpec(request.Id),cancellationToken);
         if (capitalEquipmentItem == null) throw new CapitalEquipmentNotFoundException(request.Id);
         return CapitalEquipmentMapper.GetResponse(capitalEquipmentItem, lookupValues, files, users);
     }

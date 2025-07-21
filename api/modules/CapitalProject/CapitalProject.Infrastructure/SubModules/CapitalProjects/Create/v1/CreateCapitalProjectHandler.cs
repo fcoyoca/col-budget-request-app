@@ -1,14 +1,14 @@
 ﻿using budget_request_app.WebApi.BudgetYear.Domain;
-using FSH.Framework.Core.Persistence;
 using budget_request_app.WebApi.CapitalProject.Domain;
 using FSH.Framework.Core.Exceptions;
+using FSH.Framework.Core.Persistence;
+using FSH.Framework.Core.Storage;
+using FSH.Framework.Core.Storage.File;
+using FSH.Framework.Core.Storage.File.Features;
 using Mapster;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using FSH.Framework.Core.Storage.File;
-using FSH.Framework.Core.Storage;
-using FSH.Framework.Core.Storage.File.Features;
 
 namespace budget_request_app.WebApi.CapitalProject.Infrastructure.SubModules.CapitalProjects.Create.v1;
 public sealed class CreateCapitalProjectHandler(
@@ -28,11 +28,11 @@ public sealed class CreateCapitalProjectHandler(
         }
 
         ArgumentNullException.ThrowIfNull(request);
-        
+
         var maxBudgetYear = budgetYears.Select(x => x.BudgetYear).Max();
 
         var donationFundingParent = request.Financial?.Funding?.DonationFunding;
-        
+
         var justificationPrioritization = request.TimeJustificationApproval?.JustificationPrioritization;
         var statusTimeline = request.TimeJustificationApproval?.StatusTimeline;
         var approvalOversight = request.TimeJustificationApproval?.ApprovalOversight;
@@ -60,7 +60,7 @@ public sealed class CreateCapitalProjectHandler(
         var pastFundings = request.Financial?.Past?.PastFundings;
         var pastSpendings = request.Financial?.Past?.PastSpendings;
         var projectManagement = request.ProjectManagement;
-        
+
         var allProjectRequests = await repository.ListAsync();
 
         int requestId = 1;
@@ -76,14 +76,14 @@ public sealed class CreateCapitalProjectHandler(
                 requestId = currentYearRequests
                     .Select(x => x.RequestId)
                     .Max() + 1;
-                
+
                 requestNumber = currentYearRequests
                     .Select(x => x.RequestNumber ?? 0)
                     .Max() + 1;
             }
         }
-        
-       //var projectNumber = ( maxBudgetYear % 100 ) + "-" + (requestNumber % 1000).ToString("D3");
+
+        //var projectNumber = ( maxBudgetYear % 100 ) + "-" + (requestNumber % 1000).ToString("D3");
 
         if (request.ImageFile != null)
         {
@@ -142,9 +142,10 @@ public sealed class CreateCapitalProjectHandler(
             PastSpendings = pastSpendings.Adapt<List<PastSpending>>(),
             ProjectManagement = projectManagement.Adapt<ProjectManagement>(),
             FileIds = request.FileIds,
-            ImageId = request.ImageFile?.ImageFilePath ?? string.Empty
+            ImageId = request.ImageFile?.ImageFilePath ?? string.Empty,
+            IsDraft = request.IsDraft
         };
-        
+
         await repository.AddAsync(capitalProject, cancellationToken);
         logger.LogInformation("CapitalProject created {CapitalProjectId}", capitalProject.Id);
         return new CreateCapitalProjectResponse(capitalProject.Id, "Success!!");

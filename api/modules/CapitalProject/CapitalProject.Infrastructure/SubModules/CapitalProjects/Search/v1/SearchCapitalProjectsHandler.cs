@@ -1,9 +1,10 @@
-using FSH.Framework.Core.Paging;
-using FSH.Framework.Core.Persistence;
-using budget_request_app.WebApi.CapitalProject.Infrastructure.SubModules.CapitalProjects.Get.v1;
 using budget_request_app.WebApi.CapitalProject.Domain;
+using budget_request_app.WebApi.CapitalProject.Infrastructure.SubModules.CapitalProjects.Get.v1;
 using budget_request_app.WebApi.FileService.Domain;
 using budget_request_app.WebApi.LookupValue.Domain;
+using FSH.Framework.Core.Identity.Users.Abstractions;
+using FSH.Framework.Core.Paging;
+using FSH.Framework.Core.Persistence;
 using Mapster;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,31 +15,33 @@ public sealed class SearchCapitalProjectsHandler(
     [FromKeyedServices("capitalProjects")] IReadRepository<CapitalProjectItem> repository,
     [FromKeyedServices("lookupValues")] IReadRepository<LookupValueItem> lookupRepository,
     [FromKeyedServices("capitalProjectsFundingYearItems")] IReadRepository<FundingYearItem> repositoryFundingYearItem,
-    [FromKeyedServices("fileServices")] IReadRepository<FileServiceItem> fileRepository
+    [FromKeyedServices("fileServices")] IReadRepository<FileServiceItem> fileRepository,
+    ICurrentUser userService
     )
     : IRequestHandler<SearchCapitalProjectsCommand, PagedList<SearchCapitalProjectResponse>>
 {
     public async Task<PagedList<SearchCapitalProjectResponse>> Handle(SearchCapitalProjectsCommand request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
-        
-        var spec = new SearchCapitalProjectsSpec(request);
 
-        var items = await repository.ListAsync(spec,cancellationToken).ConfigureAwait(false);
-        
+        var currentUserId = userService.GetUserId();
+        var spec = new SearchCapitalProjectsSpec(request, currentUserId);
+
+        var items = await repository.ListAsync(spec, cancellationToken).ConfigureAwait(false);
+
         var totalCount = await repository.CountAsync(spec, cancellationToken).ConfigureAwait(false);
 
-        var lookupValues = await lookupRepository.ListAsync();
-        
+        var lookupValues = await lookupRepository.ListAsync(cancellationToken);
+
         var fundingYearItems = await repositoryFundingYearItem.ListAsync(cancellationToken);
-        var files = await fileRepository.ListAsync();
-        
+        var files = await fileRepository.ListAsync(cancellationToken);
+
         var mappedToGetResponse = items.Select(
-            x => CapitalProjectMapper.GetResponse(x,lookupValues,fundingYearItems,files)
+            x => CapitalProjectMapper.GetResponse(x, lookupValues, fundingYearItems, files)
         );
 
         var mappedToAllListResponse = mappedToGetResponse.Adapt<List<SearchCapitalProjectResponse>>();
-        
+
         var itemsMapped = mappedToAllListResponse.Select(
             x => new SearchCapitalProjectResponse(
                 x.Id,
@@ -50,7 +53,7 @@ public sealed class SearchCapitalProjectsHandler(
                 CapitalProjectMapper.MapToLookupNames(x.GeneralInformation.DepartmentHeadRequestorId, lookupValues),
                 lookupValues.FirstOrDefault(y => y.Id == Guid.Parse(x.GeneralInformation.RequestStatusId))?.Name,
                 x.TimeJustificationApproval.JustificationPrioritization.DepartmentPriorityRanking.ToString(),
-                
+
                 x.BudgetId,
                 x.RevisionTitle,
                 x.GeneralInformation,
@@ -60,7 +63,8 @@ public sealed class SearchCapitalProjectsHandler(
                 x.Financial,
                 x.ProjectManagement,
                 x.Attachments,
-                x.ImageFileUrl
+                x.ImageFileUrl,
+                x.IsDraft
                 )
             );
 

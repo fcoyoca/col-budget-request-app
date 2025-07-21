@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-using budget_request_app.WebApi.CapitalProject.Domain;
-using budget_request_app.WebApi.CapitalProject.Infrastructure.SubModules.CapitalProjects.Get.v1;
+﻿using budget_request_app.WebApi.CapitalProject.Infrastructure.SubModules.CapitalProjects.Get.v1;
 using budget_request_app.WebApi.CapitalProject.Infrastructure.SubModules.CapitalProjects.Get.v1.DTOS;
 using MediatR;
 
@@ -19,5 +17,6 @@ public sealed record UpdateCapitalProjectCommand(
     FinancialDTO? Financial,
     ProjectManagementDTO? ProjectManagement,
     string? FileIds,
-    ProjectImageFileDTO? ImageFile
+    ProjectImageFileDTO? ImageFile,
+    bool IsDraft
 ) : IRequest<UpdateCapitalProjectResponse>;

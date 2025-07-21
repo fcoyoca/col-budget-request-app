@@ -14,13 +14,13 @@ public static class CapitalProjectMapper
         var approvalOversight = capitalProjectItem.ApprovalOversight.Adapt<ApprovalOversightDTO>();
         approvalOversight.ApprovingOversightBoardValue =
             MapToLookupNames(approvalOversight.ApprovingOversightBoardId.GetValueOrDefault(), lookupValues);
-        
+
         var statusTimeline = capitalProjectItem.StatusTimeline.Adapt<StatusTimelineDTO>();
-        statusTimeline.DepartmentPointOfContactValue = MapToLookupNames(statusTimeline.DepartmentPointOfContactId,lookupValues);
+        statusTimeline.DepartmentPointOfContactValue = MapToLookupNames(statusTimeline.DepartmentPointOfContactId, lookupValues);
 
         var grantFundingOpportunity = capitalProjectItem.GrantFundingOpportunity.Adapt<GrantFundingOpportunityDTO>();
-        grantFundingOpportunity.CongressionallyDirectedSpendingRequestOfficeValue = MapToLookupNames(grantFundingOpportunity.CongressionallyDirectedSpendingRequestOffice,lookupValues);
-        
+        grantFundingOpportunity.CongressionallyDirectedSpendingRequestOfficeValue = MapToLookupNames(grantFundingOpportunity.CongressionallyDirectedSpendingRequestOffice, lookupValues);
+
         TimeJustificationApprovalDTO timeJustificationApproval = new()
         {
             JustificationPrioritization = capitalProjectItem.JustificationPrioritization.Adapt<JustificationPrioritizationDTO>(),
@@ -33,16 +33,16 @@ public static class CapitalProjectMapper
 
         foreach (var operatingRevenue in operatingRevenues)
         {
-            operatingRevenue.FundingSourceValue = MapToLookupNames(operatingRevenue.FundingSourceId,lookupValues);
-            operatingRevenue.DepartmentValue = MapToLookupNames(operatingRevenue.DepartmentId,lookupValues);
+            operatingRevenue.FundingSourceValue = MapToLookupNames(operatingRevenue.FundingSourceId, lookupValues);
+            operatingRevenue.DepartmentValue = MapToLookupNames(operatingRevenue.DepartmentId, lookupValues);
         }
-        
+
         var operatingCosts = capitalProjectItem.OperatingCosts.Adapt<List<OperatingCostDTO>>();
 
         foreach (var operatingCost in operatingCosts)
         {
-            operatingCost.FundingSourceValue = MapToLookupNames(operatingCost.FundingSourceId,lookupValues);
-            operatingCost.DepartmentValue = MapToLookupNames(operatingCost.DepartmentId,lookupValues);
+            operatingCost.FundingSourceValue = MapToLookupNames(operatingCost.FundingSourceId, lookupValues);
+            operatingCost.DepartmentValue = MapToLookupNames(operatingCost.DepartmentId, lookupValues);
         }
 
         OperatingBudgetImpactDTO operatingBudgetImpact = new()
@@ -57,7 +57,7 @@ public static class CapitalProjectMapper
         {
             minorProject.ExpenditureCategoryValue = MapToLookupNames(minorProject.ExpenditureCategoryId, lookupValues);
         }
-        
+
         var streetSegments = capitalProjectItem.StreetSegments.Adapt<List<StreetSegmentDTO>>();
 
         foreach (var streetSegment in streetSegments)
@@ -93,42 +93,42 @@ public static class CapitalProjectMapper
             borrowingFunding.FundingSourceName = MapToLookupNames(borrowingFunding.FundingSourceId.GetValueOrDefault(), lookupValues);
         }
 
-        
+
         var operatingFundings = capitalProjectItem.OperatingFundings.Adapt<List<OperatingFundingDTO>>();
         foreach (var operatingFunding in operatingFundings)
         {
             operatingFunding.ExpenditureCategoryName = MapToLookupNames(operatingFunding.ExpenditureCategoryId.GetValueOrDefault(), lookupValues);
             operatingFunding.FundingSourceName = MapToLookupNames(operatingFunding.FundingSourceId.GetValueOrDefault(), lookupValues);
         }
-        
+
         var grantFundings = capitalProjectItem.GrantFundings.Adapt<List<GrantFundingDTO>>();
         foreach (var grantFunding in grantFundings)
         {
             grantFunding.ExpenditureCategoryName = MapToLookupNames(grantFunding.ExpenditureCategoryId.GetValueOrDefault(), lookupValues);
             grantFunding.FundingSourceName = MapToLookupNames(grantFunding.FundingSourceId.GetValueOrDefault(), lookupValues);
         }
-        
+
         var donationFundings = capitalProjectItem.DonationFundings.Adapt<List<DonationFundingDTO>>();
         foreach (var donationFunding in donationFundings)
         {
             donationFunding.ExpenditureCategoryName = MapToLookupNames(donationFunding.ExpenditureCategoryId.GetValueOrDefault(), lookupValues);
             donationFunding.FundingSourceName = MapToLookupNames(donationFunding.FundingSourceId.GetValueOrDefault(), lookupValues);
         }
-        
+
         var specialFundings = capitalProjectItem.SpecialFundings.Adapt<List<SpecialFundingDTO>>();
         foreach (var specialFunding in specialFundings)
         {
             specialFunding.ExpenditureCategoryName = MapToLookupNames(specialFunding.ExpenditureCategoryId.GetValueOrDefault(), lookupValues);
             specialFunding.FundingSourceName = MapToLookupNames(specialFunding.FundingSourceId.GetValueOrDefault(), lookupValues);
         }
-        
+
         var otherFundings = capitalProjectItem.OtherFundings.Adapt<List<OtherFundingDTO>>();
         foreach (var otherFunding in otherFundings)
         {
             otherFunding.ExpenditureCategoryName = MapToLookupNames(otherFunding.ExpenditureCategoryId.GetValueOrDefault(), lookupValues);
             otherFunding.FundingSourceName = MapToLookupNames(otherFunding.FundingSourceId.GetValueOrDefault(), lookupValues);
         }
-        
+
         financial.Funding = new()
         {
             TIFFundingIds = capitalProjectItem.TIFFundingIds,
@@ -141,7 +141,7 @@ public static class CapitalProjectMapper
                 DonationFundingIsContributeFundsRequired = capitalProjectItem.DonationFundingIsContributeFundsRequired,
                 DonationFundingIsDonatedFundsUsed = capitalProjectItem.DonationFundingIsDonatedFundsUsed,
                 DonationArrangements = capitalProjectItem.DonationArrangements,
-                AmountAdvanced  = capitalProjectItem.AmountAdvanced,
+                AmountAdvanced = capitalProjectItem.AmountAdvanced,
                 AdvancedFundsDescription = capitalProjectItem.AdvancedFundsDescription,
                 DonatedAmountCollected = capitalProjectItem.DonatedAmountCollected,
                 AmountDonated = capitalProjectItem.AmountDonated,
@@ -150,19 +150,19 @@ public static class CapitalProjectMapper
             SpecialFundings = specialFundings,
             OtherFundings = otherFundings,
         };
-        
+
         var spendingBudgets = capitalProjectItem.SpendingBudgets.Adapt<List<SpendingBudgetDTO>>();
         foreach (var spendingBudget in spendingBudgets)
         {
             spendingBudget.ExpenditureCategoryName = MapToLookupNames(spendingBudget.ExpenditureCategoryId.GetValueOrDefault(), lookupValues);
             spendingBudget.SpendingPurposeName = MapToLookupNames(spendingBudget.SpendingPurposeId.GetValueOrDefault(), lookupValues);
         }
-        
+
         financial.Spending = new()
         {
             SpendingBudgets = spendingBudgets,
         };
-        
+
         var fundingChanges = capitalProjectItem.FundingChanges.Adapt<List<FundingChangeDTO>>();
         foreach (var fundingChange in fundingChanges)
         {
@@ -174,7 +174,7 @@ public static class CapitalProjectMapper
         {
             FundingChanges = fundingChanges,
         };
-        
+
         var pastFundings = capitalProjectItem.PastFundings.Adapt<List<PastFundingDTO>>();
         foreach (var pastFunding in pastFundings)
         {
@@ -182,35 +182,35 @@ public static class CapitalProjectMapper
             pastFunding.FundingSourceName = MapToLookupNames(pastFunding.FundingSourceId.GetValueOrDefault(), lookupValues);
             pastFunding.FundingSubSourceName = MapToLookupNames(pastFunding.FundingSubSourceId.GetValueOrDefault(), lookupValues);
         }
-        
+
         var pastSpendings = capitalProjectItem.PastSpendings.Adapt<List<PastSpendingDTO>>();
         foreach (var pastSpending in pastSpendings)
         {
             pastSpending.ExpenditureCategoryName = MapToLookupNames(pastSpending.ExpenditureCategoryId.GetValueOrDefault(), lookupValues);
             pastSpending.SpendingPurposeName = MapToLookupNames(pastSpending.SpendingPurposeId.GetValueOrDefault(), lookupValues);
         }
-        
+
         financial.Past = new()
         {
             PastFundings = pastFundings,
             PastSpendings = pastSpendings,
         };
-        
+
         var attachments = new List<ProjectAttachmentDTO>();
 
         if (!string.IsNullOrEmpty(capitalProjectItem.FileIds))
         {
             var attachmentIds = capitalProjectItem.FileIds?.Trim().Split(",");
-            
+
             if (attachmentIds.Any())
             {
-                 var guids = attachmentIds.Where(x => x != string.Empty).Select(Guid.Parse);
-                 attachments = fileServiceItems.Where(x => guids.Contains(x.Id)).Adapt<List<ProjectAttachmentDTO>>();
-                
-                 foreach (var attachment in attachments)
-                 {
-                     attachment.Type = Path.GetExtension(attachment.FileName);
-                 } 
+                var guids = attachmentIds.Where(x => x != string.Empty).Select(Guid.Parse);
+                attachments = fileServiceItems.Where(x => guids.Contains(x.Id)).Adapt<List<ProjectAttachmentDTO>>();
+
+                foreach (var attachment in attachments)
+                {
+                    attachment.Type = Path.GetExtension(attachment.FileName);
+                }
             }
         }
 
@@ -241,10 +241,11 @@ public static class CapitalProjectMapper
             financial,
             projectManagement,
             attachments,
-            capitalProjectItem.ImageId
+            capitalProjectItem.ImageId,
+            capitalProjectItem.IsDraft
             );
     }
-    
+
     public static string MapToLookupNames(string delimitedIds, List<LookupValueItem> items)
     {
         if (string.IsNullOrWhiteSpace(delimitedIds))
@@ -258,7 +259,7 @@ public static class CapitalProjectMapper
             .Select(id => Guid.Parse(id.Trim()));
 
         items = items.Where(x => ids.Contains(x.Id)).ToList();
-        
+
         var names = items.Select(x => x.Name).ToList();
         return string.Join(", ", names);
     }
@@ -267,5 +268,5 @@ public static class CapitalProjectMapper
     {
         return items.FirstOrDefault(x => x.Id == id)?.Name;
     }
-    
+
 }
