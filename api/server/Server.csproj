@@ -33,6 +33,7 @@
     <ProjectReference Include="..\modules\CapitalEquipment\CapitalEquipment.Application\CapitalEquipment.Application.csproj" />
     <ProjectReference Include="..\modules\CapitalProject\CapitalProject.Infrastructure\CapitalProject.Infrastructure.csproj" />
     <ProjectReference Include="..\modules\CapitalProject\CapitalProject.Application\CapitalProject.Application.csproj" />
+    <ProjectReference Include="..\modules\ProjectRequestGroup\ProjectRequestGroup.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="appsettings.Development.json">
