@@ -3,12 +3,12 @@ using Asp.Versioning.Conventions;
 using budget_request_app.WebApi.BudgetYear;
 using budget_request_app.WebApi.CapitalEquipment.Infrastructure;
 using budget_request_app.WebApi.CapitalProject.Infrastructure;
+using budget_request_app.WebApi.EquipmentDepartment;
 using budget_request_app.WebApi.EquipmentFundingSource;
 using budget_request_app.WebApi.FileService;
 using budget_request_app.WebApi.LookupCategory;
 using budget_request_app.WebApi.LookupValue;
 using budget_request_app.WebApi.ProjectFundingSource;
-using budget_request_app.WebApi.EquipmentDepartment;
 using BudgetYearCutover.Infrastructure;
 using Carter;
 using FluentValidation;
@@ -107,7 +107,7 @@ public static class Extensions
 
         return app;
     }
-    
+
     public static IApplicationBuilder SetDefaultWebApiContent(this WebApplication app, IConfiguration configuration)
     {
         // Retrieve the WebApiBuildVersion from the configuration
@@ -122,7 +122,11 @@ public static class Extensions
             : $"Version: {DateTime.UtcNow:yyyy-MM-dd.Hmm}.{buildVersion}";
 
         // Map the root URL ("/") to return the app version information
-        app.MapGet("/", () => appVersion);
+        app.MapGroup("buildversion")
+            .WithName("build version")
+            .WithSummary("get current build version")
+            .MapGet("/", () => appVersion)
+            .WithTags("Build Version");
 
         return app;
     }
