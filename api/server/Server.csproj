@@ -26,6 +26,7 @@
     <ProjectReference Include="..\modules\EquipmentFundingSource\EquipmentFundingSource.csproj" />
     <ProjectReference Include="..\modules\FileService\FileService.csproj" />
     <ProjectReference Include="..\modules\LookupCategory\LookupCategory.csproj" />
+    <ProjectReference Include="..\modules\ProjectExpenditureCategory\ProjectExpenditureCategory.csproj" />
     <ProjectReference Include="..\modules\ProjectFundingSource\ProjectFundingSource.csproj" />
     <ProjectReference Include="..\modules\LookupValue\LookupValue.csproj" />
     <ProjectReference Include="..\modules\CapitalEquipment\CapitalEquipment.Infrastructure\CapitalEquipment.Infrastructure.csproj" />
