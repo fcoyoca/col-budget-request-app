@@ -21,6 +21,7 @@
     <ProjectReference Include="..\..\modules\ProjectExpenditureCategory\ProjectExpenditureCategory.csproj" />
     <ProjectReference Include="..\..\modules\ProjectFundingSource\ProjectFundingSource.csproj" />
     <ProjectReference Include="..\..\modules\ProjectRequestGroup\ProjectRequestGroup.csproj" />
+    <ProjectReference Include="..\..\modules\ProjectRequestSubGroup\ProjectRequestSubGroup.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="CapitalEquipment\" />

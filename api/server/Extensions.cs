@@ -14,6 +14,7 @@ using BudgetYearCutover.Infrastructure;
 using Carter;
 using FluentValidation;
 using budget_request_app.WebApi.ProjectRequestGroup;
+using budget_request_app.WebApi.ProjectRequestSubGroup;
 
 
 
@@ -39,7 +40,8 @@ public static class Extensions
             typeof(BudgetYearCutoverModule).Assembly,
             typeof(EquipmentDepartmentModule).Assembly,
             typeof(ProjectExpenditureCategoryModule).Assembly,
-            typeof(ProjectRequestGroupModule).Assembly
+            typeof(ProjectRequestGroupModule).Assembly,
+            typeof(ProjectRequestSubGroupModule).Assembly
         };
 
         //register validators
@@ -64,6 +66,7 @@ public static class Extensions
         builder.RegisterEquipmentDepartmentServices();
         builder.RegisterProjectExpenditureCategoryServices();
         builder.RegisterProjectRequestGroupServices();
+        builder.RegisterProjectRequestSubGroupServices();
 
         //add carter endpoint modules
         builder.Services.AddCarter(configurator: config =>
@@ -80,6 +83,7 @@ public static class Extensions
             config.WithModule<EquipmentDepartmentModule.Endpoints>();
             config.WithModule<ProjectExpenditureCategoryModule.Endpoints>();
             config.WithModule<ProjectRequestGroupModule.Endpoints>();
+            config.WithModule<ProjectRequestSubGroupModule.Endpoints>();
         });
 
         return builder;
@@ -102,6 +106,7 @@ public static class Extensions
         app.UseEquipmentDepartmentModule();
         app.UseProjectExpenditureCategoryModule();
         app.UseProjectRequestGroupModule();
+        app.UseProjectRequestSubGroupModule();
 
         //register api versions
         var versions = app.NewApiVersionSet()
