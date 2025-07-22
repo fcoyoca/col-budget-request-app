@@ -13,6 +13,7 @@ public record CreateProjectFundingSourceCommand(
     string ChartDisplayName,
     bool IsCityFunded,
     bool IsNewBorrowing,
+    string BudgetId,
     bool IsGrantFunding,
     bool IsOutsideFunding,
     bool IsTifIncrementFunding,

@@ -24,6 +24,7 @@ public sealed class CreateProjectFundingSourceHandler(
             request.ChartDisplayName,
             request.IsCityFunded,
             request.IsNewBorrowing,
+            request.BudgetId,
             request.IsGrantFunding,
             request.IsOutsideFunding,
             request.IsTifIncrementFunding,

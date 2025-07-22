@@ -11,6 +11,7 @@ public record GetProjectFundingSourceResponse(
     string chartDisplayName,
     bool isCityFunded,
     bool isNewBorrowing,
+    string budgetId,
     bool isGrantFunding,
     bool isOutsideFunding,
     bool isTifIncrementFunding,
