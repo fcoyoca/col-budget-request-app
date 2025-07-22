@@ -16,30 +16,47 @@ public sealed class GetProjectRequestGroupHandler(
     public async Task<GetProjectRequestGroupResponse> Handle(GetProjectRequestGroupRequest request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
-        var item = await cache.GetOrSetAsync(
-            $"ProjectRequestGroup:{request.Id}",
-            async () =>
-            {
-                var ProjectRequestGroupItem = await repository.GetByIdAsync(request.Id, cancellationToken);
-                if (ProjectRequestGroupItem == null) throw new ProjectRequestGroupItemNotFoundException(request.Id);
-                return new GetProjectRequestGroupResponse(
-                    ProjectRequestGroupItem.Id,
-                    ProjectRequestGroupItem.SubId,
-                    ProjectRequestGroupItem.BudgetId,
-                    ProjectRequestGroupItem.GroupTitle,
-                    ProjectRequestGroupItem.GroupSortOrder,
-                    ProjectRequestGroupItem.GroupAbbreviation,
-                    ProjectRequestGroupItem.GroupColor,
-                    ProjectRequestGroupItem.IncludeGroupFundingBreakdownGraph,
-                    ProjectRequestGroupItem.IncludeGroupFundingBreakdownTable,
-                    ProjectRequestGroupItem.IncludeGroupExpenditureBreakdownGraph,
-                    ProjectRequestGroupItem.IncludeGroupExpenditureBreakdownTable,
-                    ProjectRequestGroupItem.IsEquipmentGroup,
-                    ProjectRequestGroupItem.LookupValueId
-                );
-            },
-            cancellationToken: cancellationToken);
-        return item!;
+        //var item = await cache.GetOrSetAsync(
+        //    $"ProjectRequestGroup:{request.Id}",
+        //    async () =>
+        //    {
+        //        var ProjectRequestGroupItem = await repository.GetByIdAsync(request.Id, cancellationToken);
+        //        if (ProjectRequestGroupItem == null) throw new ProjectRequestGroupItemNotFoundException(request.Id);
+        //        return new GetProjectRequestGroupResponse(
+        //            ProjectRequestGroupItem.Id,
+        //            ProjectRequestGroupItem.SubId,
+        //            ProjectRequestGroupItem.BudgetId,
+        //            ProjectRequestGroupItem.GroupTitle,
+        //            ProjectRequestGroupItem.GroupSortOrder,
+        //            ProjectRequestGroupItem.GroupAbbreviation,
+        //            ProjectRequestGroupItem.GroupColor,
+        //            ProjectRequestGroupItem.IncludeGroupFundingBreakdownGraph,
+        //            ProjectRequestGroupItem.IncludeGroupFundingBreakdownTable,
+        //            ProjectRequestGroupItem.IncludeGroupExpenditureBreakdownGraph,
+        //            ProjectRequestGroupItem.IncludeGroupExpenditureBreakdownTable,
+        //            ProjectRequestGroupItem.IsEquipmentGroup,
+        //            ProjectRequestGroupItem.LookupValueId
+        //        );
+        //    },
+        //    cancellationToken: cancellationToken);
+        //return item!;
+        var ProjectRequestGroupItem = await repository.GetByIdAsync(request.Id, cancellationToken);
+        if (ProjectRequestGroupItem == null) throw new ProjectRequestGroupItemNotFoundException(request.Id);
+        return new GetProjectRequestGroupResponse(
+            ProjectRequestGroupItem.Id,
+            ProjectRequestGroupItem.SubId,
+            ProjectRequestGroupItem.BudgetId,
+            ProjectRequestGroupItem.GroupTitle,
+            ProjectRequestGroupItem.GroupSortOrder,
+            ProjectRequestGroupItem.GroupAbbreviation,
+            ProjectRequestGroupItem.GroupColor,
+            ProjectRequestGroupItem.IncludeGroupFundingBreakdownGraph,
+            ProjectRequestGroupItem.IncludeGroupFundingBreakdownTable,
+            ProjectRequestGroupItem.IncludeGroupExpenditureBreakdownGraph,
+            ProjectRequestGroupItem.IncludeGroupExpenditureBreakdownTable,
+            ProjectRequestGroupItem.IsEquipmentGroup,
+            ProjectRequestGroupItem.LookupValueId
+        );
     }
 }
 
