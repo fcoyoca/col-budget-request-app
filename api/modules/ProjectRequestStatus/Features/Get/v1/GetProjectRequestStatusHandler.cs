@@ -21,29 +21,29 @@ public sealed class GetProjectRequestStatusHandler(
         //    $"ProjectRequestStatuses:{request.Id}",
         //    async () =>
         //    {
-        //        var ProjectRequestGroupItem = await repository.GetByIdAsync(request.Id, cancellationToken);
-        //        if (ProjectRequestGroupItem == null) throw new ProjectRequestStatusItemNotFoundException(request.Id);
+        //        var ProjectRequestStatusItem = await repository.GetByIdAsync(request.Id, cancellationToken);
+        //        if (ProjectRequestStatusItem == null) throw new ProjectRequestStatusItemNotFoundException(request.Id);
         //        return new GetProjectRequestStatusResponse(
-        //            ProjectRequestGroupItem.Id,
-        //            ProjectRequestGroupItem.BudgetId,
-        //            ProjectRequestGroupItem.SubId,
-        //            ProjectRequestGroupItem.Title,
-        //            ProjectRequestGroupItem.IsUnfundedStatus,
-        //            ProjectRequestGroupItem.LookupValueId
+        //            ProjectRequestStatusItem.Id,
+        //            ProjectRequestStatusItem.BudgetId,
+        //            ProjectRequestStatusItem.SubId,
+        //            ProjectRequestStatusItem.Title,
+        //            ProjectRequestStatusItem.IsUnfundedStatus,
+        //            ProjectRequestStatusItem.LookupValueId
         //        );
         //    },
         //    cancellationToken: cancellationToken);
         //return item!;
 
-        var ProjectRequestGroupItem = await repository.GetByIdAsync(request.Id, cancellationToken);
-        if (ProjectRequestGroupItem == null) throw new ProjectRequestStatusItemNotFoundException(request.Id);
+        var ProjectRequestStatusItem = await repository.GetByIdAsync(request.Id, cancellationToken);
+        if (ProjectRequestStatusItem == null) throw new ProjectRequestStatusItemNotFoundException(request.Id);
         return new GetProjectRequestStatusResponse(
-            ProjectRequestGroupItem.Id,
-            ProjectRequestGroupItem.BudgetId,
-            ProjectRequestGroupItem.SubId,
-            ProjectRequestGroupItem.Title,
-            ProjectRequestGroupItem.IsUnfundedStatus,
-            ProjectRequestGroupItem.LookupValueId
+            ProjectRequestStatusItem.Id,
+            ProjectRequestStatusItem.BudgetId,
+            ProjectRequestStatusItem.SubId,
+            ProjectRequestStatusItem.Title,
+            ProjectRequestStatusItem.IsUnfundedStatus,
+            ProjectRequestStatusItem.LookupValueId
         );
     }
 }
