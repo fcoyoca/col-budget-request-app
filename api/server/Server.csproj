@@ -34,6 +34,7 @@
     <ProjectReference Include="..\modules\CapitalProject\CapitalProject.Infrastructure\CapitalProject.Infrastructure.csproj" />
     <ProjectReference Include="..\modules\CapitalProject\CapitalProject.Application\CapitalProject.Application.csproj" />
     <ProjectReference Include="..\modules\ProjectRequestGroup\ProjectRequestGroup.csproj" />
+    <ProjectReference Include="..\modules\ProjectRequestStatus\ProjectRequestStatus.csproj" />
     <ProjectReference Include="..\modules\ProjectRequestSubGroup\ProjectRequestSubGroup.csproj" />
   </ItemGroup>
   <ItemGroup>
