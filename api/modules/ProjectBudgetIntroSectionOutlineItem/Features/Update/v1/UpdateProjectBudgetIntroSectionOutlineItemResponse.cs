@@ -1,0 +1,2 @@
+﻿namespace budget_request_app.WebApi.ProjectBudgetIntroSectionOutlineItem.Features.Update.v1;
+public record UpdateProjectBudgetIntroSectionOutlineItemResponse(Guid? Id);

@@ -16,6 +16,7 @@ using FluentValidation;
 using budget_request_app.WebApi.ProjectRequestGroup;
 using budget_request_app.WebApi.ProjectRequestSubGroup;
 using budget_request_app.WebApi.ProjectRequestStatus;
+using budget_request_app.WebApi.ProjectBudgetIntroSectionOutlineItem;
 
 
 
@@ -43,7 +44,8 @@ public static class Extensions
             typeof(ProjectExpenditureCategoryModule).Assembly,
             typeof(ProjectRequestGroupModule).Assembly,
             typeof(ProjectRequestSubGroupModule).Assembly,
-            typeof(ProjectRequestStatusModule).Assembly
+            typeof(ProjectRequestStatusModule).Assembly,
+            typeof(ProjectBudgetIntroSectionOutlineItemModule).Assembly,
         };
 
         //register validators
@@ -70,6 +72,7 @@ public static class Extensions
         builder.RegisterProjectRequestGroupServices();
         builder.RegisterProjectRequestSubGroupServices();
         builder.RegisterProjectRequestStatusServices();
+        builder.RegisterProjectBudgetIntroSectionOutlineItemServices();
 
         //add carter endpoint modules
         builder.Services.AddCarter(configurator: config =>
@@ -88,6 +91,7 @@ public static class Extensions
             config.WithModule<ProjectRequestGroupModule.Endpoints>();
             config.WithModule<ProjectRequestSubGroupModule.Endpoints>();
             config.WithModule<ProjectRequestStatusModule.Endpoints>();
+            config.WithModule<ProjectBudgetIntroSectionOutlineItemModule.Endpoints>();
         });
 
         return builder;
@@ -112,6 +116,7 @@ public static class Extensions
         app.UseProjectRequestGroupModule();
         app.UseProjectRequestSubGroupModule();
         app.UseProjectRequestStatusModule();
+        app.UseProjectBudgetIntroSectionOutlineItemModule();
 
         //register api versions
         var versions = app.NewApiVersionSet()

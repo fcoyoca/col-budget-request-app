@@ -18,6 +18,7 @@
     <ProjectReference Include="..\..\modules\LookupCategory\LookupCategory.csproj" />
     <ProjectReference Include="..\..\modules\LookupValue\LookupValue.csproj" />
     <ProjectReference Include="..\..\modules\FileService\FileService.csproj" />
+    <ProjectReference Include="..\..\modules\ProjectBudgetIntroSectionOutlineItem\ProjectBudgetIntroSectionOutlineItem.csproj" />
     <ProjectReference Include="..\..\modules\ProjectExpenditureCategory\ProjectExpenditureCategory.csproj" />
     <ProjectReference Include="..\..\modules\ProjectFundingSource\ProjectFundingSource.csproj" />
     <ProjectReference Include="..\..\modules\ProjectRequestGroup\ProjectRequestGroup.csproj" />

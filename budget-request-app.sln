@@ -113,6 +113,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ProjectRequestStatus", "Pro
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectRequestStatus", "api\modules\ProjectRequestStatus\ProjectRequestStatus.csproj", "{9A26B286-8AC8-5138-6CE2-F4A2F927DCFC}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ProjectBudgetIntroSectionOutlineItem", "ProjectBudgetIntroSectionOutlineItem", "{63C87E40-25A4-4AD7-B4D2-820D69AB20B5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectBudgetIntroSectionOutlineItem", "api\modules\ProjectBudgetIntroSectionOutlineItem\ProjectBudgetIntroSectionOutlineItem.csproj", "{CCB4B2AC-5A72-43AE-5D24-EDF4D30CACD6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -495,6 +499,18 @@ Global
 		{9A26B286-8AC8-5138-6CE2-F4A2F927DCFC}.Release|x64.Build.0 = Release|Any CPU
 		{9A26B286-8AC8-5138-6CE2-F4A2F927DCFC}.Release|x86.ActiveCfg = Release|Any CPU
 		{9A26B286-8AC8-5138-6CE2-F4A2F927DCFC}.Release|x86.Build.0 = Release|Any CPU
+		{CCB4B2AC-5A72-43AE-5D24-EDF4D30CACD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCB4B2AC-5A72-43AE-5D24-EDF4D30CACD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCB4B2AC-5A72-43AE-5D24-EDF4D30CACD6}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{CCB4B2AC-5A72-43AE-5D24-EDF4D30CACD6}.Debug|x64.Build.0 = Debug|Any CPU
+		{CCB4B2AC-5A72-43AE-5D24-EDF4D30CACD6}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{CCB4B2AC-5A72-43AE-5D24-EDF4D30CACD6}.Debug|x86.Build.0 = Debug|Any CPU
+		{CCB4B2AC-5A72-43AE-5D24-EDF4D30CACD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCB4B2AC-5A72-43AE-5D24-EDF4D30CACD6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCB4B2AC-5A72-43AE-5D24-EDF4D30CACD6}.Release|x64.ActiveCfg = Release|Any CPU
+		{CCB4B2AC-5A72-43AE-5D24-EDF4D30CACD6}.Release|x64.Build.0 = Release|Any CPU
+		{CCB4B2AC-5A72-43AE-5D24-EDF4D30CACD6}.Release|x86.ActiveCfg = Release|Any CPU
+		{CCB4B2AC-5A72-43AE-5D24-EDF4D30CACD6}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -547,6 +563,8 @@ Global
 		{A92CCFEC-6A65-4233-6CD0-65011290A303} = {5DE480DD-DD6E-456F-8247-5D2080BA33F8}
 		{455DB200-CB16-4ABB-97AC-04451A79502C} = {F3DF5AC5-8CDC-46D4-969D-1245A6880215}
 		{9A26B286-8AC8-5138-6CE2-F4A2F927DCFC} = {455DB200-CB16-4ABB-97AC-04451A79502C}
+		{63C87E40-25A4-4AD7-B4D2-820D69AB20B5} = {F3DF5AC5-8CDC-46D4-969D-1245A6880215}
+		{CCB4B2AC-5A72-43AE-5D24-EDF4D30CACD6} = {63C87E40-25A4-4AD7-B4D2-820D69AB20B5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EA8248C2-3877-4AF7-8777-A17E7881E030}
