@@ -16,30 +16,48 @@ public sealed class GetProjectRequestSubGroupHandler(
     public async Task<GetProjectRequestSubGroupResponse> Handle(GetProjectRequestSubGroupRequest request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
-        var item = await cache.GetOrSetAsync(
-            $"ProjectRequestSubGroups:{request.Id}",
-            async () =>
-            {
-                var ProjectRequestSubGroupItem = await repository.GetByIdAsync(request.Id, cancellationToken);
-                if (ProjectRequestSubGroupItem == null) throw new ProjectRequestSubGroupItemNotFoundException(request.Id);
-                return new GetProjectRequestSubGroupResponse(
-                    ProjectRequestSubGroupItem.Id,
-                    ProjectRequestSubGroupItem.SubId,
-                    ProjectRequestSubGroupItem.BudgetId,
-                    ProjectRequestSubGroupItem.GroupId,
-                    ProjectRequestSubGroupItem.SubGroupTitle,
-                    ProjectRequestSubGroupItem.SubGroupSortOrder,
-                    ProjectRequestSubGroupItem.SubGroupAbbreviation,
-                    ProjectRequestSubGroupItem.SubGroupColor,
-                    ProjectRequestSubGroupItem.IncludeSubGroupFundingBreakdownGraph,
-                    ProjectRequestSubGroupItem.IncludeSubGroupFundingBreakdownTable,
-                    ProjectRequestSubGroupItem.IncludeSubGroupExpenditureBreakdownGraph,
-                    ProjectRequestSubGroupItem.IncludeSubGroupExpenditureBreakdownTable,
-                    ProjectRequestSubGroupItem.LookupValueId
-                );
-            },
-            cancellationToken: cancellationToken);
-        return item!;
+        //var item = await cache.GetOrSetAsync(
+        //    $"ProjectRequestSubGroups:{request.Id}",
+        //    async () =>
+        //    {
+        //        var ProjectRequestSubGroupItem = await repository.GetByIdAsync(request.Id, cancellationToken);
+        //        if (ProjectRequestSubGroupItem == null) throw new ProjectRequestSubGroupItemNotFoundException(request.Id);
+        //        return new GetProjectRequestSubGroupResponse(
+        //            ProjectRequestSubGroupItem.Id,
+        //            ProjectRequestSubGroupItem.SubId,
+        //            ProjectRequestSubGroupItem.BudgetId,
+        //            ProjectRequestSubGroupItem.GroupId,
+        //            ProjectRequestSubGroupItem.SubGroupTitle,
+        //            ProjectRequestSubGroupItem.SubGroupSortOrder,
+        //            ProjectRequestSubGroupItem.SubGroupAbbreviation,
+        //            ProjectRequestSubGroupItem.SubGroupColor,
+        //            ProjectRequestSubGroupItem.IncludeSubGroupFundingBreakdownGraph,
+        //            ProjectRequestSubGroupItem.IncludeSubGroupFundingBreakdownTable,
+        //            ProjectRequestSubGroupItem.IncludeSubGroupExpenditureBreakdownGraph,
+        //            ProjectRequestSubGroupItem.IncludeSubGroupExpenditureBreakdownTable,
+        //            ProjectRequestSubGroupItem.LookupValueId
+        //        );
+        //    },
+        //    cancellationToken: cancellationToken);
+        //return item!;
+
+        var ProjectRequestSubGroupItem = await repository.GetByIdAsync(request.Id, cancellationToken);
+        if (ProjectRequestSubGroupItem == null) throw new ProjectRequestSubGroupItemNotFoundException(request.Id);
+        return new GetProjectRequestSubGroupResponse(
+            ProjectRequestSubGroupItem.Id,
+            ProjectRequestSubGroupItem.SubId,
+            ProjectRequestSubGroupItem.BudgetId,
+            ProjectRequestSubGroupItem.GroupId,
+            ProjectRequestSubGroupItem.SubGroupTitle,
+            ProjectRequestSubGroupItem.SubGroupSortOrder,
+            ProjectRequestSubGroupItem.SubGroupAbbreviation,
+            ProjectRequestSubGroupItem.SubGroupColor,
+            ProjectRequestSubGroupItem.IncludeSubGroupFundingBreakdownGraph,
+            ProjectRequestSubGroupItem.IncludeSubGroupFundingBreakdownTable,
+            ProjectRequestSubGroupItem.IncludeSubGroupExpenditureBreakdownGraph,
+            ProjectRequestSubGroupItem.IncludeSubGroupExpenditureBreakdownTable,
+            ProjectRequestSubGroupItem.LookupValueId
+        );
     }
 }
 
