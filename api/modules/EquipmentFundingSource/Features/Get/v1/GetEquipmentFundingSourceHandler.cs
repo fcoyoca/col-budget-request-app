@@ -16,29 +16,46 @@ public sealed class GetEquipmentFundingSourceHandler(
     public async Task<GetEquipmentFundingSourceResponse> Handle(GetEquipmentFundingSourceRequest request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
-        var item = await cache.GetOrSetAsync(
-            $"EquipmentFundingSource:{request.Id}",
-            async () =>
-            {
-                var EquipmentFundingSourceItem = await repository.GetByIdAsync(request.Id, cancellationToken);
-                if (EquipmentFundingSourceItem == null) throw new EquipmentFundingSourceItemNotFoundException(request.Id);
-                return new GetEquipmentFundingSourceResponse(
-                    EquipmentFundingSourceItem.Id,
-                    EquipmentFundingSourceItem.SubId,
-                    EquipmentFundingSourceItem.SpecialCode,
-                    EquipmentFundingSourceItem.BudgetId,
-                    EquipmentFundingSourceItem.Title,
-                    EquipmentFundingSourceItem.Abbreviation,
-                    EquipmentFundingSourceItem.Code,
-                    EquipmentFundingSourceItem.SortOrder,
-                    EquipmentFundingSourceItem.IsNewBorrowing,
-                    EquipmentFundingSourceItem.FundingSource,
-                    EquipmentFundingSourceItem.FundingSubSource,
-                    EquipmentFundingSourceItem.LookupValueId
-                    );
-            },
-            cancellationToken: cancellationToken);
-        return item!;
+        //var item = await cache.GetOrSetAsync(
+        //    $"EquipmentFundingSource:{request.Id}",
+        //    async () =>
+        //    {
+        //        var EquipmentFundingSourceItem = await repository.GetByIdAsync(request.Id, cancellationToken);
+        //        if (EquipmentFundingSourceItem == null) throw new EquipmentFundingSourceItemNotFoundException(request.Id);
+        //        return new GetEquipmentFundingSourceResponse(
+        //            EquipmentFundingSourceItem.Id,
+        //            EquipmentFundingSourceItem.SubId,
+        //            EquipmentFundingSourceItem.SpecialCode,
+        //            EquipmentFundingSourceItem.BudgetId,
+        //            EquipmentFundingSourceItem.Title,
+        //            EquipmentFundingSourceItem.Abbreviation,
+        //            EquipmentFundingSourceItem.Code,
+        //            EquipmentFundingSourceItem.SortOrder,
+        //            EquipmentFundingSourceItem.IsNewBorrowing,
+        //            EquipmentFundingSourceItem.FundingSource,
+        //            EquipmentFundingSourceItem.FundingSubSource,
+        //            EquipmentFundingSourceItem.LookupValueId
+        //            );
+        //    },
+        //    cancellationToken: cancellationToken);
+        //return item!;
+
+        var EquipmentFundingSourceItem = await repository.GetByIdAsync(request.Id, cancellationToken);
+        if (EquipmentFundingSourceItem == null) throw new EquipmentFundingSourceItemNotFoundException(request.Id);
+        return new GetEquipmentFundingSourceResponse(
+            EquipmentFundingSourceItem.Id,
+            EquipmentFundingSourceItem.SubId,
+            EquipmentFundingSourceItem.SpecialCode,
+            EquipmentFundingSourceItem.BudgetId,
+            EquipmentFundingSourceItem.Title,
+            EquipmentFundingSourceItem.Abbreviation,
+            EquipmentFundingSourceItem.Code,
+            EquipmentFundingSourceItem.SortOrder,
+            EquipmentFundingSourceItem.IsNewBorrowing,
+            EquipmentFundingSourceItem.FundingSource,
+            EquipmentFundingSourceItem.FundingSubSource,
+            EquipmentFundingSourceItem.LookupValueId
+            );
     }
 }
 

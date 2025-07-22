@@ -1,0 +1,2 @@
+﻿namespace budget_request_app.WebApi.ProjectBudgetIntroSectionOutlineItem.Features.Deactivate.v1;
+public record DeactivateProjectBudgetIntroSectionOutlineItemResponse(Guid? Id);
