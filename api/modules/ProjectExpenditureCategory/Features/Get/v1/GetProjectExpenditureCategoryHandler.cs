@@ -16,25 +16,38 @@ public sealed class GetProjectExpenditureCategoryHandler(
     public async Task<GetProjectExpenditureCategoryResponse> Handle(GetProjectExpenditureCategoryRequest request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
-        var item = await cache.GetOrSetAsync(
-            $"ProjectExpenditureCategory:{request.Id}",
-            async () =>
-            {
-                var ProjectExpenditureCategoryItem = await repository.GetByIdAsync(request.Id, cancellationToken);
-                if (ProjectExpenditureCategoryItem == null) throw new ProjectExpenditureCategoryItemNotFoundException(request.Id);
-                return new GetProjectExpenditureCategoryResponse(
-                    ProjectExpenditureCategoryItem.Id,
-                    ProjectExpenditureCategoryItem.SubId,
-                    ProjectExpenditureCategoryItem.Category,
-                    ProjectExpenditureCategoryItem.SubCategory,
-                    ProjectExpenditureCategoryItem.SubSubCategory,
-                    ProjectExpenditureCategoryItem.ShortDisplayName,
-                    ProjectExpenditureCategoryItem.BudgetId,
-                    ProjectExpenditureCategoryItem.LookupValueId
-                    );
-            },
-            cancellationToken: cancellationToken);
-        return item!;
+        //var item = await cache.GetOrSetAsync(
+        //    $"ProjectExpenditureCategory:{request.Id}",
+        //    async () =>
+        //    {
+        //        var ProjectExpenditureCategoryItem = await repository.GetByIdAsync(request.Id, cancellationToken);
+        //        if (ProjectExpenditureCategoryItem == null) throw new ProjectExpenditureCategoryItemNotFoundException(request.Id);
+        //        return new GetProjectExpenditureCategoryResponse(
+        //            ProjectExpenditureCategoryItem.Id,
+        //            ProjectExpenditureCategoryItem.SubId,
+        //            ProjectExpenditureCategoryItem.Category,
+        //            ProjectExpenditureCategoryItem.SubCategory,
+        //            ProjectExpenditureCategoryItem.SubSubCategory,
+        //            ProjectExpenditureCategoryItem.ShortDisplayName,
+        //            ProjectExpenditureCategoryItem.BudgetId,
+        //            ProjectExpenditureCategoryItem.LookupValueId
+        //            );
+        //    },
+        //    cancellationToken: cancellationToken);
+        //return item!;
+
+        var ProjectExpenditureCategoryItem = await repository.GetByIdAsync(request.Id, cancellationToken);
+        if (ProjectExpenditureCategoryItem == null) throw new ProjectExpenditureCategoryItemNotFoundException(request.Id);
+        return new GetProjectExpenditureCategoryResponse(
+            ProjectExpenditureCategoryItem.Id,
+            ProjectExpenditureCategoryItem.SubId,
+            ProjectExpenditureCategoryItem.Category,
+            ProjectExpenditureCategoryItem.SubCategory,
+            ProjectExpenditureCategoryItem.SubSubCategory,
+            ProjectExpenditureCategoryItem.ShortDisplayName,
+            ProjectExpenditureCategoryItem.BudgetId,
+            ProjectExpenditureCategoryItem.LookupValueId
+            );
     }
 }
 
