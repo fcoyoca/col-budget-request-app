@@ -1,4 +1,5 @@
-﻿using budget_request_app.WebApi.CapitalProject.Domain.Events;
+﻿using System.ComponentModel.DataAnnotations;
+using budget_request_app.WebApi.CapitalProject.Domain.Events;
 using FSH.Framework.Core.Domain;
 using FSH.Framework.Core.Domain.Contracts;
 
@@ -6,9 +7,13 @@ namespace budget_request_app.WebApi.CapitalProject.Domain;
 public class CapitalProjectItem : AuditableEntity, IAggregateRoot
 {
     public int? RequestNumber { get; set; }
+    [StringLength(160)]
     public string? ProjectNumber { get; set; }
+    [StringLength(160)]
     public string? MunisProjectNumber { get; set; }
+    [StringLength(160)]
     public string? BudgetId { get; set; }
+    [StringLength(250)]
     public string? RevisionTitle { get; set; }
     public int RequestId { get; set; }
     // 1st tab
@@ -64,9 +69,7 @@ public class CapitalProjectItem : AuditableEntity, IAggregateRoot
     public string? ImageId { get; set; }
     public bool IsDraft { get; set; }
 
-    public static CapitalProjectItem Create(
-
-        )
+    public static CapitalProjectItem Create()
     {
         var CapitalProject = new CapitalProjectItem();
 
@@ -75,9 +78,7 @@ public class CapitalProjectItem : AuditableEntity, IAggregateRoot
         return CapitalProject;
     }
 
-    public static CapitalProjectItem Update(
-
-        )
+    public static CapitalProjectItem Update()
     {
         var CapitalProject = new CapitalProjectItem();
         CapitalProject.QueueDomainEvent(new CapitalProjectUpdated() { CapitalProject = CapitalProject });
