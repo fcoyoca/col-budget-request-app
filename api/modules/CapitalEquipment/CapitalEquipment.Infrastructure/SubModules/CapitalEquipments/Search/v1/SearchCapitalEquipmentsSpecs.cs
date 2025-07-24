@@ -1,15 +1,15 @@
 ﻿using Ardalis.Specification;
+using budget_request_app.WebApi.CapitalEquipment.Domain;
 using FSH.Framework.Core.Paging;
 using FSH.Framework.Core.Specifications;
-using budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Get.v1;
-using budget_request_app.WebApi.CapitalEquipment.Domain;
 
 namespace budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Search.v1;
 public class SearchCapitalEquipmentSpecs : EntitiesByPaginationFilterSpec<CapitalEquipmentItem>
 {
-    public SearchCapitalEquipmentSpecs(SearchCapitalEquipmentsCommand command)
+    public SearchCapitalEquipmentSpecs(SearchCapitalEquipmentsCommand command, Guid currentUserId)
         : base(command) =>
         Query
+            .Where(p => !p.IsDraft || (p.IsDraft && p.CreatedBy == currentUserId))
             .Include(x => x.FundingItems)
             .ThenInclude(x => x.YearEstimates)
             .Include(x => x.FundingItems)

@@ -1,0 +1,28 @@
+﻿using Asp.Versioning;
+using FSH.Framework.Infrastructure.Auth.Policy;
+using MediatR;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
+
+namespace budget_request_app.WebApi.ProjectExpenditureCategory.Features.Update.v1;
+public static class UpdateProjectExpenditureCategoryEndpoint
+{
+    internal static RouteHandlerBuilder MapProjectExpenditureCategoryItemUpdationEndpoint(this IEndpointRouteBuilder endpoints)
+    {
+        return endpoints.
+            MapPut("/{id:guid}", async (Guid id, UpdateProjectExpenditureCategoryCommand request, ISender mediator) =>
+            {
+                if (id != request.Id) return Results.BadRequest();
+                var response = await mediator.Send(request);
+                return Results.Ok(response);
+            })
+            .WithName(nameof(UpdateProjectExpenditureCategoryEndpoint))
+            .WithSummary("Updates a ProjectExpenditureCategory item")
+            .WithDescription("Updated a ProjectExpenditureCategory item")
+            .Produces<UpdateProjectExpenditureCategoryResponse>(StatusCodes.Status200OK)
+            .RequirePermission("Permissions.LookupCategories.Update")
+            .MapToApiVersion(new ApiVersion(1, 0));
+
+    }
+}

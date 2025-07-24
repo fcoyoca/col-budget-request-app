@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-using budget_request_app.WebApi.CapitalEquipment.Domain;
-using budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Get.v1;
+﻿using budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Get.v1;
 using MediatR;
 
 namespace budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Create.v1;
@@ -21,7 +19,8 @@ public sealed record CreateCapitalEquipmentCommand(
     ApprovalOversightInfo ApprovalOversightInfo,
     FundingCreateDTO Funding,
     string? FileIds,
-    ImageFileDTO? ImageFile
+    ImageFileDTO? ImageFile,
+    bool IsDraft
 ) : IRequest<CreateCapitalEquipmentResponse>;
 
 public class GeneralInfo
@@ -41,11 +40,11 @@ public class GeneralInfo
 
 public class EquipmentInfo
 {
-    public bool IsNew  { get; set; }
+    public bool IsNew { get; set; }
     public bool IsReplacement { get; set; }
     public bool? IsLeasedVehicle { get; set; }
     public int? Quantity { get; set; }
-    public decimal? UnitCost  { get; set; }
+    public decimal? UnitCost { get; set; }
     public string EquipmentSummary { get; set; }
 }
 
@@ -137,12 +136,12 @@ public class PastFundingCreateDTO
 {
     public Guid Id { get; set; }
     public string? Details { get; set; }
-    public int? Year  { get; set; }
+    public int? Year { get; set; }
     public decimal? Amount { get; set; }
     public string? Request { get; set; }
     public Guid? FundingSource { get; set; } = Guid.Empty;
     public Guid? FundingSubSource { get; set; } = Guid.Empty;
-    public string? SOF  { get; set; }
+    public string? SOF { get; set; }
 }
 
 public static class FundingTab

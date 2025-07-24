@@ -1,4 +1,3 @@
-using budget_request_app.WebApi.CapitalProject.Domain;
 using budget_request_app.WebApi.CapitalProject.Infrastructure.SubModules.CapitalProjects.Get.v1.DTOS;
 
 //using budget_request_app.WebApi.CapitalProject.Infrastructure.SubModules.CapitalProjects.Create.v1;
@@ -18,7 +17,8 @@ public sealed record GetCapitalProjectResponse(
     FinancialDTO? Financial,
     ProjectManagementDTO? ProjectManagement,
     List<ProjectAttachmentDTO>? Attachments,
-    string? ImageFileUrl
+    string? ImageFileUrl,
+    bool IsDraft
     );
 
 public class ProjectAttachmentDTO

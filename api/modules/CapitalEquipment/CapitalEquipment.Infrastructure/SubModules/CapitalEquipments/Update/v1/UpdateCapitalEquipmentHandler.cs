@@ -1,19 +1,16 @@
-using System.Runtime.InteropServices.JavaScript;
 using budget_request_app.WebApi.CapitalEquipment.Domain;
 using budget_request_app.WebApi.CapitalEquipment.Domain.Exceptions;
 using budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Create.v1;
 using budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Get.v1;
+using FSH.Framework.Core.Jobs;
 using FSH.Framework.Core.Persistence;
-using FSH.Framework.Core.Storage.File;
 using FSH.Framework.Core.Storage;
+using FSH.Framework.Core.Storage.File;
+using FSH.Framework.Core.Storage.File.Features;
 using Mapster;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using FSH.Framework.Core.Storage.File.Features;
-using FSH.Framework.Infrastructure.Jobs;
-using FSH.Framework.Core.Jobs;
-using budget_request_app.WebApi.FileService.Domain;
 
 namespace budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Update.v1;
 public sealed class UpdateCapitalEquipmentHandler(
@@ -31,7 +28,7 @@ public sealed class UpdateCapitalEquipmentHandler(
         ArgumentNullException.ThrowIfNull(request);
         var capitalEquipment = await repository.FirstOrDefaultAsync(new GetCapitalEquipmentByIdSpec(request.Id), cancellationToken);
         _ = capitalEquipment ?? throw new CapitalEquipmentNotFoundException(request.Id);
-        
+
         GeneralInfo generalInfo = new GeneralInfo();
         EquipmentInfo equipmentInfo = new EquipmentInfo();
         JustificationPrioritization justificationPrioritization = new JustificationPrioritization();
@@ -40,7 +37,7 @@ public sealed class UpdateCapitalEquipmentHandler(
         OperatingBudgetImpact operatingBudgetImpact = new OperatingBudgetImpact();
         ApprovalOversightInfo approvalOversightInfo = new ApprovalOversightInfo();
         List<FundingItem> fundingItems = new List<FundingItem>();
-        
+
         generalInfo = request.GeneralInfo;
         equipmentInfo = request.EquipmentInfo;
         justificationPrioritization = request.JustificationPrioritization;
@@ -48,18 +45,18 @@ public sealed class UpdateCapitalEquipmentHandler(
         existingAssetInfo = request.ExistingAssetInfo;
         operatingBudgetImpact = request.OperatingBudgetImpact;
         approvalOversightInfo = request.ApprovalOversightInfo;
-        
+
         var borrowingFundings = FundingItemMapper.MapFundingItems(request.Funding.BorrowingFundings, FundingTab.Borrowing);
         var oueFundings = FundingItemMapper.MapFundingItems(request.Funding.OUEFundings, FundingTab.Operating);
         var grantFundings = FundingItemMapper.MapFundingItems(request.Funding.GrantFundings, FundingTab.Grant);
         var outsideFundings = FundingItemMapper.MapFundingItems(request.Funding.OutsideFundings, FundingTab.Outside);
         var specialFundings = FundingItemMapper.MapFundingItems(request.Funding.SpecialFundings, FundingTab.Special);
         var otherFundings = FundingItemMapper.MapFundingItems(request.Funding.OtherFundings, FundingTab.Other);
-        
+
         var capitalEquipmentFundingItems = await repositoryFundingItem.ListAsync();
         var items = capitalEquipmentFundingItems.Where(x => x.CapitalEquipmentId == request.Id).ToList();
         await repositoryFundingItem.DeleteRangeAsync(items, cancellationToken);
-        
+
         fundingItems = new List<FundingItem>();
         fundingItems.AddRange(borrowingFundings);
         fundingItems.AddRange(oueFundings);
@@ -67,14 +64,14 @@ public sealed class UpdateCapitalEquipmentHandler(
         fundingItems.AddRange(outsideFundings);
         fundingItems.AddRange(specialFundings);
         fundingItems.AddRange(otherFundings);
-        
+
         foreach (FundingItem fundingItem in fundingItems)
         {
             fundingItem.CapitalEquipmentId = request.Id;
         }
-        
+
         await repositoryFundingItem.AddRangeAsync(fundingItems, cancellationToken);
-        
+
         //capitalEquipment.PastFundings.Clear();
 
         if (request.ImageFile != null)
@@ -84,19 +81,19 @@ public sealed class UpdateCapitalEquipmentHandler(
                 await CheckFileIfExist(request.Id);
 
                 FileUploadCommand fileUploadCommand = new FileUploadCommand();
-                    fileUploadCommand.Data = request.ImageFile.ImageFile.Split(',')[1];
-                    fileUploadCommand.Name = request.ImageFile.ImageFileName + '_' + Guid.NewGuid();
-                    fileUploadCommand.Extension = request.ImageFile.ImageFileExt;
+                fileUploadCommand.Data = request.ImageFile.ImageFile.Split(',')[1];
+                fileUploadCommand.Name = request.ImageFile.ImageFileName + '_' + Guid.NewGuid();
+                fileUploadCommand.Extension = request.ImageFile.ImageFileExt;
 
-                    var uploadedFile = await storageService.UploadAttachmentAsync(fileUploadCommand, FileType.Image, cancellationToken);
-                    request.ImageFile.ImageFilePath = uploadedFile.AbsoluteUri;
+                var uploadedFile = await storageService.UploadAttachmentAsync(fileUploadCommand, FileType.Image, cancellationToken);
+                request.ImageFile.ImageFilePath = uploadedFile.AbsoluteUri;
             }
             catch (Exception ex)
             {
                 var message = ex.Message;
             }
         }
- 
+
         var updatedCapitalEquipment = CapitalEquipmentItem.Update(
             capitalEquipment,
             request.ProjectNumber,
@@ -145,18 +142,19 @@ public sealed class UpdateCapitalEquipmentHandler(
             approvalOversightInfo.PurchasingBuyerReview,
             approvalOversightInfo.AdditionalNotes,
             request.FileIds,
-            request.ImageFile?.ImageFilePath ?? string.Empty
+            request.ImageFile?.ImageFilePath ?? string.Empty,
+            request.IsDraft
             );
 
         var pastFundingChildren = request.Funding.PastFundings.Adapt<List<PastFunding>>();
-        
+
         updatedCapitalEquipment.PastFundings = new List<PastFunding>();
         updatedCapitalEquipment.PastFundings = pastFundingChildren;
-        
+
         await repository.UpdateAsync(updatedCapitalEquipment, cancellationToken);
-        
+
         logger.LogInformation("CapitalEquipment with id : {CapitalEquipmentId} updated.", updatedCapitalEquipment.Id);
-        
+
         return new UpdateCapitalEquipmentResponse(capitalEquipment.Id);
     }
 

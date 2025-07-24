@@ -1,36 +1,36 @@
-using System.Net.Mail;
 using budget_request_app.WebApi.CapitalEquipment.Domain;
 using budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Create.v1;
 using budget_request_app.WebApi.FileService.Domain;
 using budget_request_app.WebApi.LookupValue.Domain;
+using FSH.Framework.Core.Identity.Users.Dtos;
 using Mapster;
 
 namespace budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Get.v1;
 
 public static class CapitalEquipmentMapper
 {
-    public static GetCapitalEquipmentResponse GetResponse(CapitalEquipmentItem capitalEquipmentItem, List<LookupValueItem> lookupValues, List<FileServiceItem> fileServiceItems)
+    public static GetCapitalEquipmentResponse GetResponse(CapitalEquipmentItem capitalEquipmentItem, List<LookupValueItem> lookupValues, List<FileServiceItem> fileServiceItems, List<UserDetail> users)
     {
         var requestingDepartmentIds = capitalEquipmentItem.RequestingDepartmentIds.Split(",")
             .Select(x => x.Trim());
         var requestingDepartments = lookupValues.Where(
             x => requestingDepartmentIds.Contains(x.Id.ToString())
         ).Select(x => x.Name).ToList();
-        
+
         var requestingDepartmentHeadIds = capitalEquipmentItem.DepartmentHeadRequestorId.Split(",")
             .Select(x => x.Trim());
         var requestingDepartmentHeads = lookupValues.Where(
             x => requestingDepartmentHeadIds.Contains(x.Id.ToString())
         ).Select(x => x.Name).ToList();
-        
-        
+
+
         var requestStatus = lookupValues.FirstOrDefault(x => x.Id.ToString() == capitalEquipmentItem.RequestStatusId);
         var requestStatusName = string.Empty;
         if (requestStatus != null)
         {
             requestStatusName = requestStatus.Name;
         }
-        
+
         var equipmentCategoryName = lookupValues.FirstOrDefault(x => x.Id.ToString() == capitalEquipmentItem.EquipmentCategoryId)?.Name;
 
         GeneralInfo generalInfo = new GeneralInfo()
@@ -92,7 +92,7 @@ public static class CapitalEquipmentMapper
         {
             AssetBeingReplaced = capitalEquipmentItem.AssetBeingReplaced,
             ConditionOfAssetBeingReplaced = capitalEquipmentItem.ConditionOfAssetBeingReplaced,
-            OdometerReadingHours = Decimal.Parse(capitalEquipmentItem.OdometerReadingHours.Length > 0 ? capitalEquipmentItem.OdometerReadingHours : "0" ),
+            OdometerReadingHours = Decimal.Parse(capitalEquipmentItem.OdometerReadingHours.Length > 0 ? capitalEquipmentItem.OdometerReadingHours : "0"),
             StandardReplacementCycle = capitalEquipmentItem.StandardReplacementCycle,
             EstimatedLifeOfEquipment = capitalEquipmentItem.EstimatedLifeOfEquipment,
         };
@@ -147,7 +147,7 @@ public static class CapitalEquipmentMapper
             OtherFundings = fundingItems.Where(x => x.FundingType == FundingTab.Other).ToList(),
             PastFundings = pastFundings
         };
-        
+
         var attachments = new List<AttachmentDTO>();
         var imageFile = new ImageFileDTO();
 
@@ -156,12 +156,15 @@ public static class CapitalEquipmentMapper
             var attachmentIds = capitalEquipmentItem.FileIds.Trim().Split(",");
             var guids = attachmentIds.Select(Guid.Parse);
             attachments = fileServiceItems.Where(x => guids.Contains(x.Id)).Adapt<List<AttachmentDTO>>();
-            
+
             foreach (var attachment in attachments)
             {
                 attachment.Type = Path.GetExtension(attachment.FileName);
             }
         }
+
+        string? createdByFullName = users.FirstOrDefault(x => x.Id == capitalEquipmentItem.CreatedBy)!.FullName ?? string.Empty;
+        string? lastModifiedByFullName = users.FirstOrDefault(x => x.Id == capitalEquipmentItem.LastModifiedBy)!.FullName ?? string.Empty;
 
         return new GetCapitalEquipmentResponse(
             capitalEquipmentItem.Id,
@@ -180,7 +183,14 @@ public static class CapitalEquipmentMapper
             approvalOversightInfo,
             funding,
             attachments,
-            capitalEquipmentItem.ImageId
+            capitalEquipmentItem.ImageId,
+            capitalEquipmentItem.IsDraft,
+            capitalEquipmentItem.Created,
+            capitalEquipmentItem.CreatedBy,
+            createdByFullName,
+            capitalEquipmentItem.LastModified,
+            capitalEquipmentItem.LastModifiedBy!.Value,
+            lastModifiedByFullName
             );
     }
 }

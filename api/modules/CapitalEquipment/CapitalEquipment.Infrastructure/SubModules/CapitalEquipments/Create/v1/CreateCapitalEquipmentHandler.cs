@@ -1,16 +1,13 @@
 ﻿using budget_request_app.WebApi.BudgetYear.Domain;
-using FSH.Framework.Core.Persistence;
 using budget_request_app.WebApi.CapitalEquipment.Domain;
 using FSH.Framework.Core.Exceptions;
-using Mapster;
+using FSH.Framework.Core.Persistence;
+using FSH.Framework.Core.Storage;
+using FSH.Framework.Core.Storage.File;
+using FSH.Framework.Core.Storage.File.Features;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using PastFunding = budget_request_app.WebApi.CapitalProject.Domain.PastFunding;
-using FSH.Framework.Core.Storage.File;
-using FSH.Framework.Core.Storage;
-using FSH.Framework.Core.Storage.File.Features;
-using Microsoft.AspNetCore.Components;
 
 namespace budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Create.v1;
 public sealed class CreateCapitalEquipmentHandler(
@@ -28,11 +25,11 @@ public sealed class CreateCapitalEquipmentHandler(
         {
             throw new NotFoundException("budget year not found");
         }
-        
+
         ArgumentNullException.ThrowIfNull(request);
-        
+
         var maxBudgetYear = budgetYears.Select(x => x.BudgetYear).Max();
-        
+
         GeneralInfo generalInfo = new GeneralInfo();
         EquipmentInfo equipmentInfo = new EquipmentInfo();
         JustificationPrioritization justificationPrioritization = new JustificationPrioritization();
@@ -41,7 +38,7 @@ public sealed class CreateCapitalEquipmentHandler(
         OperatingBudgetImpact operatingBudgetImpact = new OperatingBudgetImpact();
         ApprovalOversightInfo approvalOversightInfo = new ApprovalOversightInfo();
         List<FundingItem> fundingItems = new List<FundingItem>();
-        
+
         generalInfo = request.GeneralInfo;
         equipmentInfo = request.EquipmentInfo;
         justificationPrioritization = request.JustificationPrioritization;
@@ -64,7 +61,7 @@ public sealed class CreateCapitalEquipmentHandler(
         fundingItems.AddRange(outsideFundings);
         fundingItems.AddRange(specialFundings);
         fundingItems.AddRange(otherFundings);
-        
+
         var allEquipmentRequests = await repository.ListAsync();
 
         int requestId = 1;
@@ -81,7 +78,7 @@ public sealed class CreateCapitalEquipmentHandler(
                 requestId = currentYearRequests
                     .Select(x => x.RequestId)
                     .Max() + 1;
-                
+
                 requestNumber = currentYearRequests
                     .Select(x => x.RequestNumber ?? 0)
                     .Max() + 1;
@@ -161,9 +158,10 @@ public sealed class CreateCapitalEquipmentHandler(
             fundingItems,
             //request.Funding.PastFundings.Adapt<List<CapitalEquipment.Domain.PastFunding>>(),
             request.FileIds ?? string.Empty,
-            request.ImageFile?.ImageFilePath ?? string.Empty
+            request.ImageFile?.ImageFilePath ?? string.Empty,
+            request.IsDraft
             );
-        
+
         await repository.AddAsync(data, cancellationToken);
         logger.LogInformation("CapitalEquipment created {CapitalEquipmentId}", data.Id);
         return new CreateCapitalEquipmentResponse(data.Id);

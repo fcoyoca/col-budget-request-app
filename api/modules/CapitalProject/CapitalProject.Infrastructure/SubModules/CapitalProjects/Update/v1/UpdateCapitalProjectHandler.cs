@@ -1,15 +1,14 @@
 ﻿using System.Reflection;
-using FSH.Framework.Core.Persistence;
 using budget_request_app.WebApi.CapitalProject.Domain;
 using budget_request_app.WebApi.CapitalProject.Infrastructure.SubModules.CapitalProjects.Get.v1;
-using budget_request_app.WebApi.CapitalProject.Infrastructure.SubModules.CapitalProjects.Get.v1.DTOS;
+using FSH.Framework.Core.Persistence;
+using FSH.Framework.Core.Storage;
+using FSH.Framework.Core.Storage.File;
+using FSH.Framework.Core.Storage.File.Features;
 using Mapster;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using FSH.Framework.Core.Storage;
-using FSH.Framework.Core.Storage.File;
-using FSH.Framework.Core.Storage.File.Features;
 
 namespace budget_request_app.WebApi.CapitalProject.Infrastructure.SubModules.CapitalProjects.Update.v1;
 public sealed class UpdateCapitalProjectHandler(
@@ -43,7 +42,7 @@ public sealed class UpdateCapitalProjectHandler(
         }
 
         var donationFundingParent = request.Financial?.Funding?.DonationFunding;
-        
+
         var justificationPrioritization = request.TimeJustificationApproval?.JustificationPrioritization;
         var statusTimeline = request.TimeJustificationApproval?.StatusTimeline;
         var approvalOversight = request.TimeJustificationApproval?.ApprovalOversight;
@@ -88,7 +87,7 @@ public sealed class UpdateCapitalProjectHandler(
         capitalProject.PastSpendings = new();
         capitalProject.OperatingCosts = new();
         capitalProject.OperatingRevenues = new();
-        
+
 
         //await repository.SaveChangesAsync(cancellationToken);
 
@@ -107,12 +106,12 @@ public sealed class UpdateCapitalProjectHandler(
 
         capitalProject.OperatingCosts = operatingCosts.Adapt<List<OperatingCost>>();
         capitalProject.OperatingRevenues = operatingRevenues.Adapt<List<OperatingRevenue>>();
-        
+
         capitalProject.ProjectNumber = request.ProjectNumber;
         capitalProject.MunisProjectNumber = request.MunisProjectNumber;
         capitalProject.RevisionTitle = request.RevisionTitle;
-        
-        CopyFields(request.GeneralInformation,capitalProject.GeneralInformation);
+
+        CopyFields(request.GeneralInformation, capitalProject.GeneralInformation);
         CopyFields(justificationPrioritization, capitalProject.JustificationPrioritization);
         CopyFields(statusTimeline, capitalProject.StatusTimeline);
         CopyFields(approvalOversight, capitalProject.ApprovalOversight);
@@ -120,7 +119,7 @@ public sealed class UpdateCapitalProjectHandler(
         //CopyFields(minorProjects, capitalProject.MinorProjects);
         //CopyFields(streetSegments, capitalProject.StreetSegments);
         CopyFields(projectManagement, capitalProject.ProjectManagement);
-        
+
         capitalProject.IsMappedRequest = request.MinorProjectLocation?.RequestLocation?.IsMappedRequest;
         capitalProject.GISMappingDescription = request.MinorProjectLocation?.RequestLocation?.GISMappingDescription;
         capitalProject.TIFFundingIds = tifFundingIds;
@@ -131,16 +130,17 @@ public sealed class UpdateCapitalProjectHandler(
         capitalProject.DonatedAmountCollected = donatedAmountCollected;
         capitalProject.AmountDonated = amountDonated;
         capitalProject.DonationArrangements = donationArrangements;
-        
+
         capitalProject.FileIds = request.FileIds;
         capitalProject.ImageId = request.ImageFile?.ImageFilePath ?? string.Empty;
+        capitalProject.IsDraft = request.IsDraft;
 
         await repository.UpdateAsync(capitalProject, cancellationToken);
-        
+
         logger.LogInformation("CapitalProject updated {CapitalProjectId}", capitalProject.Id);
-        return new UpdateCapitalProjectResponse(capitalProject.Id, "Kimper success!! " + capitalProject.TIFFundingIds );
+        return new UpdateCapitalProjectResponse(capitalProject.Id, "Kimper success!! " + capitalProject.TIFFundingIds);
     }
-    
+
     public void CopyFields(dynamic source, dynamic target)
     {
         if (source == null || target == null)

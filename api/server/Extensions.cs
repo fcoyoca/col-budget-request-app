@@ -3,15 +3,22 @@ using Asp.Versioning.Conventions;
 using budget_request_app.WebApi.BudgetYear;
 using budget_request_app.WebApi.CapitalEquipment.Infrastructure;
 using budget_request_app.WebApi.CapitalProject.Infrastructure;
+using budget_request_app.WebApi.EquipmentDepartment;
 using budget_request_app.WebApi.EquipmentFundingSource;
 using budget_request_app.WebApi.FileService;
 using budget_request_app.WebApi.LookupCategory;
 using budget_request_app.WebApi.LookupValue;
 using budget_request_app.WebApi.ProjectFundingSource;
 using budget_request_app.WebApi.EquipmentDepartment;
+using budget_request_app.WebApi.ProjectExpenditureCategory;
 using BudgetYearCutover.Infrastructure;
 using Carter;
 using FluentValidation;
+using budget_request_app.WebApi.ProjectRequestGroup;
+using budget_request_app.WebApi.ProjectRequestSubGroup;
+using budget_request_app.WebApi.ProjectRequestStatus;
+using budget_request_app.WebApi.ProjectBudgetIntroSectionOutlineItem;
+
 
 
 namespace budget_request_app.WebApi.Host;
@@ -35,6 +42,11 @@ public static class Extensions
             typeof(EquipmentFundingSourceModule).Assembly,
             typeof(BudgetYearCutoverModule).Assembly,
             typeof(EquipmentDepartmentModule).Assembly,
+            typeof(ProjectExpenditureCategoryModule).Assembly,
+            typeof(ProjectRequestGroupModule).Assembly,
+            typeof(ProjectRequestSubGroupModule).Assembly,
+            typeof(ProjectRequestStatusModule).Assembly,
+            typeof(ProjectBudgetIntroSectionOutlineItemModule).Assembly,
         };
 
         //register validators
@@ -57,6 +69,11 @@ public static class Extensions
         builder.RegisterEquipmentFundingSourceServices();
         builder.RegisterBudgetYearCutoverServices();
         builder.RegisterEquipmentDepartmentServices();
+        builder.RegisterProjectExpenditureCategoryServices();
+        builder.RegisterProjectRequestGroupServices();
+        builder.RegisterProjectRequestSubGroupServices();
+        builder.RegisterProjectRequestStatusServices();
+        builder.RegisterProjectBudgetIntroSectionOutlineItemServices();
 
         //add carter endpoint modules
         builder.Services.AddCarter(configurator: config =>
@@ -71,6 +88,11 @@ public static class Extensions
             config.WithModule<EquipmentFundingSourceModule.Endpoints>();
             config.WithModule<BudgetYearCutoverModule.Endpoints>();
             config.WithModule<EquipmentDepartmentModule.Endpoints>();
+            config.WithModule<ProjectExpenditureCategoryModule.Endpoints>();
+            config.WithModule<ProjectRequestGroupModule.Endpoints>();
+            config.WithModule<ProjectRequestSubGroupModule.Endpoints>();
+            config.WithModule<ProjectRequestStatusModule.Endpoints>();
+            config.WithModule<ProjectBudgetIntroSectionOutlineItemModule.Endpoints>();
         });
 
         return builder;
@@ -91,6 +113,11 @@ public static class Extensions
         app.UseEquipmentFundingSourceModule();
         app.UseBudgetYearCutoverModule();
         app.UseEquipmentDepartmentModule();
+        app.UseProjectExpenditureCategoryModule();
+        app.UseProjectRequestGroupModule();
+        app.UseProjectRequestSubGroupModule();
+        app.UseProjectRequestStatusModule();
+        app.UseProjectBudgetIntroSectionOutlineItemModule();
 
         //register api versions
         var versions = app.NewApiVersionSet()
@@ -107,7 +134,7 @@ public static class Extensions
 
         return app;
     }
-    
+
     public static IApplicationBuilder SetDefaultWebApiContent(this WebApplication app, IConfiguration configuration)
     {
         // Retrieve the WebApiBuildVersion from the configuration
@@ -122,7 +149,11 @@ public static class Extensions
             : $"Version: {DateTime.UtcNow:yyyy-MM-dd.Hmm}.{buildVersion}";
 
         // Map the root URL ("/") to return the app version information
-        app.MapGet("/", () => appVersion);
+        app.MapGroup("buildversion")
+            .WithName("build version")
+            .WithSummary("get current build version")
+            .MapGet("/", () => appVersion)
+            .WithTags("Build Version");
 
         return app;
     }

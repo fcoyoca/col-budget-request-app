@@ -1,4 +1,3 @@
-using budget_request_app.WebApi.CapitalEquipment.Domain;
 using budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Create.v1;
 using budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Get.v1;
 using MediatR;
@@ -20,7 +19,8 @@ public sealed record UpdateCapitalEquipmentCommand(
     ApprovalOversightInfo ApprovalOversightInfo,
     FundingCreateDTO Funding,
     string FileIds,
-    ImageFileDTO? ImageFile
+    ImageFileDTO? ImageFile,
+    bool IsDraft
     ) : IRequest<UpdateCapitalEquipmentResponse>;
 
 

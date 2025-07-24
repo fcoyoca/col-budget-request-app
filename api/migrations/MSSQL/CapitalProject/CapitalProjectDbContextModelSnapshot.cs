@@ -193,6 +193,9 @@ namespace budget_request_app.WebApi.Migrations.MSSQL.CapitalProject
                     b.Property<string>("ImageId")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsDraft")
+                        .HasColumnType("bit");
+
                     b.Property<bool?>("IsMappedRequest")
                         .HasColumnType("bit");
 

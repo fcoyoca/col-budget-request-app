@@ -1,6 +1,7 @@
 using FSH.Framework.Core.Domain;
 using FSH.Framework.Core.Domain.Contracts;
 using budget_request_app.WebApi.CapitalProject.Domain.Events;
+using System.ComponentModel.DataAnnotations;
 
 namespace budget_request_app.WebApi.CapitalProject.Domain;
 
@@ -31,6 +32,7 @@ public class OperatingFunding : CapitalProjectFundingBase
 public class GrantFunding : CapitalProjectFundingBase
 {
     public Guid? FundingSourceId { get; set; } = Guid.Empty;
+    [StringLength(250)]
     public string? GrantingAgency { get; set; }
     public decimal? CashMatchPercentage { get; set; }
     public decimal? CashMatchAmount { get; set; }
@@ -67,17 +69,22 @@ public class FundingYearItem : AuditableEntity, IAggregateRoot
 public class FundingChange : AuditableEntity, IAggregateRoot
 {
     public Guid? ChangeSetId { get; set; }
+    [StringLength(160)]
     public string? ChangeTypeIds { get; set; }
+    [StringLength(500)]
     public string? Changes { get; set; }
 }
 
 public class PastFunding : AuditableEntity, IAggregateRoot
 {
     public Guid? ExpenditureCategoryId { get; set; }
+    [StringLength(500)]
     public string? SourceOfFunds { get; set; }
+    [StringLength(500)]
     public string? Details { get; set; }
     public int? Year { get; set; }
     public decimal? Amount { get; set; }
+    [StringLength(220)]
     public string? CIPItemNumber { get; set; }
     public Guid? FundingSourceId { get; set; }
     public Guid? FundingSubSourceId { get; set; }
@@ -90,5 +97,6 @@ public class PastSpending : AuditableEntity, IAggregateRoot
     public string? Details { get; set; }
     public int? Year { get; set; }
     public decimal? Amount { get; set; }
+    [StringLength(220)]
     public string? CIPItemNumber { get; set; }
 }
