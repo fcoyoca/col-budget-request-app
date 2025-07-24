@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using budget_request_app.WebApi.ProjectFundingSource.Persistence;
 
@@ -11,9 +12,11 @@ using budget_request_app.WebApi.ProjectFundingSource.Persistence;
 namespace budget_request_app.WebApi.Migrations.MSSQL.ProjectFundingSource
 {
     [DbContext(typeof(ProjectFundingSourceDbContext))]
-    partial class ProjectFundingSourceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250724015045_addSubSubId")]
+    partial class addSubSubId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

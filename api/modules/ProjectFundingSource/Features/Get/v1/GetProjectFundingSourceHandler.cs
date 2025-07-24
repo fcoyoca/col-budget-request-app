@@ -46,6 +46,7 @@ public sealed class GetProjectFundingSourceHandler(
         return new GetProjectFundingSourceResponse(
             ProjectFundingSourceItem.Id,
             ProjectFundingSourceItem.SubId,
+            ProjectFundingSourceItem.SubSubId,
             ProjectFundingSourceItem.Source,
             ProjectFundingSourceItem.SubSource,
             ProjectFundingSourceItem.SubSubSource,

@@ -7,6 +7,7 @@ namespace budget_request_app.WebApi.ProjectFundingSource.Domain;
 public class ProjectFundingSourceItem : AuditableEntity, IAggregateRoot
 {
     public string SubId { get; set; } = default!;
+    public string SubSubId { get; set; } = default!;
     public string Source { get; set; } = default!;
     public string SubSource { get; set; } = default!;
     public string SubSubSource { get; set; } = default!;
@@ -26,6 +27,7 @@ public class ProjectFundingSourceItem : AuditableEntity, IAggregateRoot
 
     public static ProjectFundingSourceItem Create(
         string subId,
+        string subSubId,
         string source,
         string subSource,
         string subSubSource,
@@ -44,6 +46,7 @@ public class ProjectFundingSourceItem : AuditableEntity, IAggregateRoot
         var item = new ProjectFundingSourceItem
         {
             SubId = subId,
+            SubSubId = subSubId,
             Source = source,
             SubSource = subSource,
             SubSubSource = subSubSource,

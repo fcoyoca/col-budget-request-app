@@ -4,6 +4,7 @@ namespace budget_request_app.WebApi.ProjectFundingSource.Features.Update.v1;
 public sealed record UpdateProjectFundingSourceCommand(
     Guid Id,
     string SubId,
+    string SubSubId,
     string Source,
     string SubSource,
     string SubSubSource,
@@ -13,10 +14,11 @@ public sealed record UpdateProjectFundingSourceCommand(
     string ChartDisplayName,
     bool IsCityFunded,
     bool IsNewBorrowing,
+    string BudgetId,
     bool IsGrantFunding,
     bool IsOutsideFunding,
     bool IsTifIncrementFunding,
-    Guid? LookupCategoryId = null): IRequest<UpdateProjectFundingSourceResponse>;
+    Guid? LookupValueId) : IRequest<UpdateProjectFundingSourceResponse>;
 
 
 

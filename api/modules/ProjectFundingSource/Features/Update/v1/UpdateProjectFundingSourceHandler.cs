@@ -21,6 +21,7 @@ public sealed class UpdateProjectFundingSourceHandler(
 
         // Update properties
         projectFundingSource.SubId = request.SubId;
+        projectFundingSource.SubSubId = request.SubSubId;
         projectFundingSource.Source = request.Source;
         projectFundingSource.SubSource = request.SubSource;
         projectFundingSource.SubSubSource = request.SubSubSource;
@@ -30,6 +31,7 @@ public sealed class UpdateProjectFundingSourceHandler(
         projectFundingSource.ChartDisplayName = request.ChartDisplayName;
         projectFundingSource.IsCityFunded = request.IsCityFunded;
         projectFundingSource.IsNewBorrowing = request.IsNewBorrowing;
+        projectFundingSource.BudgetId = request.BudgetId;
         projectFundingSource.IsGrantFunding = request.IsGrantFunding;
         projectFundingSource.IsOutsideFunding = request.IsOutsideFunding;
         projectFundingSource.IsTifIncrementFunding = request.IsTifIncrementFunding;

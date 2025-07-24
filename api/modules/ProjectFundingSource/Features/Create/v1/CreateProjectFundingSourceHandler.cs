@@ -15,6 +15,7 @@ public sealed class CreateProjectFundingSourceHandler(
         ArgumentNullException.ThrowIfNull(request);
         var item = ProjectFundingSourceItem.Create(
             request.SubId,
+            request.SubSubId,
             request.Source,
             request.SubSource,
             request.SubSubSource,
