@@ -1,3 +1,4 @@
+using budget_request_app.Shared.Authorization;
 using budget_request_app.WebApi.CapitalEquipment.Domain;
 using budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Get.v1;
 using budget_request_app.WebApi.FileService.Domain;
@@ -21,6 +22,8 @@ public sealed class SearchCapitalEquipmentsHandler(
     {
         ArgumentNullException.ThrowIfNull(request);
         var currentUserId = currentUserService.GetUserId();
+        var hasAdminRole = currentUserService.IsInRole(FshRoles.Admin);
+        var claims = currentUserService.GetUserIdentity();
         var spec = new SearchCapitalEquipmentSpecs(request, currentUserId);
         var users = await userService.GetListAsync(cancellationToken);
         var items = await repository.ListAsync(spec, cancellationToken).ConfigureAwait(false);
