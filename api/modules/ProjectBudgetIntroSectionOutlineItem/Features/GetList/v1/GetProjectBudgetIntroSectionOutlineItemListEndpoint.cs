@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Routing;
 
 namespace budget_request_app.WebApi.ProjectBudgetIntroSectionOutlineItem.Features.GetList.v1;
 
-public static class ProjectBudgetIntroSectionOutlineItemListEndpoint
+public static class GetProjectBudgetIntroSectionOutlineItemListEndpoint
 {
     internal static RouteHandlerBuilder MapGetProjectBudgetIntroSectionOutlineItemListEndpoint(this IEndpointRouteBuilder endpoints)
     {
@@ -17,7 +17,7 @@ public static class ProjectBudgetIntroSectionOutlineItemListEndpoint
             var response = await mediator.Send(new GetProjectBudgetIntroSectionOutlineItemListRequest(filter));
             return Results.Ok(response);
         })
-        .WithName(nameof(ProjectBudgetIntroSectionOutlineItemListEndpoint))
+        .WithName(nameof(GetProjectBudgetIntroSectionOutlineItemListEndpoint))
         .WithSummary("Gets a list of ProjectBudgetIntroSectionOutlineItem items with paging support")
         .WithDescription("Gets a list of ProjectBudgetIntroSectionOutlineItem items with paging support")
         .Produces<PagedList<ProjectBudgetIntroSectionOutlineItemDto>>()

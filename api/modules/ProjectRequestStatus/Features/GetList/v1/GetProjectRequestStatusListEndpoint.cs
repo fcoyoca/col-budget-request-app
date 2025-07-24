@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Routing;
 
 namespace budget_request_app.WebApi.ProjectRequestStatus.Features.GetList.v1;
 
-public static class ProjectRequestStatusListEndpoint
+public static class GetProjectRequestStatusListEndpoint
 {
     internal static RouteHandlerBuilder MapGetProjectRequestStatusListEndpoint(this IEndpointRouteBuilder endpoints)
     {
@@ -17,7 +17,7 @@ public static class ProjectRequestStatusListEndpoint
             var response = await mediator.Send(new GetProjectRequestStatusListRequest(filter));
             return Results.Ok(response);
         })
-        .WithName(nameof(ProjectRequestStatusListEndpoint))
+        .WithName(nameof(GetProjectRequestStatusListEndpoint))
         .WithSummary("Gets a list of ProjectRequestStatus items with paging support")
         .WithDescription("Gets a list of ProjectRequestStatus items with paging support")
         .Produces<PagedList<ProjectRequestStatusDto>>()
