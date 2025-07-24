@@ -1,63 +1,105 @@
-﻿using budget_request_app.WebApi.CapitalEquipment.Domain.Events;
+﻿using System.ComponentModel.DataAnnotations;
+using budget_request_app.WebApi.CapitalEquipment.Domain.Events;
 using FSH.Framework.Core.Domain;
 using FSH.Framework.Core.Domain.Contracts;
 
 namespace budget_request_app.WebApi.CapitalEquipment.Domain;
 public class CapitalEquipmentItem : AuditableEntity, IAggregateRoot
 {
+    [Required]
     public int? RequestNumber { get; set; }
+    [StringLength(200)]
     public string? ProjectNumber { get; set; }
-    public string BudgetId { get; set; }
-    public string RevisionTitle { get; set; }
+    [StringLength(200)]
+    public string? BudgetId { get; set; }
+    [StringLength(200)]
+    public string? RevisionTitle { get; set; }
+
+    [Required]
     public int RequestId { get; set; }
-    public string Title { get; set; }
-    public string RequestStatusId { get; set; }
-    public string RemarksPrintout { get; set; }
-    public string RequestingDepartmentIds { get; set; }
-    public string DepartmentHeadRequestorId { get; set; }
-    public string EquipmentName { get; set; }
-    public string EquipmentCategoryId { get; set; }
+
+    [Required]
+    [StringLength(200)]
+    public string? Title { get; set; }
+    [StringLength(160)]
+    public string? RequestStatusId { get; set; }
+    [StringLength(500)]
+    public string? RemarksPrintout { get; set; }
+
+    [StringLength(160)]
+    public string? RequestingDepartmentIds { get; set; }
+    [StringLength(160)]
+    public string? DepartmentHeadRequestorId { get; set; }
+    [StringLength(200)]
+    public string? EquipmentName { get; set; }
+    [StringLength(160)]
+    public string? EquipmentCategoryId { get; set; }
     public bool IsNew { get; set; }
     public bool IsReplacement { get; set; }
     public bool? IsLeasedVehicle { get; set; }
     public int? Quantity { get; set; }
     public Decimal? UnitCost { get; set; }
-    public string EquipmentSummary { get; set; }
+    [StringLength(500)]
+    public string? EquipmentSummary { get; set; }
     public int? DepartmentPriorityRanking { get; set; } = 0;
-    public string ExpectedOutcomes { get; set; } = string.Empty;
-    public string PurposeOfExpenditure { get; set; } = string.Empty;
-    public string JustificationForReplacement { get; set; } = string.Empty;
-    public string RequiredMandatedPriority { get; set; }
-    public string SafetyPriority { get; set; }
-    public string PaybackPeriodPriority { get; set; }
-    public string SustainabilityPriority { get; set; }
-    public string CostToOperatePriority { get; set; }
-    public string RevenueGenerationPriority { get; set; }
-
-    public string RequiredMandatedExplanation { get; set; }
-    public string SafetyExplanation { get; set; }
-    public string PaybackPeriodExplanation { get; set; }
-    public string SustainabilityExplanation { get; set; }
-    public string CostToOperateExplanation { get; set; }
-    public string RevenueGenerationExplanation { get; set; }
-    public string AssetBeingReplaced { get; set; }
-    public string ConditionOfAssetBeingReplaced { get; set; }
-    public string OdometerReadingHours { get; set; }
-    public string StandardReplacementCycle { get; set; }
+    [StringLength(500)]
+    public string? ExpectedOutcomes { get; set; } = string.Empty;
+    [StringLength(500)]
+    public string? PurposeOfExpenditure { get; set; } = string.Empty;
+    [StringLength(500)]
+    public string? JustificationForReplacement { get; set; } = string.Empty;
+    [StringLength(160)]
+    public string? RequiredMandatedPriority { get; set; }
+    [StringLength(160)]
+    public string? SafetyPriority { get; set; }
+    [StringLength(160)]
+    public string? PaybackPeriodPriority { get; set; }
+    [StringLength(160)]
+    public string? SustainabilityPriority { get; set; }
+    [StringLength(160)]
+    public string? CostToOperatePriority { get; set; }
+    [StringLength(160)]
+    public string? RevenueGenerationPriority { get; set; }
+    [StringLength(500)]
+    public string? RequiredMandatedExplanation { get; set; }
+    [StringLength(500)]
+    public string? SafetyExplanation { get; set; }
+    [StringLength(500)]
+    public string? PaybackPeriodExplanation { get; set; }
+    [StringLength(500)]
+    public string? SustainabilityExplanation { get; set; }
+    [StringLength(500)]
+    public string? CostToOperateExplanation { get; set; }
+    [StringLength(500)]
+    public string? RevenueGenerationExplanation { get; set; }
+    [StringLength(200)]
+    public string? AssetBeingReplaced { get; set; }
+    [StringLength(200)]
+    public string? ConditionOfAssetBeingReplaced { get; set; }
+    [StringLength(200)]
+    public string? OdometerReadingHours { get; set; }
+    [StringLength(200)]
+    public string? StandardReplacementCycle { get; set; }
     public int? EstimatedLifeOfEquipment { get; set; }
-    public string DepartmentResponsibleForOperatingCosts { get; set; }
+    [StringLength(200)]
+    public string? DepartmentResponsibleForOperatingCosts { get; set; }
     public decimal? AnnualOperatingCosts { get; set; }
     public decimal? AnnualRevenueFromEquipment { get; set; }
     public bool? HasPurchaseBeenApprovedByOversight { get; set; }
-    public string LegistarApprovalItemNumber { get; set; }
-    public string ApprovingOversightBoard { get; set; }
+    [StringLength(200)]
+    public string? LegistarApprovalItemNumber { get; set; }
+    [StringLength(200)]
+    public string? ApprovingOversightBoard { get; set; }
     public DateTime? DateOfOversightApproval { get; set; }
     public bool? PurchasingBuyerReview { get; set; }
-    public string AdditionalNotes { get; set; }
-    public List<FundingItem> FundingItems { get; set; }
-    public List<PastFunding> PastFundings { get; set; }
-    public string FileIds { get; set; }
-    public string ImageId { get; set; }
+    [StringLength(500)]
+    public string? AdditionalNotes { get; set; }
+    public List<FundingItem>? FundingItems { get; set; }
+    public List<PastFunding>? PastFundings { get; set; }
+    [StringLength(500)]
+    public string? FileIds { get; set; }
+    [StringLength(200)]
+    public string? ImageId { get; set; }
     public bool IsDraft { get; set; }
 
     public static CapitalEquipmentItem Create(

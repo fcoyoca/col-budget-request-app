@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 using budget_request_app.WebApi.CapitalEquipment.Domain.Events;
 using FSH.Framework.Core.Domain;
@@ -7,7 +8,7 @@ using FSH.Framework.Core.Domain.Contracts;
 namespace budget_request_app.WebApi.CapitalEquipment.Domain;
 public class FundingItem : AuditableEntity, IAggregateRoot
 {
-    public string FundingType  { get; set; }
+    public string? FundingType  { get; set; }
     public Guid? FundingSource { get; set; } = Guid.Empty;
     public string? GrantingAgency { get; set; }
     public FundingYearItem? CurrentYearRequested { get; set; }
