@@ -1,5 +1,6 @@
-﻿using FSH.Framework.Infrastructure.Auth.Policy;
+﻿using budget_request_app.Shared.Authorization;
 using budget_request_app.WebApi.CapitalProject.Infrastructure.SubModules.CapitalProjects.Update.v1;
+using FSH.Framework.Infrastructure.Auth.Policy;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -10,6 +11,7 @@ public static class UpdateCapitalProjectEndpoint
 {
     internal static RouteHandlerBuilder MapCapitalProjectUpdateEndpoint(this IEndpointRouteBuilder endpoints)
     {
+        string requirePermission = FshPermission.NameFor(FshActions.Update, FshResources.CapitalProjects);
         return endpoints
             .MapPut("/{id:guid}", async (Guid id, UpdateCapitalProjectCommand request, ISender mediator) =>
             {
@@ -21,7 +23,7 @@ public static class UpdateCapitalProjectEndpoint
             .WithSummary("updates a CapitalProject")
             .WithDescription("updates a CapitalProject")
             .Produces<UpdateCapitalProjectResponse>()
-            .RequirePermission("Permissions.CapitalProjects.Update")
+            .RequirePermission(requirePermission)
             .MapToApiVersion(1);
     }
 }

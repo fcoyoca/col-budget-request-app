@@ -1,4 +1,5 @@
 ﻿using Asp.Versioning;
+using budget_request_app.Shared.Authorization;
 using FSH.Framework.Infrastructure.Auth.Policy;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -12,6 +13,8 @@ public static class CreateFileServiceEndpoint
 {
     internal static RouteHandlerBuilder MapFileServiceItemCreationEndpoint(this IEndpointRouteBuilder endpoints)
     {
+        string requirePermission = FshPermission.NameFor(FshActions.Create, FshResources.FileServices);
+
         return endpoints.MapPost("/", async (HttpRequest request, ISender mediator,HttpContext context) =>
             {
                 var payload = new CreateFileServiceItemCommand(request);

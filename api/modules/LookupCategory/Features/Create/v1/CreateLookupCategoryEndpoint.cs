@@ -1,4 +1,5 @@
 ﻿using Asp.Versioning;
+using budget_request_app.Shared.Authorization;
 using FSH.Framework.Infrastructure.Auth.Policy;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -10,6 +11,7 @@ public static class CreateLookupCategoryEndpoint
 {
     internal static RouteHandlerBuilder MapLookupCategoryItemCreationEndpoint(this IEndpointRouteBuilder endpoints)
     {
+        string requirePermisison = FshPermission.NameFor(FshActions.Create, FshResources.LookupCategories);
         return endpoints.MapPost("/", async (CreateLookupCategoryCommand request, ISender mediator) =>
                 {
                     var response = await mediator.Send(request);
@@ -19,7 +21,7 @@ public static class CreateLookupCategoryEndpoint
                 .WithSummary("Creates a LookupCategory item")
                 .WithDescription("Creates a LookupCategory item")
                 .Produces<CreateLookupCategoryResponse>(StatusCodes.Status201Created)
-                //.RequirePermission("Permissions.LookupCategories.Create")
+                .RequirePermission(requirePermisison)
                 .AllowAnonymous()
                 .MapToApiVersion(new ApiVersion(1, 0));
 

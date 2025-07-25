@@ -1,3 +1,4 @@
+using budget_request_app.Shared.Authorization;
 using budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Update.v1;
 using budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.UpdateStatus.v1;
 using FSH.Framework.Infrastructure.Auth.Policy;
@@ -11,6 +12,7 @@ public static class UpdateStatusCapitalEquipmentEndpoint
 {
     internal static RouteHandlerBuilder MapCapitalEquipmentUpdateStatusEndpoint(this IEndpointRouteBuilder endpoints)
     {
+        string requirePermission = FshPermission.NameFor(FshActions.Update, FshResources.CapitalEquipments);
         return endpoints
             .MapPut("/statuses", async (UpdateStatusCapitalEquipmentCommand request, ISender mediator) =>
             {
@@ -21,7 +23,7 @@ public static class UpdateStatusCapitalEquipmentEndpoint
             .WithSummary("update an equipment status")
             .WithDescription("update an equipment status")
             .Produces<UpdateCapitalEquipmentResponse>()
-            .RequirePermission("Permissions.CapitalEquipments.Update")
+            .RequirePermission(requirePermission)
             .MapToApiVersion(1);
     }
 }

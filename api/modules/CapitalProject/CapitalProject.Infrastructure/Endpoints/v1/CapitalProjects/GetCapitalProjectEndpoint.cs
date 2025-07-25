@@ -1,5 +1,6 @@
-using FSH.Framework.Infrastructure.Auth.Policy;
+using budget_request_app.Shared.Authorization;
 using budget_request_app.WebApi.CapitalProject.Infrastructure.SubModules.CapitalProjects.Get.v1;
+using FSH.Framework.Infrastructure.Auth.Policy;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -10,6 +11,7 @@ public static class GetCapitalProjectEndpoint
 {
     internal static RouteHandlerBuilder MapGetCapitalProjectEndpoint(this IEndpointRouteBuilder endpoints)
     {
+        string requirePermission = FshPermission.NameFor(FshActions.View, FshResources.CapitalProjects);
         return endpoints
             .MapGet("/{id:guid}", async (Guid id, ISender mediator) =>
             {
@@ -21,7 +23,7 @@ public static class GetCapitalProjectEndpoint
             .WithDescription("gets CapitalProject by id")
             .Produces<GetCapitalProjectResponse>()
             .AllowAnonymous()
-            //.RequirePermission("Permissions.CapitalProjects.View")
+            .RequirePermission(requirePermission)
             .MapToApiVersion(1);
     }
 }

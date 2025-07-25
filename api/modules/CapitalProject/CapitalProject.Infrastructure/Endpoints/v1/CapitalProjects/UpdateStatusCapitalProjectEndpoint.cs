@@ -1,3 +1,4 @@
+using budget_request_app.Shared.Authorization;
 using budget_request_app.WebApi.CapitalProject.Infrastructure.SubModules.CapitalProjects.Update.v1;
 using budget_request_app.WebApi.CapitalProject.Infrastructure.SubModules.CapitalProjects.UpdateStatus.v1;
 using FSH.Framework.Infrastructure.Auth.Policy;
@@ -11,6 +12,7 @@ public static class UpdateStatusCapitalProjectEndpoint
 {
     internal static RouteHandlerBuilder MapCapitalProjectUpdateStatusEndpoint(this IEndpointRouteBuilder endpoints)
     {
+        string requirePermission = FshPermission.NameFor(FshActions.Update, FshResources.CapitalProjects);
         return endpoints
             .MapPut("/statuses", async (UpdateStatusCapitalProjectCommand request, ISender mediator) =>
             {
@@ -21,7 +23,7 @@ public static class UpdateStatusCapitalProjectEndpoint
             .WithSummary("update an project status")
             .WithDescription("update an project status")
             .Produces<UpdateCapitalProjectResponse>()
-            .RequirePermission("Permissions.CapitalProjects.Update")
+            .RequirePermission(requirePermission)
             .MapToApiVersion(1);
     }
 }

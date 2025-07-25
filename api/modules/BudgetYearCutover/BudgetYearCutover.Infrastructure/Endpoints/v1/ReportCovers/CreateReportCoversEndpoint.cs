@@ -1,4 +1,6 @@
+using budget_request_app.Shared.Authorization;
 using BudgetYearCutover.Infrastructure.SubModules.ReportCovers.Create.v1;
+using FSH.Framework.Infrastructure.Auth.Policy;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -10,6 +12,8 @@ public static class CreateReportCoversEndpoint
 {
     public static RouteHandlerBuilder MapReportCoversEndpoint(this IEndpointRouteBuilder endpoints)
     {
+        string requirePermission = FshPermission.NameFor(FshActions.Create, FshResources.Cutover);
+
         return endpoints
             .MapPost("/", async (CreateCutoverReportCommand request, ISender mediator) =>
             {
@@ -19,6 +23,7 @@ public static class CreateReportCoversEndpoint
             .WithName(nameof(CreateReportCoversEndpoint))
             .WithSummary("upload report covers")
             .WithDescription("upload report covers")
+            .RequirePermission(requirePermission)
             .Produces<CreateCutoverReportResponse>()
             .MapToApiVersion(1);
     }

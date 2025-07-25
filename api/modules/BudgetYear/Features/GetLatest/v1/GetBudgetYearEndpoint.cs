@@ -1,4 +1,5 @@
-﻿using budget_request_app.WebApi.LookupValue.Features.Get.v1;
+﻿using budget_request_app.Shared.Authorization;
+using budget_request_app.WebApi.LookupValue.Features.Get.v1;
 using FSH.Framework.Infrastructure.Auth.Policy;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -10,6 +11,11 @@ public static class GetBudgetYearEndpoint
 {
     internal static RouteHandlerBuilder MapGetBudgetYearEndpoint(this IEndpointRouteBuilder endpoints)
     {
+        string requirePermission = FshPermission.NameFor(FshActions.View, FshResources.BudgetYears);
+        string[] additionalPermissions = [
+            FshPermission.NameFor(FshActions.View, FshResources.CapitalEquipments),
+            FshPermission.NameFor(FshActions.View, FshResources.CapitalProjects)
+        ];
         return endpoints.MapGet("/latest", async (ISender mediator) =>
                         {
                             var response = await mediator.Send(new GetBudgetYearRequest());
@@ -19,7 +25,7 @@ public static class GetBudgetYearEndpoint
                         .WithSummary("gets latest BudgetYear")
                         .WithDescription("gets latest BudgetYear")
                         .Produces<GetBudgetYearResponse>()
-                        //.RequirePermission("Permissions.BudgetYears.View")
+                        .RequirePermission(requirePermission, additionalPermissions)
                         .AllowAnonymous()
                         .MapToApiVersion(1);
     }

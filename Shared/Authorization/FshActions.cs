@@ -10,4 +10,13 @@ public static class FshActions
     public const string Generate = nameof(Generate);
     public const string Clean = nameof(Clean);
     public const string UpgradeSubscription = nameof(UpgradeSubscription);
+
+    // Add these custom workflow actions:
+    public const string Submit = nameof(Submit);
+    public const string Approve = nameof(Approve);
+    public const string Reject = nameof(Reject);
+    public const string Withdraw = nameof(Withdraw);
+    public const string Archive = nameof(Archive);
+    public const string RequireReview = nameof(RequireReview);
+    public const string Unfund = nameof(Unfund); // For "Unfunded Request"
 }

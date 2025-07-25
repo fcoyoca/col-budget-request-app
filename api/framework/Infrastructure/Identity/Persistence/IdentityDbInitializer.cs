@@ -1,16 +1,15 @@
-﻿using Finbuckle.MultiTenant.Abstractions;
+﻿using budget_request_app.Shared.Authorization;
+using Finbuckle.MultiTenant.Abstractions;
 using FSH.Framework.Core.Origin;
 using FSH.Framework.Core.Persistence;
 using FSH.Framework.Infrastructure.Identity.RoleClaims;
 using FSH.Framework.Infrastructure.Identity.Roles;
 using FSH.Framework.Infrastructure.Identity.Users;
 using FSH.Framework.Infrastructure.Tenant;
-using budget_request_app.Shared.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using IdentityConstants = budget_request_app.Shared.Authorization.IdentityConstants;
 
 namespace FSH.Framework.Infrastructure.Identity.Persistence;
 internal sealed class IdentityDbInitializer(
@@ -39,60 +38,85 @@ internal sealed class IdentityDbInitializer(
 
     private async Task SeedRolesAsync()
     {
-        foreach (string roleName in FshRoles.DefaultRoles)
+        try
         {
-            if (await roleManager.Roles.SingleOrDefaultAsync(r => r.Name == roleName)
-                is not FshRole role)
+            foreach (string roleName in FshRoles.DefaultRoles)
             {
-                // create role
-                role = new FshRole(roleName, $"{roleName} Role for {multiTenantContextAccessor.MultiTenantContext.TenantInfo?.Id} Tenant");
-                await roleManager.CreateAsync(role);
-            }
-
-            // Assign permissions
-            if (roleName == FshRoles.Basic)
-            {
-                await AssignPermissionsToRoleAsync(context, FshPermissions.Basic, role);
-            }
-            else if (roleName == FshRoles.Admin)
-            {
-                await AssignPermissionsToRoleAsync(context, FshPermissions.Admin, role);
-
-                if (multiTenantContextAccessor.MultiTenantContext.TenantInfo?.Id == TenantConstants.Root.Id)
+                if (await roleManager.Roles.SingleOrDefaultAsync(r => r.Name == roleName)
+                    is not FshRole role)
                 {
-                    await AssignPermissionsToRoleAsync(context, FshPermissions.Root, role);
+                    // create role
+                    role = new FshRole(roleName, $"{roleName} Role for {multiTenantContextAccessor.MultiTenantContext.TenantInfo?.Id} Tenant");
+                    await roleManager.CreateAsync(role);
+                }
+
+                // Assign permissions
+                if (roleName == FshRoles.Basic)
+                {
+                    await AssignPermissionsToRoleAsync(context, FshPermissions.Basic, role);
+                }
+                else if (roleName == FshRoles.FinanceApprover)
+                {
+                    await AssignPermissionsToRoleAsync(context, FshPermissions.FinanceApprover, role);
+                }
+                else if (roleName == FshRoles.FinanceAdmin)
+                {
+                    await AssignPermissionsToRoleAsync(context, FshPermissions.FinanceAdmin, role);
+                }
+                else if (roleName == FshRoles.DepartmentUser)
+                {
+                    await AssignPermissionsToRoleAsync(context, FshPermissions.DepartmentUser, role);
+                }
+                else if (roleName == FshRoles.Admin)
+                {
+                    await AssignPermissionsToRoleAsync(context, FshPermissions.Admin, role);
+
+                    if (multiTenantContextAccessor.MultiTenantContext.TenantInfo?.Id == TenantConstants.Root.Id)
+                    {
+                        await AssignPermissionsToRoleAsync(context, FshPermissions.Root, role);
+                    }
                 }
             }
+        }
+        catch (Exception e)
+        {
+            throw;
         }
     }
 
     private async Task AssignPermissionsToRoleAsync(IdentityDbContext dbContext, IReadOnlyList<FshPermission> permissions, FshRole role)
     {
-        var currentClaims = await roleManager.GetClaimsAsync(role);
-        var newClaims = permissions
-            .Where(permission => !currentClaims.Any(c => c.Type == FshClaims.Permission && c.Value == permission.Name))
-            .Select(permission => new FshRoleClaim
+        try
+        {
+            var currentClaims = await roleManager.GetClaimsAsync(role);
+            var newClaims = permissions
+                .Where(permission => !currentClaims.Any(c => c.Type == FshClaims.Permission && c.Value == permission.Name))
+                .Select(permission => new FshRoleClaim
+                {
+                    RoleId = role.Id,
+                    ClaimType = FshClaims.Permission,
+                    ClaimValue = permission.Name,
+                    CreatedBy = "application",
+                    CreatedOn = timeProvider.GetUtcNow()
+                })
+                .ToList();
+
+            foreach (var claim in newClaims)
             {
-                RoleId = role.Id,
-                ClaimType = FshClaims.Permission,
-                ClaimValue = permission.Name,
-                CreatedBy = "application",
-                CreatedOn = timeProvider.GetUtcNow()
-            })
-            .ToList();
+                logger.LogInformation("Seeding {Role} Permission '{Permission}' for '{TenantId}' Tenant.", role.Name, claim.ClaimValue, multiTenantContextAccessor.MultiTenantContext.TenantInfo?.Id);
+                await dbContext.RoleClaims.AddAsync(claim);
+            }
 
-        foreach (var claim in newClaims)
-        {
-            logger.LogInformation("Seeding {Role} Permission '{Permission}' for '{TenantId}' Tenant.", role.Name, claim.ClaimValue, multiTenantContextAccessor.MultiTenantContext.TenantInfo?.Id);
-            await dbContext.RoleClaims.AddAsync(claim);
+            // Save changes to the database context
+            if (newClaims.Count != 0)
+            {
+                await dbContext.SaveChangesAsync();
+            }
         }
-
-        // Save changes to the database context
-        if (newClaims.Count != 0)
+        catch (Exception e)
         {
-            await dbContext.SaveChangesAsync();
+            throw;
         }
-
     }
 
     private async Task SeedAdminUserAsync()

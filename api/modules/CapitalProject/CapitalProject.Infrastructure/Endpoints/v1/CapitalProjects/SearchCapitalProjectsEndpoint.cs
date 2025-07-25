@@ -1,7 +1,8 @@
-using FSH.Framework.Core.Paging;
-using FSH.Framework.Infrastructure.Auth.Policy;
+using budget_request_app.Shared.Authorization;
 using budget_request_app.WebApi.CapitalProject.Infrastructure.SubModules.CapitalProjects.Get.v1;
 using budget_request_app.WebApi.CapitalProject.Infrastructure.SubModules.CapitalProjects.Search.v1;
+using FSH.Framework.Core.Paging;
+using FSH.Framework.Infrastructure.Auth.Policy;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -13,6 +14,7 @@ public static class SearchCapitalProjectsEndpoint
 {
     internal static RouteHandlerBuilder MapGetCapitalProjectListEndpoint(this IEndpointRouteBuilder endpoints)
     {
+        string requirePermission = FshPermission.NameFor(FshActions.View, FshResources.CapitalProjects);
         return endpoints
             .MapPost("/search", async (ISender mediator, [FromBody] SearchCapitalProjectsCommand command) =>
             {
@@ -24,7 +26,7 @@ public static class SearchCapitalProjectsEndpoint
             .WithDescription("Gets a list of CapitalProjects with pagination and filtering support")
             .Produces<PagedList<SearchCapitalProjectResponse>>()
             .AllowAnonymous()
-            //.RequirePermission("Permissions.CapitalProjects.View")
+            .RequirePermission(requirePermission)
             .MapToApiVersion(1);
     }
 }

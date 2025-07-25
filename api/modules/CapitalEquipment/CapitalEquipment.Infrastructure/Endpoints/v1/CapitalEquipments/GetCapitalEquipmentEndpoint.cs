@@ -1,5 +1,6 @@
-using FSH.Framework.Infrastructure.Auth.Policy;
+using budget_request_app.Shared.Authorization;
 using budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Get.v1;
+using FSH.Framework.Infrastructure.Auth.Policy;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -10,6 +11,7 @@ public static class GetCapitalEquipmentEndpoint
 {
     internal static RouteHandlerBuilder MapGetCapitalEquipmentEndpoint(this IEndpointRouteBuilder endpoints)
     {
+        string requirePermission = FshPermission.NameFor(FshActions.View, FshResources.CapitalEquipments);
         return endpoints
             .MapGet("/{id:guid}", async (Guid id, ISender mediator) =>
             {
@@ -21,7 +23,7 @@ public static class GetCapitalEquipmentEndpoint
             .WithDescription("gets CapitalEquipment by id")
             .Produces<GetCapitalEquipmentResponse>()
             .AllowAnonymous()
-            //.RequirePermission("Permissions.CapitalEquipments.View")
+            .RequirePermission(requirePermission)
             .MapToApiVersion(1);
     }
 }

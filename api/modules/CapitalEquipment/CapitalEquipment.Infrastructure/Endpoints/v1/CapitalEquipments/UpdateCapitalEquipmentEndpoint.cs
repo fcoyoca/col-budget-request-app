@@ -1,3 +1,4 @@
+using budget_request_app.Shared.Authorization;
 using budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Update.v1;
 using FSH.Framework.Infrastructure.Auth.Policy;
 using MediatR;
@@ -10,6 +11,7 @@ public static class UpdateCapitalEquipmentEndpoint
 {
     internal static RouteHandlerBuilder MapCapitalEquipmentUpdateEndpoint(this IEndpointRouteBuilder endpoints)
     {
+        string requirePermission = FshPermission.NameFor(FshActions.Update, FshResources.CapitalEquipments);
         return endpoints
             .MapPut("/{id:guid}", async (Guid id, UpdateCapitalEquipmentCommand request, ISender mediator) =>
             {
@@ -21,7 +23,7 @@ public static class UpdateCapitalEquipmentEndpoint
             .WithSummary("update a product")
             .WithDescription("update a product")
             .Produces<UpdateCapitalEquipmentResponse>()
-            .RequirePermission("Permissions.CapitalEquipments.Update")
+            .RequirePermission(requirePermission)
             .MapToApiVersion(1);
     }
 }

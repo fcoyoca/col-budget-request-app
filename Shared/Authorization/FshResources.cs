@@ -12,11 +12,15 @@ public static class FshResources
     public const string Brands = nameof(Brands);
     public const string Todos = nameof(Todos);
     public const string AuditTrails = nameof(AuditTrails);
+
     public const string LookupCategories = nameof(LookupCategories);
-    
     public const string CapitalEquipments = nameof(CapitalEquipments);
     public const string FundingItems = nameof(FundingItems);
     public const string CapitalProjects = nameof(CapitalProjects);
     public const string FileServices = nameof(FileServices);
     public const string BudgetYears = nameof(BudgetYears);
+    public const string Cutover = nameof(Cutover);
+
+    public const string FinancialReports = nameof(FinancialReports);
+    public const string Workflow = nameof(Workflow); // for cross-cutting approvals
 }

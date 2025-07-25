@@ -1,7 +1,8 @@
-using FSH.Framework.Core.Paging;
-using FSH.Framework.Infrastructure.Auth.Policy;
+using budget_request_app.Shared.Authorization;
 using budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Get.v1;
 using budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Search.v1;
+using FSH.Framework.Core.Paging;
+using FSH.Framework.Infrastructure.Auth.Policy;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -13,6 +14,7 @@ public static class SearchCapitalEquipmentsEndpoint
 {
     internal static RouteHandlerBuilder MapGetCapitalEquipmentListEndpoint(this IEndpointRouteBuilder endpoints)
     {
+        string requirePermission = FshPermission.NameFor(FshActions.View, FshResources.CapitalEquipments);
         return endpoints
             .MapPost("/search", async (ISender mediator, [FromBody] SearchCapitalEquipmentsCommand command) =>
             {
@@ -24,7 +26,7 @@ public static class SearchCapitalEquipmentsEndpoint
             .WithDescription("Gets a list of CapitalEquipments with pagination and filtering support")
             .Produces<PagedList<GetCapitalEquipmentResponse>>()
             .AllowAnonymous()
-            //.RequirePermission("Permissions.CapitalEquipments.View")
+            .RequirePermission(requirePermission)
             .MapToApiVersion(1);
     }
 }

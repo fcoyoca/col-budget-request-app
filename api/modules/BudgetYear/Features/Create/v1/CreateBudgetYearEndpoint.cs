@@ -1,4 +1,5 @@
 ﻿using Asp.Versioning;
+using budget_request_app.Shared.Authorization;
 using FSH.Framework.Infrastructure.Auth.Policy;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -10,6 +11,12 @@ public static class CreateBudgetYearEndpoint
 {
     internal static RouteHandlerBuilder MapBudgetYearItemCreationEndpoint(this IEndpointRouteBuilder endpoints)
     {
+        string requirePermission = FshPermission.NameFor(FshActions.Create, FshResources.Cutover);
+        //string[] additionalPermissions = [
+        //    FshPermission.NameFor(FshActions.Create, FshResources.CapitalEquipments),
+        //    FshPermission.NameFor(FshActions.Create, FshResources.CapitalProjects)
+        //];
+
         return endpoints.MapPost("/", async (CreateBudgetYearCommand request, ISender mediator) =>
                 {
                     var response = await mediator.Send(request);
@@ -19,7 +26,7 @@ public static class CreateBudgetYearEndpoint
                 .WithSummary("Creates a BudgetYear item")
                 .WithDescription("Creates a BudgetYear item")
                 .Produces<CreateBudgetYearResponse>(StatusCodes.Status201Created)
-                //.RequirePermission("Permissions.BudgetYears.Create")
+                .RequirePermission(requirePermission)
                 .AllowAnonymous()
                 .MapToApiVersion(new ApiVersion(1, 0));
 

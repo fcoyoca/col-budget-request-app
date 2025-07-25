@@ -1,5 +1,6 @@
-﻿using FSH.Framework.Infrastructure.Auth.Policy;
+﻿using budget_request_app.Shared.Authorization;
 using budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Create.v1;
+using FSH.Framework.Infrastructure.Auth.Policy;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -10,6 +11,8 @@ public static class CreateCapitalEquipmentEndpoint
 {
     internal static RouteHandlerBuilder MapCapitalEquipmentCreationEndpoint(this IEndpointRouteBuilder endpoints)
     {
+        string requirePermission = FshPermission.NameFor(FshActions.Create, FshResources.CapitalEquipments);
+
         return endpoints
             .MapPost("/", async (CreateCapitalEquipmentCommand request, ISender mediator) =>
             {
@@ -20,7 +23,7 @@ public static class CreateCapitalEquipmentEndpoint
             .WithSummary("creates a CapitalEquipment")
             .WithDescription("creates a CapitalEquipment")
             .Produces<CreateCapitalEquipmentResponse>()
-            .RequirePermission("Permissions.CapitalEquipments.Create")
+            .RequirePermission(requirePermission)
             .MapToApiVersion(1);
     }
 }

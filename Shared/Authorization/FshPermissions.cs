@@ -27,34 +27,13 @@ public static class FshPermissions
         new("Delete Roles", FshActions.Delete, FshResources.Roles),
         new("View RoleClaims", FshActions.View, FshResources.RoleClaims),
         new("Update RoleClaims", FshActions.Update, FshResources.RoleClaims),
-        
-        //products
-        new("View Products", FshActions.View, FshResources.Products, IsBasic: true),
-        new("Search Products", FshActions.Search, FshResources.Products, IsBasic: true),
-        new("Create Products", FshActions.Create, FshResources.Products),
-        new("Update Products", FshActions.Update, FshResources.Products),
-        new("Delete Products", FshActions.Delete, FshResources.Products),
-        new("Export Products", FshActions.Export, FshResources.Products),
 
-        //brands
-        new("View Brands", FshActions.View, FshResources.Brands, IsBasic: true),
-        new("Search Brands", FshActions.Search, FshResources.Brands, IsBasic: true),
-        new("Create Brands", FshActions.Create, FshResources.Brands),
-        new("Update Brands", FshActions.Update, FshResources.Brands),
-        new("Delete Brands", FshActions.Delete, FshResources.Brands),
-        new("Export Brands", FshActions.Export, FshResources.Brands),
-
-        //todos
-        new("View Todos", FshActions.View, FshResources.Todos, IsBasic: true),
-        new("Search Todos", FshActions.Search, FshResources.Todos, IsBasic: true),
-        new("Create Todos", FshActions.Create, FshResources.Todos),
-        new("Update Todos", FshActions.Update, FshResources.Todos),
-        new("Delete Todos", FshActions.Delete, FshResources.Todos),
-        new("Export Todos", FshActions.Export, FshResources.Todos),
+        new("View Hangfire", FshActions.View, FshResources.Hangfire),
+        new("View Dashboard", FshActions.View, FshResources.Dashboard),
         
         //lookup
-        new("View LookupCategories", FshActions.View, FshResources.LookupCategories, IsBasic: true),
-        new("Search LookupCategories", FshActions.Search, FshResources.LookupCategories, IsBasic: true),
+        new("View LookupCategories", FshActions.View, FshResources.LookupCategories),
+        new("Search LookupCategories", FshActions.Search, FshResources.LookupCategories),
         new("Create LookupCategories", FshActions.Create, FshResources.LookupCategories),
         new("Update LookupCategories", FshActions.Update, FshResources.LookupCategories),
         new("Delete LookupCategories", FshActions.Delete, FshResources.LookupCategories),
@@ -67,6 +46,15 @@ public static class FshPermissions
         new("Update CapitalEquipments", FshActions.Update, FshResources.CapitalEquipments),
         new("Delete CapitalEquipments", FshActions.Delete, FshResources.CapitalEquipments),
         new("Export CapitalEquipments", FshActions.Export, FshResources.CapitalEquipments),
+
+        // Workflow for Capital Equipments
+        new("Submit CapitalEquipments", FshActions.Submit, FshResources.CapitalEquipments),
+        new("Approve CapitalEquipments", FshActions.Approve, FshResources.CapitalEquipments),
+        new("Reject CapitalEquipments", FshActions.Reject, FshResources.CapitalEquipments),
+        new("Withdraw CapitalEquipments", FshActions.Withdraw, FshResources.CapitalEquipments),
+        new("Archive CapitalEquipments", FshActions.Archive, FshResources.CapitalEquipments),
+        new("Require Department Review (Equipments)", FshActions.RequireReview, FshResources.CapitalEquipments),
+        new("Mark CapitalEquipment as Unfunded", FshActions.Unfund, FshResources.CapitalEquipments),
         
         //capital project
         new("View CapitalProjects", FshActions.View, FshResources.CapitalProjects, IsBasic: true),
@@ -75,13 +63,24 @@ public static class FshPermissions
         new("Update CapitalProjects", FshActions.Update, FshResources.CapitalProjects),
         new("Delete CapitalProjects", FshActions.Delete, FshResources.CapitalProjects),
         new("Export CapitalProjects", FshActions.Export, FshResources.CapitalProjects),
-        
+
+        // Workflow for Capital Projects
+        new("Submit CapitalProjects", FshActions.Submit, FshResources.CapitalProjects),
+        new("Approve CapitalProjects", FshActions.Approve, FshResources.CapitalProjects),
+        new("Reject CapitalProjects", FshActions.Reject, FshResources.CapitalProjects),
+        new("Withdraw CapitalProjects", FshActions.Withdraw, FshResources.CapitalProjects),
+        new("Archive CapitalProjects", FshActions.Archive, FshResources.CapitalProjects),
+        new("Require Department Review (Projects)", FshActions.RequireReview, FshResources.CapitalProjects),
+        new("Mark CapitalProject as Unfunded", FshActions.Unfund, FshResources.CapitalProjects),
+
+
         new("Create FileServiceItem", FshActions.Create, FshResources.FileServices),
         new("Budget Year Create Cutover", FshActions.Create, FshResources.BudgetYears),
         new("Budget Year View Cutover", FshActions.View, FshResources.BudgetYears),
 
-         new("View Hangfire", FshActions.View, FshResources.Hangfire),
-         new("View Dashboard", FshActions.View, FshResources.Dashboard),
+        new("View Finance Reports", FshActions.View, FshResources.FinancialReports),
+
+        new("Create cutover process", FshActions.Create, FshResources.Cutover),
 
         //audit
         new("View Audit Trails", FshActions.View, FshResources.AuditTrails),
@@ -91,6 +90,104 @@ public static class FshPermissions
     public static IReadOnlyList<FshPermission> Root { get; } = new ReadOnlyCollection<FshPermission>(AllPermissions.Where(p => p.IsRoot).ToArray());
     public static IReadOnlyList<FshPermission> Admin { get; } = new ReadOnlyCollection<FshPermission>(AllPermissions.Where(p => !p.IsRoot).ToArray());
     public static IReadOnlyList<FshPermission> Basic { get; } = new ReadOnlyCollection<FshPermission>(AllPermissions.Where(p => p.IsBasic).ToArray());
+
+    private static FshPermission Get(string action, string resource) =>
+    All.First(p => p.Action == action && p.Resource == resource);
+
+    public static IReadOnlyList<FshPermission> DepartmentUser => new ReadOnlyCollection<FshPermission>([
+        // Capital Equipment Permissions
+        Get(FshActions.View, FshResources.CapitalEquipments),
+        Get(FshActions.Search, FshResources.CapitalEquipments),
+        Get(FshActions.Create, FshResources.CapitalEquipments),
+        Get(FshActions.Update, FshResources.CapitalEquipments),
+        Get(FshActions.Withdraw, FshResources.CapitalEquipments),
+        Get(FshActions.Submit, FshResources.CapitalEquipments),
+
+        // Capital Project Permissions (same request, but different view)
+        Get(FshActions.View, FshResources.CapitalProjects),
+        Get(FshActions.Search, FshResources.CapitalProjects),
+        Get(FshActions.Create, FshResources.CapitalProjects),
+        Get(FshActions.Update, FshResources.CapitalProjects),
+        Get(FshActions.Withdraw, FshResources.CapitalProjects),
+        Get(FshActions.Submit, FshResources.CapitalProjects),
+    ]);
+
+
+    public static IReadOnlyList<FshPermission> FinanceApprover => new ReadOnlyCollection<FshPermission>([
+        // Capital Equipments
+        Get(FshActions.View, FshResources.CapitalEquipments),
+        Get(FshActions.Create, FshResources.CapitalEquipments),
+        Get(FshActions.Update, FshResources.CapitalEquipments),
+        Get(FshActions.Search, FshResources.CapitalEquipments),
+        Get(FshActions.Approve, FshResources.CapitalEquipments),
+        Get(FshActions.Reject, FshResources.CapitalEquipments),
+        Get(FshActions.Archive, FshResources.CapitalEquipments),
+        Get(FshActions.Unfund, FshResources.CapitalEquipments),
+        Get(FshActions.RequireReview, FshResources.CapitalEquipments),
+
+        // Capital Project Permissions (same data, different view)
+        Get(FshActions.View, FshResources.CapitalProjects),
+        Get(FshActions.Create, FshResources.CapitalProjects),
+        Get(FshActions.Update, FshResources.CapitalProjects),
+        Get(FshActions.Search, FshResources.CapitalProjects),
+        Get(FshActions.Approve, FshResources.CapitalProjects),
+        Get(FshActions.Reject, FshResources.CapitalProjects),
+        Get(FshActions.Archive, FshResources.CapitalProjects),
+        Get(FshActions.Unfund, FshResources.CapitalProjects),
+        Get(FshActions.RequireReview, FshResources.CapitalProjects)
+    ]);
+
+
+    public static IReadOnlyList<FshPermission> FinanceAdmin => new ReadOnlyCollection<FshPermission>([
+        // Core capital project permissions
+        Get(FshActions.View, FshResources.CapitalProjects),
+        Get(FshActions.Create, FshResources.CapitalProjects),
+        Get(FshActions.Search, FshResources.CapitalProjects),
+        Get(FshActions.Update, FshResources.CapitalProjects),
+        Get(FshActions.Delete, FshResources.CapitalProjects),
+        Get(FshActions.Export, FshResources.CapitalProjects),
+        // Workflow permissions
+        Get(FshActions.Approve, FshResources.CapitalProjects),
+        Get(FshActions.Reject, FshResources.CapitalProjects),
+        Get(FshActions.Archive, FshResources.CapitalProjects),
+        Get(FshActions.RequireReview, FshResources.CapitalProjects),
+        Get(FshActions.Unfund, FshResources.CapitalProjects),
+
+        // Capital equipment permissions
+        Get(FshActions.View, FshResources.CapitalEquipments),
+        Get(FshActions.Search, FshResources.CapitalEquipments),
+        Get(FshActions.Create, FshResources.CapitalEquipments),
+        Get(FshActions.Update, FshResources.CapitalEquipments),
+        Get(FshActions.Delete, FshResources.CapitalEquipments),
+        Get(FshActions.Export, FshResources.CapitalEquipments),
+        // Workflow permissions
+        Get(FshActions.Approve, FshResources.CapitalEquipments),
+        Get(FshActions.Reject, FshResources.CapitalEquipments),
+        Get(FshActions.Archive, FshResources.CapitalEquipments),
+        Get(FshActions.RequireReview, FshResources.CapitalEquipments),
+        Get(FshActions.Unfund, FshResources.CapitalEquipments),
+
+        // Reporting
+        Get(FshActions.View, FshResources.FinancialReports),
+
+        // Budget year permissions
+        Get(FshActions.View, FshResources.BudgetYears),
+        Get(FshActions.Create, FshResources.BudgetYears),
+
+        // Optional: View audit or dashboard
+        Get(FshActions.View, FshResources.AuditTrails),
+        Get(FshActions.View, FshResources.Dashboard),
+
+        // Annual Cutover
+        Get(FshActions.Create, FshResources.Cutover),
+
+        // Lookup categories
+        Get(FshActions.View, FshResources.LookupCategories),
+        Get(FshActions.Search, FshResources.LookupCategories),
+        Get(FshActions.Delete, FshResources.LookupCategories),
+        Get(FshActions.Create, FshResources.LookupCategories),
+        Get(FshActions.Update, FshResources.LookupCategories),
+    ]);
 }
 
 public record FshPermission(string Description, string Action, string Resource, bool IsBasic = false, bool IsRoot = false)
@@ -101,5 +198,3 @@ public record FshPermission(string Description, string Action, string Resource, 
         return $"Permissions.{resource}.{action}";
     }
 }
-
-

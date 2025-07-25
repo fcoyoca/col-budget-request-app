@@ -14,6 +14,6 @@
     <ProjectReference Include="..\..\FileService\FileService.csproj" />
     <ProjectReference Include="..\..\LookupValue\LookupValue.csproj" />
     <ProjectReference Include="..\CapitalProject.Application\CapitalProject.Application.csproj" />
-    <ProjectReference Include="..\..\BudgetYear\BudgetYear.csproj"/>
+    <ProjectReference Include="..\..\BudgetYear\BudgetYear.csproj" />
   </ItemGroup>
 </Project>

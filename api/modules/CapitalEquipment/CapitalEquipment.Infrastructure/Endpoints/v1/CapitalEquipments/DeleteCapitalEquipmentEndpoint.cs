@@ -1,4 +1,5 @@
-﻿using budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Delete.v1;
+﻿using budget_request_app.Shared.Authorization;
+using budget_request_app.WebApi.CapitalEquipment.Infrastructure.SubModules.CapitalEquipments.Delete.v1;
 using FSH.Framework.Infrastructure.Auth.Policy;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -10,6 +11,7 @@ public static class DeleteCapitalEquipmentEndpoint
 {
     internal static RouteHandlerBuilder MapCapitalEquipmentDeleteEndpoint(this IEndpointRouteBuilder endpoints)
     {
+        string requirePermission = FshPermission.NameFor(FshActions.Delete, FshResources.CapitalEquipments);
         return endpoints
             .MapDelete("/{id:guid}", async (Guid id, ISender mediator) =>
              {
@@ -20,7 +22,7 @@ public static class DeleteCapitalEquipmentEndpoint
             .WithSummary("deletes capitalEquipment by id")
             .WithDescription("deletes capitalEquipment by id")
             .Produces(StatusCodes.Status204NoContent)
-            .RequirePermission("Permissions.CapitalEquipments.Delete")
+            .RequirePermission(requirePermission)
             .MapToApiVersion(1);
     }
 }
