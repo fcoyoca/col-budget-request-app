@@ -133,12 +133,24 @@ internal sealed partial class UserService(
                 user = await CreateOrUpdateFromPrincipalAsync(principal);
             }
 
-            if (principal.FindFirstValue(ClaimTypes.Role) is string role &&
-                await roleManager.RoleExistsAsync(role) &&
-                !await userManager.IsInRoleAsync(user, role))
+            var roles = principal.FindAll(ClaimTypes.Role)
+                .Select(r => r.Value)
+                .ToList();
+
+            foreach (var role in roles)
             {
-                await userManager.AddToRoleAsync(user, role);
+                if (await roleManager.RoleExistsAsync(role) && !await userManager.IsInRoleAsync(user, role))
+                {
+                    await userManager.AddToRoleAsync(user, role);
+                }
             }
+
+            //if (principal.FindFirstValue(ClaimTypes.Role) is string role &&
+            //    await roleManager.RoleExistsAsync(role) &&
+            //    !await userManager.IsInRoleAsync(user, role))
+            //{
+            //    await userManager.AddToRoleAsync(user, role);
+            //}
 
             return user.Id;
         }

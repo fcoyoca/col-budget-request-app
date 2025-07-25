@@ -107,7 +107,7 @@ internal class AzureAdJwtBearerEvents : JwtBearerEvents
         var upnClaim = principal.FindFirst(ClaimTypes.Upn);
         if (upnClaim is not null)
         {
-            var emailClaim = principal.FindFirst(ClaimTypes.Email);
+            var emailClaim = principal.FindFirst(ClaimTypes.Upn);
             identity.TryRemoveClaim(emailClaim);
             identity.AddClaim(new Claim(ClaimTypes.Email, upnClaim.Value));
         }
