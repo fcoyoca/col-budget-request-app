@@ -35,6 +35,15 @@ public class RoleService(RoleManager<FshRole> roleManager,
 
         return new RoleDto { Id = role.Id, Name = role.Name!, Description = role.Description };
     }
+    
+    public async Task<RoleDto?> GetRoleByName(string name)
+    {
+        FshRole? role = await _roleManager.FindByNameAsync(name);
+
+        _ = role ?? throw new NotFoundException("role not found");
+
+        return new RoleDto { Id = role.Id, Name = role.Name!, Description = role.Description };
+    }
 
     public async Task<RoleDto> CreateOrUpdateRoleAsync(CreateOrUpdateRoleCommand command)
     {
@@ -71,6 +80,19 @@ public class RoleService(RoleManager<FshRole> roleManager,
 
         role.Permissions = await context.RoleClaims
             .Where(c => c.RoleId == id && c.ClaimType == FshClaims.Permission)
+            .Select(c => c.ClaimValue!)
+            .ToListAsync(cancellationToken);
+
+        return role;
+    }
+    
+    public async Task<RoleDto> GetWithPermissionsAsyncByRoleName(string name, CancellationToken cancellationToken)
+    {
+        var role = await GetRoleByName(name);
+        _ = role ?? throw new NotFoundException("role not found");
+
+        role.Permissions = await context.RoleClaims
+            .Where(c => c.RoleId == role.Id && c.ClaimType == FshClaims.Permission)
             .Select(c => c.ClaimValue!)
             .ToListAsync(cancellationToken);
 

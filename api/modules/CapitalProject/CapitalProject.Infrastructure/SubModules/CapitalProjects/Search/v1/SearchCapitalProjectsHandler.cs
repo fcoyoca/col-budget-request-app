@@ -1,3 +1,4 @@
+using budget_request_app.Shared.Authorization;
 using budget_request_app.WebApi.CapitalProject.Domain;
 using budget_request_app.WebApi.CapitalProject.Infrastructure.SubModules.CapitalProjects.Get.v1;
 using budget_request_app.WebApi.FileService.Domain;
@@ -25,7 +26,8 @@ public sealed class SearchCapitalProjectsHandler(
         ArgumentNullException.ThrowIfNull(request);
 
         var currentUserId = userService.GetUserId();
-        var spec = new SearchCapitalProjectsSpec(request, currentUserId);
+        var canViewAll = (userService.IsInRole(FshRoles.Admin) || userService.IsInRole(FshRoles.FinanceAdmin));
+        var spec = new SearchCapitalProjectsSpec(request, currentUserId, canViewAll);
 
         var items = await repository.ListAsync(spec, cancellationToken).ConfigureAwait(false);
 

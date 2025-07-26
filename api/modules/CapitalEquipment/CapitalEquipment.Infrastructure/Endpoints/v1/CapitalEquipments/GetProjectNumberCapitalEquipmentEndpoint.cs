@@ -22,7 +22,6 @@ public static class GetProjectNumberCapitalEquipmentEndpoint
             .WithSummary("get projectNumber")
             .WithDescription("get projectNumber")
             .Produces<GetProjectNumberCapitalEquipmentResponse>()
-            .AllowAnonymous()
             .RequirePermission(requirePermission)
             .MapToApiVersion(1);
     }

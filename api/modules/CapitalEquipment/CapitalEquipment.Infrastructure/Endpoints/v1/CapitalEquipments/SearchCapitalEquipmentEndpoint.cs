@@ -25,7 +25,6 @@ public static class SearchCapitalEquipmentsEndpoint
             .WithSummary("Gets a list of CapitalEquipments")
             .WithDescription("Gets a list of CapitalEquipments with pagination and filtering support")
             .Produces<PagedList<GetCapitalEquipmentResponse>>()
-            .AllowAnonymous()
             .RequirePermission(requirePermission)
             .MapToApiVersion(1);
     }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using FSH.Framework.Infrastructure.Auth.Policy;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Identity.Web;
@@ -12,9 +13,12 @@ internal static class Extensions
     internal static IServiceCollection ConfigureAzureAdAuth(this IServiceCollection services, IConfiguration config)
     {
         var logger = Log.ForContext(typeof(AzureAdJwtBearerEvents));
-
+        services.AddAuthorizationBuilder().AddRequiredPermissionPolicy();
         services
-            .AddAuthorization()
+            .AddAuthorization(options =>
+            {
+                options.FallbackPolicy = options.DefaultPolicy;
+            })
             .AddAuthentication(authentication =>
             {
                 authentication.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -30,9 +34,6 @@ internal static class Extensions
                 };
                 options.Events = new AzureAdJwtBearerEvents(logger, config);
             }, msIdentityOptions => config.GetSection("SecuritySettings:AzureAd").Bind(msIdentityOptions));
-        
-         
-
         return services;
     }
 }

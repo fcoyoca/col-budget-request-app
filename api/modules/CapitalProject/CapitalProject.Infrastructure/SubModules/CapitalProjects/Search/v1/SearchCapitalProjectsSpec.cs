@@ -7,12 +7,14 @@ namespace budget_request_app.WebApi.CapitalProject.Infrastructure.SubModules.Cap
 
 public class SearchCapitalProjectsSpec : EntitiesByPaginationFilterSpec<CapitalProjectItem>
 {
-    public SearchCapitalProjectsSpec(SearchCapitalProjectsCommand command, Guid currentUserId)
+    public SearchCapitalProjectsSpec(SearchCapitalProjectsCommand command, Guid currentUserId, bool canViewAll)
         : base(command) =>
         Query
-            .Where(p => !p.IsDraft || (p.IsDraft && p.CreatedBy == currentUserId))
+            .Where(p =>
+                canViewAll ||
+                !p.IsDraft ||
+                (p.IsDraft && p.CreatedBy == currentUserId))
             .Include(x => x.GeneralInformation)
-
             .Include(x => x.JustificationPrioritization)
             .Include(x => x.StatusTimeline)
             .Include(x => x.GrantFundingOpportunity)

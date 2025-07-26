@@ -22,7 +22,6 @@ public static class GetCapitalEquipmentEndpoint
             .WithSummary("gets CapitalEquipment by id")
             .WithDescription("gets CapitalEquipment by id")
             .Produces<GetCapitalEquipmentResponse>()
-            .AllowAnonymous()
             .RequirePermission(requirePermission)
             .MapToApiVersion(1);
     }

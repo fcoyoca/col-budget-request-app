@@ -12,5 +12,7 @@ public interface IRoleService
     Task<RoleDto> GetWithPermissionsAsync(string id, CancellationToken cancellationToken);
 
     Task<string> UpdatePermissionsAsync(UpdatePermissionsCommand request);
+    Task<RoleDto?> GetRoleByName(string name);
+    Task<RoleDto> GetWithPermissionsAsyncByRoleName(string name, CancellationToken cancellationToken);
 }
 
