@@ -22,9 +22,9 @@ public sealed class SearchCapitalEquipmentsHandler(
     {
         ArgumentNullException.ThrowIfNull(request);
         var currentUserId = currentUserService.GetUserId();
-        var hasAdminRole = currentUserService.IsInRole(FshRoles.Admin);
+        var canViewAll = (currentUserService.IsInRole(FshRoles.Admin) || currentUserService.IsInRole(FshRoles.FinanceAdmin));
         var claims = currentUserService.GetUserIdentity();
-        var spec = new SearchCapitalEquipmentSpecs(request, currentUserId);
+        var spec = new SearchCapitalEquipmentSpecs(request, currentUserId, canViewAll);
         var users = await userService.GetListAsync(cancellationToken);
         var items = await repository.ListAsync(spec, cancellationToken).ConfigureAwait(false);
         var totalCount = await repository.CountAsync(spec, cancellationToken).ConfigureAwait(false);
