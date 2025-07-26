@@ -3,17 +3,14 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace budget_request_app.WebApi.Migrations.MSSQL.EquipmentDepartment
+namespace budget_request_app.WebApi.Migrations.MSSQL.LookupValue
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class AddEquipmentDepartmentsTable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.EnsureSchema(
-                name: "lookup");
-
             migrationBuilder.CreateTable(
                 name: "EquipmentDepartments",
                 schema: "lookup",

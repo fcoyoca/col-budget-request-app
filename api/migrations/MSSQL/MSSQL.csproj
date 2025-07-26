@@ -4,11 +4,6 @@
     <AssemblyName>budget_request_app.WebApi.Migrations.MSSQL</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="EquipmentDepartment\**" />
-    <EmbeddedResource Remove="EquipmentDepartment\**" />
-    <None Remove="EquipmentDepartment\**" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Remove="Identity\20241123030737_Add Identity Schema1.cs" />
     <Compile Remove="Identity\20241123030737_Add Identity Schema1.Designer.cs" />
     <Compile Remove="Identity\IdentityDbContextModelSnapshot1.cs" />
