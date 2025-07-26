@@ -7,4 +7,10 @@
     <ProjectReference Include="..\..\framework\Core\Core.csproj" />
     <ProjectReference Include="..\..\framework\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Domain\Events\" />
+    <Folder Include="Exceptions\" />
+    <Folder Include="Features\" />
+    <Folder Include="Persistence\Configurations\" />
+  </ItemGroup>
 </Project>

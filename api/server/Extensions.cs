@@ -3,21 +3,19 @@ using Asp.Versioning.Conventions;
 using budget_request_app.WebApi.BudgetYear;
 using budget_request_app.WebApi.CapitalEquipment.Infrastructure;
 using budget_request_app.WebApi.CapitalProject.Infrastructure;
-using budget_request_app.WebApi.EquipmentDepartment;
 using budget_request_app.WebApi.EquipmentFundingSource;
 using budget_request_app.WebApi.FileService;
 using budget_request_app.WebApi.LookupCategory;
 using budget_request_app.WebApi.LookupValue;
-using budget_request_app.WebApi.ProjectFundingSource;
-using budget_request_app.WebApi.EquipmentDepartment;
+using budget_request_app.WebApi.ProjectBudgetIntroSectionOutlineItem;
 using budget_request_app.WebApi.ProjectExpenditureCategory;
+using budget_request_app.WebApi.ProjectFundingSource;
+using budget_request_app.WebApi.ProjectRequestGroup;
+using budget_request_app.WebApi.ProjectRequestStatus;
+using budget_request_app.WebApi.ProjectRequestSubGroup;
 using BudgetYearCutover.Infrastructure;
 using Carter;
 using FluentValidation;
-using budget_request_app.WebApi.ProjectRequestGroup;
-using budget_request_app.WebApi.ProjectRequestSubGroup;
-using budget_request_app.WebApi.ProjectRequestStatus;
-using budget_request_app.WebApi.ProjectBudgetIntroSectionOutlineItem;
 
 
 
@@ -41,7 +39,6 @@ public static class Extensions
             typeof(ProjectFundingSourceModule).Assembly,
             typeof(EquipmentFundingSourceModule).Assembly,
             typeof(BudgetYearCutoverModule).Assembly,
-            typeof(EquipmentDepartmentModule).Assembly,
             typeof(ProjectExpenditureCategoryModule).Assembly,
             typeof(ProjectRequestGroupModule).Assembly,
             typeof(ProjectRequestSubGroupModule).Assembly,
@@ -68,7 +65,6 @@ public static class Extensions
         builder.RegisterProjectFundingSourceServices();
         builder.RegisterEquipmentFundingSourceServices();
         builder.RegisterBudgetYearCutoverServices();
-        builder.RegisterEquipmentDepartmentServices();
         builder.RegisterProjectExpenditureCategoryServices();
         builder.RegisterProjectRequestGroupServices();
         builder.RegisterProjectRequestSubGroupServices();
@@ -87,7 +83,6 @@ public static class Extensions
             config.WithModule<ProjectFundingSourceModule.Endpoints>();
             config.WithModule<EquipmentFundingSourceModule.Endpoints>();
             config.WithModule<BudgetYearCutoverModule.Endpoints>();
-            config.WithModule<EquipmentDepartmentModule.Endpoints>();
             config.WithModule<ProjectExpenditureCategoryModule.Endpoints>();
             config.WithModule<ProjectRequestGroupModule.Endpoints>();
             config.WithModule<ProjectRequestSubGroupModule.Endpoints>();
@@ -112,7 +107,6 @@ public static class Extensions
         app.UseProjectFundingSourceModule();
         app.UseEquipmentFundingSourceModule();
         app.UseBudgetYearCutoverModule();
-        app.UseEquipmentDepartmentModule();
         app.UseProjectExpenditureCategoryModule();
         app.UseProjectRequestGroupModule();
         app.UseProjectRequestSubGroupModule();

@@ -1,6 +1,4 @@
-﻿using budget_request_app.WebApi.LookupCategory.Domain;
-using budget_request_app.WebApi.LookupCategory.Persistence;
-using budget_request_app.WebApi.LookupValue.Domain;
+﻿using budget_request_app.WebApi.LookupValue.Domain;
 using Finbuckle.MultiTenant.Abstractions;
 using FSH.Framework.Core.Persistence;
 using FSH.Framework.Infrastructure.Persistence;
@@ -18,6 +16,7 @@ public sealed class LookupValueDbContext : FshDbContext
     }
 
     public DbSet<LookupValueItem> LookupValues { get; set; } = null!;
+    public DbSet<EquipmentDepartmentItem> EquipmentDepartments { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
